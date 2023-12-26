@@ -1,12 +1,12 @@
 using MusicLibrary_GUI;
-using MusicLibrary_GUI.Models;
+using MusicLibrary_BLL.Models;
 
 namespace MusicLibrary
 {
     public partial class Authentication : Form
     {
         SignUp SignUpForm;
-        UserList _users = UserList.GetInstance();
+        UserList Users = UserList.GetInstance();
         public Authentication()
         {
             InitializeComponent();
@@ -15,7 +15,7 @@ namespace MusicLibrary
         #region Form Load
         private void Authentication_Load(object sender, EventArgs e)
         {
-
+            Users.UpdateList();
         }
         #endregion
 

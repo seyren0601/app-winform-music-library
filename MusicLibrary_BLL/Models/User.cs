@@ -6,11 +6,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicLibrary_GUI.Models
+namespace MusicLibrary_BLL.Models
 {
-    internal class User
+    public class User
     {
-        string Username { get; set; }
+        public string Username { get; set; }
         string Password { get; set; }
         byte[] Salt { get; set; }
         public User(string username, string passWord, byte[] salt)
@@ -36,6 +36,11 @@ namespace MusicLibrary_GUI.Models
                     iterationCount: 100000,
                     numBytesRequested: 256 / 8)
                 );
+        }
+
+        public string GetSaltString()
+        {
+            return Convert.ToBase64String(Salt, 0, 16);
         }
     }
 }

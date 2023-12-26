@@ -75,6 +75,7 @@
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(244, 30);
             txtUsername.TabIndex = 3;
+            txtUsername.TextChanged += txtUsername_TextChanged;
             // 
             // txtPassword
             // 
@@ -82,6 +83,7 @@
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(244, 30);
             txtPassword.TabIndex = 4;
+            txtPassword.TextChanged += txtPassword_TextChanged;
             // 
             // txtRePassword
             // 
@@ -89,6 +91,7 @@
             txtRePassword.Name = "txtRePassword";
             txtRePassword.Size = new Size(244, 30);
             txtRePassword.TabIndex = 5;
+            txtRePassword.TextChanged += txtRePassword_TextChanged;
             // 
             // lblHeader
             // 
@@ -103,12 +106,14 @@
             // 
             // btnSignUp
             // 
+            btnSignUp.Enabled = false;
             btnSignUp.Location = new Point(182, 242);
             btnSignUp.Name = "btnSignUp";
             btnSignUp.Size = new Size(96, 42);
             btnSignUp.TabIndex = 7;
             btnSignUp.Text = "Sign Up";
             btnSignUp.UseVisualStyleBackColor = true;
+            btnSignUp.Click += btnSignUp_Click;
             // 
             // btnCheck
             // 
@@ -118,6 +123,7 @@
             btnCheck.TabIndex = 8;
             btnCheck.Text = "Check";
             btnCheck.UseVisualStyleBackColor = true;
+            btnCheck.Click += btnCheck_Click;
             // 
             // btnCancel
             // 

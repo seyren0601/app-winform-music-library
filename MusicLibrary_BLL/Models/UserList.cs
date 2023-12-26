@@ -5,16 +5,19 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using static MusicLibrary_BLL.UserSerivce;
 
-namespace MusicLibrary_GUI.Models
+namespace MusicLibrary_BLL.Models
 {
-    internal class UserList:IEnumerable
+    public class UserList:IEnumerable
     {
-        private readonly List<User> _users = new List<User>();
+        private List<User> _users = new List<User>();
         static UserList Instance;
         public static UserList GetInstance()
         {
-            if ( Instance == null ) { return Instance = new UserList(); }
+            if ( Instance == null ) { 
+                return Instance = new UserList(); 
+            }
             else { return Instance; }
         }
 
@@ -24,6 +27,11 @@ namespace MusicLibrary_GUI.Models
         {
             get => _users[index];
             set => _users[index] = value;
+        }
+
+        public void UpdateList()
+        {
+            _users = GetUsers();
         }
     }
 }
