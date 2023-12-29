@@ -44,6 +44,7 @@ namespace MusicLibrary_BLL.Services
             foreach(var fileInfo in dir.GetFiles().OrderBy(c => c.Name))
             {
                 var fileNode = new TreeNode(fileInfo.Name);
+                fileNode.Tag = fileInfo.FullName;
                 node.Nodes.Add(fileNode);
             }
         }

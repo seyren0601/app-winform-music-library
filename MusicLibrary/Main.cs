@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MusicLibrary_BLL.Services;
+using NAudio.Wave;
 
 namespace MusicLibrary
 {
@@ -15,6 +16,8 @@ namespace MusicLibrary
     {
         public string RootDirectory = @"D:\OneDrive - nhg.vn\CNTT_HongBang\HK5\.NET\Project\Source\Music";
         TreeViewService _treeViewSerivce = TreeViewService.GetInstance();
+        MusicPlayer mp = new MusicPlayer();
+
         public Main()
         {
             InitializeComponent();
@@ -32,5 +35,11 @@ namespace MusicLibrary
             Close();
         }
         #endregion
+
+        private void trvDirectories_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            mp.StopMp3();
+            mp.PlayMp3(e.Node.Tag.ToString());
+        }
     }
 }

@@ -50,6 +50,7 @@
             trvDirectories.Name = "trvDirectories";
             trvDirectories.Size = new Size(234, 385);
             trvDirectories.TabIndex = 6;
+            trvDirectories.NodeMouseDoubleClick += trvDirectories_NodeMouseDoubleClick;
             // 
             // btnExit
             // 
