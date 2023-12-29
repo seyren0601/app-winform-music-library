@@ -11,7 +11,7 @@ namespace MusicLibrary_BLL.Models
     public class User
     {
         public string Username { get; set; }
-        string Password { get; set; }
+        string? Password { get; set; }
         byte[] Salt { get; set; }
         public User(string username, string passWord, byte[] salt)
         {

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
-using static MusicLibrary_BLL.UserSerivce;
+using static MusicLibrary_BLL.Services.UserSerivce;
 
 namespace MusicLibrary_BLL.Models
 {

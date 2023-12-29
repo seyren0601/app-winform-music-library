@@ -4,22 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MusicLibrary_DAL.Entities;
+using MusicLibrary_BLL.Models;
+using static MusicLibrary_BLL.Services.UserSerivce;
 
 namespace MusicLibrary_DAL
 {
     internal class Program
     {
-        public static void Main()
+        public static void Main(string[] args)
         {
-            using (var context = new MusicLibraryDbContext())
-            {
-                Console.WriteLine("Users: ");
-                IQueryable<dbo_User> Users = context.Users;
-                foreach (var user in Users)
-                {
-                    Console.WriteLine(user.username.ToString());
-                }
-            }
+            User? user = FindUser("seyren");
+            if (user != null)
+                Console.WriteLine($"{user.Username} {user.GetHashedPassword()} {user.GetSaltString()}");
         }
     }
 }

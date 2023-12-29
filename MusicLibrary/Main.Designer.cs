@@ -28,12 +28,58 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Main";
+            lblHeader = new Label();
+            trvDirectories = new TreeView();
+            btnExit = new Button();
+            SuspendLayout();
+            // 
+            // lblHeader
+            // 
+            lblHeader.Font = new Font("Segoe UI", 24.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblHeader.ForeColor = Color.Blue;
+            lblHeader.Location = new Point(107, -1);
+            lblHeader.Name = "lblHeader";
+            lblHeader.Size = new Size(614, 47);
+            lblHeader.TabIndex = 5;
+            lblHeader.Text = "MUSIC LIBRARY MANAGER\r\n\r\n";
+            lblHeader.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // trvDirectories
+            // 
+            trvDirectories.Location = new Point(0, 66);
+            trvDirectories.Name = "trvDirectories";
+            trvDirectories.Size = new Size(234, 385);
+            trvDirectories.TabIndex = 6;
+            // 
+            // btnExit
+            // 
+            btnExit.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnExit.Location = new Point(700, 414);
+            btnExit.Name = "btnExit";
+            btnExit.Size = new Size(100, 37);
+            btnExit.TabIndex = 7;
+            btnExit.Text = "Exit";
+            btnExit.UseVisualStyleBackColor = true;
+            btnExit.Click += btnExit_Click;
+            // 
+            // Main
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(btnExit);
+            Controls.Add(trvDirectories);
+            Controls.Add(lblHeader);
+            Name = "Main";
+            Text = "Main";
+            Load += Main_Load;
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Label lblHeader;
+        private TreeView trvDirectories;
+        private Button btnExit;
     }
 }

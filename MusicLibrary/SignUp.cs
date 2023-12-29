@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static MusicLibrary_BLL.UserSerivce;
+using static MusicLibrary_BLL.Services.UserSerivce;
 using MusicLibrary_BLL.Models;
 
 namespace MusicLibrary_GUI
@@ -18,6 +18,10 @@ namespace MusicLibrary_GUI
         {
             InitializeComponent();
         }
+
+        #region Form Load
+
+        #endregion
 
         #region Events
         // Buttons
@@ -50,7 +54,7 @@ namespace MusicLibrary_GUI
             if (addSuccess)
             {
                 var result = MessageBox.Show("Đăng ký thành công!", "Thông báo");
-                if (result != DialogResult.None) 
+                if (result != DialogResult.None)
                 {
                     Close();
                 }

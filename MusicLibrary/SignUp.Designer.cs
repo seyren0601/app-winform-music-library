@@ -81,6 +81,7 @@
             // 
             txtPassword.Location = new Point(126, 124);
             txtPassword.Name = "txtPassword";
+            txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(244, 30);
             txtPassword.TabIndex = 4;
             txtPassword.TextChanged += txtPassword_TextChanged;
@@ -89,6 +90,7 @@
             // 
             txtRePassword.Location = new Point(126, 184);
             txtRePassword.Name = "txtRePassword";
+            txtRePassword.PasswordChar = '*';
             txtRePassword.Size = new Size(244, 30);
             txtRePassword.TabIndex = 5;
             txtRePassword.TextChanged += txtRePassword_TextChanged;

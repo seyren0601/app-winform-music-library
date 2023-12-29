@@ -30,8 +30,8 @@
         {
             lblUsername = new Label();
             lblPassword = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
+            txtUsername = new TextBox();
+            txtPassword = new TextBox();
             lblHeader = new Label();
             btnLogIn = new Button();
             btnSignUp = new Button();
@@ -61,19 +61,20 @@
             lblPassword.Text = "Password";
             lblPassword.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // textBox1
+            // txtUsername
             // 
-            textBox1.Location = new Point(311, 101);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(185, 30);
-            textBox1.TabIndex = 2;
+            txtUsername.Location = new Point(311, 101);
+            txtUsername.Name = "txtUsername";
+            txtUsername.Size = new Size(185, 30);
+            txtUsername.TabIndex = 2;
             // 
-            // textBox2
+            // txtPassword
             // 
-            textBox2.Location = new Point(311, 154);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(185, 30);
-            textBox2.TabIndex = 3;
+            txtPassword.Location = new Point(311, 154);
+            txtPassword.Name = "txtPassword";
+            txtPassword.PasswordChar = '*';
+            txtPassword.Size = new Size(185, 30);
+            txtPassword.TabIndex = 3;
             // 
             // lblHeader
             // 
@@ -96,6 +97,7 @@
             btnLogIn.TabIndex = 5;
             btnLogIn.Text = "Log In";
             btnLogIn.UseVisualStyleBackColor = true;
+            btnLogIn.Click += btnLogIn_Click;
             // 
             // btnSignUp
             // 
@@ -137,8 +139,8 @@
             Controls.Add(btnSignUp);
             Controls.Add(btnLogIn);
             Controls.Add(lblHeader);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(txtPassword);
+            Controls.Add(txtUsername);
             Controls.Add(lblPassword);
             Controls.Add(lblUsername);
             Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -156,8 +158,8 @@
 
         private Label lblUsername;
         private Label lblPassword;
-        private TextBox textBox1;
-        private TextBox textBox2;
+        private TextBox txtUsername;
+        private TextBox txtPassword;
         private Label lblHeader;
         private Button btnLogIn;
         private Button btnSignUp;

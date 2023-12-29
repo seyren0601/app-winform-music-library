@@ -3,7 +3,7 @@ using MusicLibrary_DAL.Entities;
 using MusicLibrary_BLL.Models;
 using System.Linq;
 
-namespace MusicLibrary_BLL
+namespace MusicLibrary_BLL.Services
 {
     public static class UserSerivce
     {
@@ -12,13 +12,14 @@ namespace MusicLibrary_BLL
             using (var db = new MusicLibraryDbContext())
             {
                 IQueryable<dbo_User> QueryResult = db.Users;
+
                 List<User> Users = new List<User>();
-                foreach(var user in QueryResult)
+                foreach (var row in QueryResult)
                 {
                     Users.Add(new User(
-                        user.username,
-                        user.h_pass,
-                        Convert.FromBase64String(user.salt)));
+                        row.username,
+                        row.h_pass,
+                        Convert.FromBase64String(row.salt)));
                 }
                 return Users;
             }
@@ -26,11 +27,12 @@ namespace MusicLibrary_BLL
 
         public static User? FindUser(string username)
         {
-            using(var db = new MusicLibraryDbContext())
+            using (var db = new MusicLibraryDbContext())
             {
                 IQueryable<dbo_User> Users = db.Users
                     .Where(x => x.username == username);
-                if(Users.Count() == 0)
+
+                if (Users.Count() == 0)
                 {
                     return null;
                 }
@@ -58,6 +60,37 @@ namespace MusicLibrary_BLL
 
                 int affected = db.SaveChanges();
                 return affected == 1;
+            }
+        }
+
+        public static bool LoginUser(string username, string password)
+        {
+            
+            using(var db = new MusicLibraryDbContext())
+            {
+                IQueryable<dbo_User> Users = db.Users
+                    .Where(x=>x.username == username);
+                if(Users.Count() == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    dbo_User db_user = Users.First();
+                    byte[] salt = Convert.FromBase64String(db_user.salt);
+                    User loginUser = new User(username, password, salt);
+                    bool authenticated =
+                        loginUser.Username == db_user.username
+                        && loginUser.GetHashedPassword() == db_user.h_pass;
+                    if (authenticated)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
         }
     }
