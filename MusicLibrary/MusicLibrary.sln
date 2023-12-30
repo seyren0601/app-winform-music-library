@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicLibrary_BLL", "..\Musi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicLibrary_DAL", "..\MusicLibrary_DAL\MusicLibrary_DAL.csproj", "{4AC73388-B092-44A2-8D64-7799D1C56CB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground", "..\Playground\Playground.csproj", "{110DF7C3-32D6-43D7-BAA6-DAB333A95E25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playground", "..\Playground\Playground.csproj", "{110DF7C3-32D6-43D7-BAA6-DAB333A95E25}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4AC73388-B092-44A2-8D64-7799D1C56CB9} = {4AC73388-B092-44A2-8D64-7799D1C56CB9}
 	EndProjectSection

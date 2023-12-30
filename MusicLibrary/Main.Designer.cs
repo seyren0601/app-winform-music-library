@@ -1,4 +1,6 @@
-﻿namespace MusicLibrary
+﻿using NAudio.Gui;
+
+namespace MusicLibrary
 {
     partial class Main
     {
@@ -31,6 +33,7 @@
             lblHeader = new Label();
             trvDirectories = new TreeView();
             btnExit = new Button();
+            volumeSlider1 = new VolumeSlider();
             SuspendLayout();
             // 
             // lblHeader
@@ -46,6 +49,7 @@
             // 
             // trvDirectories
             // 
+            trvDirectories.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             trvDirectories.Location = new Point(0, 66);
             trvDirectories.Name = "trvDirectories";
             trvDirectories.Size = new Size(234, 385);
@@ -63,6 +67,15 @@
             btnExit.UseVisualStyleBackColor = true;
             btnExit.Click += btnExit_Click;
             // 
+            // volumeSlider1
+            // 
+            volumeSlider1.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            volumeSlider1.Location = new Point(301, 104);
+            volumeSlider1.Margin = new Padding(4, 5, 4, 5);
+            volumeSlider1.Name = "volumeSlider1";
+            volumeSlider1.Size = new Size(94, 29);
+            volumeSlider1.TabIndex = 8;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -71,6 +84,7 @@
             Controls.Add(btnExit);
             Controls.Add(trvDirectories);
             Controls.Add(lblHeader);
+            Controls.Add(volumeSlider1);
             Name = "Main";
             Text = "Main";
             Load += Main_Load;
@@ -82,5 +96,6 @@
         private Label lblHeader;
         private TreeView trvDirectories;
         private Button btnExit;
+        private VolumeSlider volumeSlider1;
     }
 }
