@@ -16,7 +16,7 @@ namespace MusicLibrary
     {
         public string RootDirectory = @"D:\OneDrive - nhg.vn\CNTT_HongBang\HK5\.NET\Project\Source\Music";
         TreeViewService _treeViewSerivce = TreeViewService.GetInstance();
-        MusicPlayer mp = new MusicPlayer();
+        MusicPlayer mp = MusicPlayer.GetInstance();
 
         public Main()
         {
@@ -38,8 +38,7 @@ namespace MusicLibrary
 
         private void trvDirectories_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            mp.StopMp3();
-            mp.PlayMp3(e.Node.Tag.ToString());
+            mp.PlayMusic(e.Node.Tag.ToString());
         }
     }
 }
