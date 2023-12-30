@@ -12,7 +12,7 @@ namespace MusicLibrary_BLL.Services
     {
         Mp3FileReader mp3FileReader;
         FlacReader flacReader;
-        private IWavePlayer? waveOut = null;
+        public IWavePlayer? waveOut = null;
         static MusicPlayer Instance;
         public static MusicPlayer GetInstance()
         {
@@ -20,6 +20,7 @@ namespace MusicLibrary_BLL.Services
             else return Instance;
         }
 
+        #region Controls
         public void PlayMusic(string path)
         {
             FileInfo fileinfo = new FileInfo(path);
@@ -33,6 +34,54 @@ namespace MusicLibrary_BLL.Services
                     break;
             }
         }
+
+        public void ChangeVolume(float volume)
+        {
+            if(waveOut != null)
+            {
+                waveOut.Volume = volume;
+            }
+        }
+
+        public TimeSpan GetMaxDuration()
+        {
+            if (flacReader.CanRead)
+            {
+                return flacReader.TotalTime;
+            }
+            if (mp3FileReader.CanRead)
+            {
+                return mp3FileReader.TotalTime;
+            }
+            return TimeSpan.Zero;
+        }
+
+        public TimeSpan GetPosition()
+        {
+            if(flacReader.CanRead)
+            {
+                return flacReader.CurrentTime;
+            }
+            else if (mp3FileReader.CanRead)
+            {
+                return mp3FileReader.CurrentTime;
+            }
+            return TimeSpan.Zero;
+        }
+
+        public void SetPosition(TimeSpan position)
+        {
+            if (flacReader.CanRead)
+            {
+                flacReader.CurrentTime = position;
+            }
+            else if (mp3FileReader.CanRead)
+            {
+                mp3FileReader.CurrentTime = position;
+            }
+        }
+
+        #endregion
 
         #region Mp3
         private void Mp3_Play(string path)
@@ -95,15 +144,15 @@ namespace MusicLibrary_BLL.Services
         private void Mp3_OnPlaybackStopped(object sender, EventArgs e)
         {
             waveOut.Dispose();
-            waveOut = null;
-            mp3FileReader.Dispose();
+            if(mp3FileReader.CanRead)
+                mp3FileReader.Dispose();
         }
 
         private void Flac_OnPlaybackStopped(object sender, EventArgs e)
         {
             waveOut.Dispose();
-            waveOut = null;
-            flacReader.Dispose();
+            if(flacReader.CanRead)
+                flacReader.Dispose();
         }
 
         #endregion

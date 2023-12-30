@@ -82,11 +82,11 @@
             lblHeader.BorderStyle = BorderStyle.FixedSingle;
             lblHeader.Font = new Font("Segoe UI", 24.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblHeader.ForeColor = Color.Blue;
-            lblHeader.Location = new Point(96, 9);
+            lblHeader.Location = new Point(186, 9);
             lblHeader.Name = "lblHeader";
-            lblHeader.Size = new Size(614, 47);
+            lblHeader.Size = new Size(418, 47);
             lblHeader.TabIndex = 4;
-            lblHeader.Text = "MUSIC LIBRARY MANAGEMENT SYSTEM\r\n";
+            lblHeader.Text = "MUSIC LIBRARY MANAGER\r\n";
             lblHeader.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnLogIn
