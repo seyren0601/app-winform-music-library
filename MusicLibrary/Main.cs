@@ -40,6 +40,9 @@ namespace MusicLibrary
 
         private void trvDirectories_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            // Read and Play media (mp3/flac)
+            mp.PlayMusic(e.Node.Tag.ToString());
+
             // Set seekbar max value
             TimeSpan maxSeconds = mp.GetMaxDuration();
             trbSeeker.Maximum = maxSeconds.Minutes * 60 + maxSeconds.Seconds;
@@ -47,10 +50,6 @@ namespace MusicLibrary
 
             // Start timer to update seekbar along with media playback
             tmrSeekBar.Start();
-
-            // Play media (mp3/flac)
-            mp.PlayMusic(e.Node.Tag.ToString());
-            
         }
 
         private void volumeSlider1_VolumeChanged(object sender, EventArgs e)
@@ -82,6 +81,7 @@ namespace MusicLibrary
             {
                 TimeSpan currentTime = mp.GetPosition();
                 trbSeeker.Value = (int)currentTime.TotalSeconds;
+                lblSeekMin.Text = string.Format("{0:D2}:{1:D2}", currentTime.Minutes, currentTime.Seconds);
             }
         }
 
