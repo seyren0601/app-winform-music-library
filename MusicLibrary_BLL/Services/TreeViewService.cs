@@ -21,17 +21,18 @@ namespace MusicLibrary_BLL.Services
             RecurseFolders(rootPath, rootNode);
         }
 
-        public void RecurseFolders(string path, TreeNode node)
+        public void RecurseFolders(string path, TreeNode folderNode)
         {
             var dir = new DirectoryInfo(path);
-            node.Text = dir.Name;
+            folderNode.Text = dir.Name;
+            folderNode.SelectedImageIndex =  folderNode.ImageIndex = 0;
 
             try
             {
                 foreach(var subdir in dir.GetDirectories())
                 {
                     var childNode = new TreeNode();
-                    node.Nodes.Add(childNode);
+                    folderNode.Nodes.Add(childNode);
 
                     RecurseFolders(subdir.FullName, childNode);
                 }
@@ -41,11 +42,14 @@ namespace MusicLibrary_BLL.Services
                 MessageBox.Show($"Unauthorized at folder. Mesasge: {ex.Message}");
             }
 
-            foreach(var fileInfo in dir.GetFiles().OrderBy(c => c.Name))
+            foreach(var fileInfo in dir.GetFiles()
+                                        .Where(c=>c.Extension == ".mp3")
+                                        .OrderBy(c => c.Name))
             {
                 var fileNode = new TreeNode(fileInfo.Name);
                 fileNode.Tag = fileInfo.FullName;
-                node.Nodes.Add(fileNode);
+                fileNode.SelectedImageIndex = fileNode.ImageIndex = 1;
+                folderNode.Nodes.Add(fileNode);
             }
         }
     }

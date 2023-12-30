@@ -34,9 +34,10 @@ namespace MusicLibrary
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             lblHeader = new Label();
             trvDirectories = new TreeView();
+            treeview_icons = new ImageList(components);
             btnExit = new Button();
             volumeSlider1 = new VolumeSlider();
-            icons = new ImageList(components);
+            media_icons = new ImageList(components);
             btnPlay = new Button();
             btnPause = new Button();
             trbSeeker = new TrackBar();
@@ -59,12 +60,23 @@ namespace MusicLibrary
             // 
             // trvDirectories
             // 
-            trvDirectories.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            trvDirectories.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            trvDirectories.ImageIndex = 0;
+            trvDirectories.ImageList = treeview_icons;
             trvDirectories.Location = new Point(0, 66);
             trvDirectories.Name = "trvDirectories";
+            trvDirectories.SelectedImageIndex = 1;
             trvDirectories.Size = new Size(234, 385);
             trvDirectories.TabIndex = 6;
             trvDirectories.NodeMouseDoubleClick += trvDirectories_NodeMouseDoubleClick;
+            // 
+            // treeview_icons
+            // 
+            treeview_icons.ColorDepth = ColorDepth.Depth32Bit;
+            treeview_icons.ImageStream = (ImageListStreamer)resources.GetObject("treeview_icons.ImageStream");
+            treeview_icons.TransparentColor = Color.Transparent;
+            treeview_icons.Images.SetKeyName(0, "pngtree-vector-folder-icon-png-image_3788101.png");
+            treeview_icons.Images.SetKeyName(1, "mp3-file.png");
             // 
             // btnExit
             // 
@@ -88,20 +100,20 @@ namespace MusicLibrary
             volumeSlider1.Volume = 0.6F;
             volumeSlider1.VolumeChanged += volumeSlider1_VolumeChanged;
             // 
-            // icons
+            // media_icons
             // 
-            icons.ColorDepth = ColorDepth.Depth32Bit;
-            icons.ImageStream = (ImageListStreamer)resources.GetObject("icons.ImageStream");
-            icons.TransparentColor = Color.Transparent;
-            icons.Images.SetKeyName(0, "play.png");
-            icons.Images.SetKeyName(1, "pause.png");
+            media_icons.ColorDepth = ColorDepth.Depth32Bit;
+            media_icons.ImageStream = (ImageListStreamer)resources.GetObject("media_icons.ImageStream");
+            media_icons.TransparentColor = Color.Transparent;
+            media_icons.Images.SetKeyName(0, "play-button.png");
+            media_icons.Images.SetKeyName(1, "pause.png");
             // 
             // btnPlay
             // 
             btnPlay.FlatAppearance.BorderColor = SystemColors.Control;
             btnPlay.FlatStyle = FlatStyle.Flat;
             btnPlay.ImageIndex = 0;
-            btnPlay.ImageList = icons;
+            btnPlay.ImageList = media_icons;
             btnPlay.Location = new Point(260, 66);
             btnPlay.Name = "btnPlay";
             btnPlay.Size = new Size(48, 48);
@@ -114,7 +126,7 @@ namespace MusicLibrary
             btnPause.FlatAppearance.BorderColor = SystemColors.Control;
             btnPause.FlatStyle = FlatStyle.Flat;
             btnPause.ImageIndex = 1;
-            btnPause.ImageList = icons;
+            btnPause.ImageList = media_icons;
             btnPause.Location = new Point(314, 66);
             btnPause.Name = "btnPause";
             btnPause.Size = new Size(55, 48);
@@ -183,12 +195,13 @@ namespace MusicLibrary
         private TreeView trvDirectories;
         private Button btnExit;
         private VolumeSlider volumeSlider1;
-        private ImageList icons;
+        private ImageList media_icons;
         private Button btnPlay;
         private Button btnPause;
         private TrackBar trbSeeker;
         private Label lblSeekMin;
         private Label lblSeekMax;
         private System.Windows.Forms.Timer tmrSeekBar;
+        private ImageList treeview_icons;
     }
 }
