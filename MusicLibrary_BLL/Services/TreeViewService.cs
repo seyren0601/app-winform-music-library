@@ -43,11 +43,11 @@ namespace MusicLibrary_BLL.Services
             }
 
             foreach(var fileInfo in dir.GetFiles()
-                                        .Where(c=>c.Extension == ".mp3")
+                                        .Where(c=>c.Extension == ".mp3" || c.Extension == ".flac")
                                         .OrderBy(c => c.Name))
             {
                 var fileNode = new TreeNode(fileInfo.Name);
-                fileNode.Tag = fileInfo.FullName;
+                fileNode.Tag = fileInfo;
                 fileNode.SelectedImageIndex = fileNode.ImageIndex = 1;
                 folderNode.Nodes.Add(fileNode);
             }

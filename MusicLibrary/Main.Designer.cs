@@ -44,6 +44,7 @@ namespace MusicLibrary
             lblSeekMin = new Label();
             lblSeekMax = new Label();
             tmrSeekBar = new System.Windows.Forms.Timer(components);
+            btnStop = new Button();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
             SuspendLayout();
             // 
@@ -107,6 +108,7 @@ namespace MusicLibrary
             media_icons.TransparentColor = Color.Transparent;
             media_icons.Images.SetKeyName(0, "play-button.png");
             media_icons.Images.SetKeyName(1, "pause.png");
+            media_icons.Images.SetKeyName(2, "stop.png");
             // 
             // btnPlay
             // 
@@ -114,7 +116,7 @@ namespace MusicLibrary
             btnPlay.FlatStyle = FlatStyle.Flat;
             btnPlay.ImageIndex = 0;
             btnPlay.ImageList = media_icons;
-            btnPlay.Location = new Point(260, 66);
+            btnPlay.Location = new Point(240, 66);
             btnPlay.Name = "btnPlay";
             btnPlay.Size = new Size(48, 48);
             btnPlay.TabIndex = 9;
@@ -127,7 +129,7 @@ namespace MusicLibrary
             btnPause.FlatStyle = FlatStyle.Flat;
             btnPause.ImageIndex = 1;
             btnPause.ImageList = media_icons;
-            btnPause.Location = new Point(314, 66);
+            btnPause.Location = new Point(284, 66);
             btnPause.Name = "btnPause";
             btnPause.Size = new Size(55, 48);
             btnPause.TabIndex = 10;
@@ -167,11 +169,25 @@ namespace MusicLibrary
             tmrSeekBar.Interval = 1;
             tmrSeekBar.Tick += tmrSeekBar_Tick;
             // 
+            // btnStop
+            // 
+            btnStop.FlatAppearance.BorderColor = SystemColors.Control;
+            btnStop.FlatStyle = FlatStyle.Flat;
+            btnStop.ImageIndex = 2;
+            btnStop.ImageList = media_icons;
+            btnStop.Location = new Point(345, 73);
+            btnStop.Name = "btnStop";
+            btnStop.Size = new Size(41, 35);
+            btnStop.TabIndex = 14;
+            btnStop.UseVisualStyleBackColor = true;
+            btnStop.Click += btnStop_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnStop);
             Controls.Add(lblSeekMax);
             Controls.Add(lblSeekMin);
             Controls.Add(trbSeeker);
@@ -203,5 +219,6 @@ namespace MusicLibrary
         private Label lblSeekMax;
         private System.Windows.Forms.Timer tmrSeekBar;
         private ImageList treeview_icons;
+        private Button btnStop;
     }
 }

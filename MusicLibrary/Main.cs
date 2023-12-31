@@ -40,16 +40,22 @@ namespace MusicLibrary
 
         private void trvDirectories_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            // Read and Play media (mp3/flac)
-            mp.PlayMusic(e.Node.Tag.ToString());
+            if (e.Node.Tag is FileInfo)
+            {
+                // Read and Play media (mp3/flac)
+                mp.PlayFile((FileInfo)e.Node.Tag);
 
-            // Set seekbar max value
-            TimeSpan maxSeconds = mp.GetMaxDuration();
-            trbSeeker.Maximum = maxSeconds.Minutes * 60 + maxSeconds.Seconds;
-            lblSeekMax.Text = string.Format("{0:D2}:{1:D2}", maxSeconds.Minutes, maxSeconds.Seconds);
+                // Set seekbar max value
+                TimeSpan maxSeconds = mp.GetMaxDuration();
+                trbSeeker.Maximum = maxSeconds.Minutes * 60 + maxSeconds.Seconds;
+                lblSeekMax.Text = string.Format("{0:D2}:{1:D2}", maxSeconds.Minutes, maxSeconds.Seconds);
 
-            // Start timer to update seekbar along with media playback
-            tmrSeekBar.Start();
+                Console.WriteLine(trbSeeker.Minimum);
+                Console.WriteLine(trbSeeker.Maximum);
+                 
+                // Start timer to update seekbar along with media playback
+                tmrSeekBar.Start();
+            }
         }
 
         private void volumeSlider1_VolumeChanged(object sender, EventArgs e)
@@ -76,7 +82,6 @@ namespace MusicLibrary
 
         private void tmrSeekBar_Tick(object sender, EventArgs e)
         {
-
             if (mp.waveOut != null && mp.waveOut.PlaybackState == PlaybackState.Playing)
             {
                 TimeSpan currentTime = mp.GetPosition();
@@ -95,12 +100,20 @@ namespace MusicLibrary
 
         private void trbSeeker_MouseUp(object sender, MouseEventArgs e)
         {
-            if(mp.waveOut != null)
+            if (mp.waveOut != null)
             {
                 TimeSpan value = new TimeSpan(0, 0, trbSeeker.Value);
                 mp.SetPosition(value);
                 mp.waveOut.Play();
             }
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            mp.Stop();
+            trbSeeker.Value = 0;
+            lblSeekMin.Text = "0:00";
+            mp.SetPosition(TimeSpan.Zero);
         }
     }
 }
