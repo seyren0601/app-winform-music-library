@@ -7,25 +7,25 @@ namespace MusicLibrary_BLL.Services
 {
     public static class UserSerivce
     {
-        public static List<User> GetUsers()
+        public static List<dbo_User> GetUsers()
         {
             using (var db = new MusicLibraryDbContext())
             {
                 IQueryable<dbo_User> QueryResult = db.Users;
 
-                List<User> Users = new List<User>();
+                List<dbo_User> Users = new List<dbo_User>();
                 foreach (var row in QueryResult)
                 {
-                    Users.Add(new User(
+                    Users.Add(new dbo_User(
                         row.username,
                         row.h_pass,
-                        Convert.FromBase64String(row.salt)));
+                        row.salt));
                 }
                 return Users;
             }
         }
 
-        public static User? FindUser(string username)
+        public static dbo_User? FindUser(string username)
         {
             using (var db = new MusicLibraryDbContext())
             {
@@ -39,23 +39,24 @@ namespace MusicLibrary_BLL.Services
                 else
                 {
                     dbo_User user = Users.First();
-                    return new User(
+                    return new dbo_User(
                         user.username,
                         user.h_pass,
-                        Convert.FromBase64String(user.salt));
+                        user.salt);
                 }
             }
         }
 
-        public static bool AddUser(User user)
+        public static bool AddUser(string username, string password)
         {
             using (var db = new MusicLibraryDbContext())
             {
+                var password_info = dbo_User.GetHashedPassword(password);
                 db.Users.Add(new dbo_User()
                 {
-                    username = user.Username,
-                    h_pass = user.GetHashedPassword(),
-                    salt = user.GetSaltString()
+                    username = username,
+                    h_pass = password_info.Item1,
+                    salt = Convert.ToBase64String(password_info.Item2)
                 });
 
                 int affected = db.SaveChanges();

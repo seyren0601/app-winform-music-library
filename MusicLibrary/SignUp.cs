@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static MusicLibrary_BLL.Services.UserSerivce;
 using MusicLibrary_BLL.Models;
+using MusicLibrary_DAL.Entities;
 
 namespace MusicLibrary_GUI
 {
@@ -33,7 +34,7 @@ namespace MusicLibrary_GUI
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            User? user = FindUser(txtUsername.Text);
+            dbo_User? user = FindUser(txtUsername.Text);
             if (user != null)
             {
                 MessageBox.Show("Username đã được đăng ký", "Thông báo");
@@ -50,7 +51,7 @@ namespace MusicLibrary_GUI
 
         private void btnSignUp_Click(object sender, EventArgs e)
         {
-            bool addSuccess = AddUser(new User(txtUsername.Text, txtPassword.Text));
+            bool addSuccess = AddUser(txtUsername.Text, txtPassword.Text);
             if (addSuccess)
             {
                 var result = MessageBox.Show("Đăng ký thành công!", "Thông báo");

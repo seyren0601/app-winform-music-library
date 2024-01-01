@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using static MusicLibrary_BLL.Services.UserSerivce;
+using MusicLibrary_DAL.Entities;
 
 namespace MusicLibrary_BLL.Models
 {
     public class UserList:IEnumerable
     {
-        private List<User> _users = new List<User>();
+        private List<dbo_User> _users = new List<dbo_User>();
         static UserList Instance;
         public static UserList GetInstance()
         {
@@ -23,7 +24,7 @@ namespace MusicLibrary_BLL.Models
 
         // Indexer and GetEnumerator
         IEnumerator IEnumerable.GetEnumerator() => _users.GetEnumerator();
-        public User this[int index]
+        public dbo_User this[int index]
         {
             get => _users[index];
             set => _users[index] = value;
