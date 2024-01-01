@@ -282,7 +282,6 @@ namespace MusicLibrary
             grdNowPlaying.AllowUserToDeleteRows = false;
             grdNowPlaying.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             grdNowPlaying.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            grdNowPlaying.Enabled = false;
             grdNowPlaying.Location = new Point(240, 120);
             grdNowPlaying.Name = "grdNowPlaying";
             grdNowPlaying.ReadOnly = true;

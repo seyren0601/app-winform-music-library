@@ -140,13 +140,29 @@ namespace MusicLibrary
         {
             if (e.ClickedItem == ctxTreeNode.Items[0])
             {
-                MusicFile file = trvDirectories.SelectedNode.Tag as MusicFile;
-                NowPlaying.Add(file);
-                mp.PlayList = NowPlaying;
-                if (mp.PlayList.Count == 1)
+                if (trvDirectories.SelectedNode.Tag is MusicFile)
                 {
-                    mp.PlayFile(file);
-                    SetupPlayFile(file);
+                    MusicFile file = trvDirectories.SelectedNode.Tag as MusicFile;
+                    NowPlaying.Add(file);
+                    mp.PlayList = NowPlaying;
+                    if (mp.PlayList.Count == 1)
+                    {
+                        mp.PlayFile(file);
+                        SetupPlayFile(file);
+                    }
+                }
+                else
+                {
+                    TreeNode root = trvDirectories.SelectedNode;
+                    _treeViewSerivce.AddFolderToPlaylist(root, NowPlaying);
+                    MusicFile file = NowPlaying[0];
+                    bool PlayListIsEmpty = mp.PlayList.Count == 0;
+                    mp.PlayList = NowPlaying;
+                    if (PlayListIsEmpty)
+                    {
+                        mp.PlayFile(file);
+                        SetupPlayFile(file);
+                    }
                 }
             }
             Console.WriteLine("Current playlist: ");

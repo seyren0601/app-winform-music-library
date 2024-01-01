@@ -26,6 +26,7 @@ namespace MusicLibrary_BLL.Services
         {
             var dir = new DirectoryInfo(path);
             folderNode.Text = dir.Name;
+            folderNode.Tag = dir;
             folderNode.SelectedImageIndex =  folderNode.ImageIndex = 0;
 
             try
@@ -51,6 +52,15 @@ namespace MusicLibrary_BLL.Services
                 fileNode.Tag = new MusicFile(fileInfo);
                 fileNode.SelectedImageIndex = fileNode.ImageIndex = 1;
                 folderNode.Nodes.Add(fileNode);
+            }
+        }
+
+        public void AddFolderToPlaylist(TreeNode node, MusicList playlist)
+        {
+            foreach(TreeNode sub_node in node.Nodes)
+            {
+                if (sub_node.Tag is DirectoryInfo) AddFolderToPlaylist(sub_node, playlist);
+                else playlist.Add(sub_node.Tag as MusicFile);
             }
         }
     }
