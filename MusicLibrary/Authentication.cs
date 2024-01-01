@@ -30,7 +30,7 @@ namespace MusicLibrary
 
         private void btnLogIn_Click(object sender, EventArgs e)
         {
-            if(LoginUser(txtUsername.Text, txtPassword.Text))
+            if (LoginUser(txtUsername.Text, txtPassword.Text))
             {
                 var result = MessageBox.Show("Login thành công", "Thông báo");
                 if (result != DialogResult.None)
@@ -46,9 +46,24 @@ namespace MusicLibrary
                 MessageBox.Show("Login thất bại", "Thông báo");
             }
         }
+
+        // Key presses
+
         #endregion
 
+        private void Authentication_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) btnLogIn_Click(sender, new EventArgs());
+        }
 
+        private void txtUsername_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) btnLogIn_Click(sender, new EventArgs());
+        }
 
+        private void txtPassword_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) btnLogIn_Click(sender, new EventArgs());
+        }
     }
 }

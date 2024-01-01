@@ -67,6 +67,7 @@
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(185, 30);
             txtUsername.TabIndex = 2;
+            txtUsername.KeyUp += txtUsername_KeyUp;
             // 
             // txtPassword
             // 
@@ -75,6 +76,7 @@
             txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(185, 30);
             txtPassword.TabIndex = 3;
+            txtPassword.KeyUp += txtPassword_KeyUp;
             // 
             // lblHeader
             // 
@@ -95,6 +97,7 @@
             btnLogIn.Name = "btnLogIn";
             btnLogIn.Size = new Size(75, 32);
             btnLogIn.TabIndex = 5;
+            btnLogIn.TabStop = false;
             btnLogIn.Text = "Log In";
             btnLogIn.UseVisualStyleBackColor = true;
             btnLogIn.Click += btnLogIn_Click;
@@ -105,6 +108,7 @@
             btnSignUp.Name = "btnSignUp";
             btnSignUp.Size = new Size(88, 32);
             btnSignUp.TabIndex = 6;
+            btnSignUp.TabStop = false;
             btnSignUp.Text = "Sign Up";
             btnSignUp.UseVisualStyleBackColor = true;
             btnSignUp.Click += btnSignUp_Click;
@@ -115,6 +119,7 @@
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(91, 32);
             btnExit.TabIndex = 7;
+            btnExit.TabStop = false;
             btnExit.Text = "Exit";
             btnExit.UseVisualStyleBackColor = true;
             // 
@@ -150,6 +155,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Authentication";
             Load += Authentication_Load;
+            KeyUp += Authentication_KeyUp;
             ResumeLayout(false);
             PerformLayout();
         }

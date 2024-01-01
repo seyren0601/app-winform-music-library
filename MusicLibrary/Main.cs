@@ -19,7 +19,7 @@ namespace MusicLibrary
 {
     public partial class Main : Form
     {
-        public string RootDirectory = @"D:\OneDrive - nhg.vn\CNTT_HongBang\HK5\.NET\Project\Source\Music";
+        public string RootDirectory = "..\\..\\..\\Music";
         TreeViewService _treeViewSerivce = TreeViewService.GetInstance();
         MusicPlayer mp = MusicPlayer.GetInstance();
         MediaTag mt = MediaTag.GetInstance();
