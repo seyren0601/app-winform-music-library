@@ -78,11 +78,10 @@ namespace MusicLibrary_BLL.Services
                 else
                 {
                     dbo_User db_user = Users.First();
-                    byte[] salt = Convert.FromBase64String(db_user.salt);
-                    User loginUser = new User(username, password, salt);
+                    byte[] salt = db_user.salt_byte;
                     bool authenticated =
-                        loginUser.Username == db_user.username
-                        && loginUser.GetHashedPassword() == db_user.h_pass;
+                        username == db_user.username
+                        && dbo_User.GetHashedPassword(password, salt) == db_user.h_pass;
                     if (authenticated)
                     {
                         return true;

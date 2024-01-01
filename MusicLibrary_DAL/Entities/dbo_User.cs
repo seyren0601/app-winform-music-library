@@ -47,5 +47,16 @@ namespace MusicLibrary_DAL.Entities
                     numBytesRequested: 256 / 8)
                 ), salt_generated);
         }
+
+        public static string GetHashedPassword(string password, byte[] salt_byte)
+        {
+            return Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: password!,
+                    salt: salt_byte,
+                    prf: KeyDerivationPrf.HMACSHA256,
+                    iterationCount: 100000,
+                    numBytesRequested: 256 / 8)
+                );
+        }
     }
 }
