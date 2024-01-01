@@ -34,6 +34,8 @@ namespace MusicLibrary
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             lblHeader = new Label();
             trvDirectories = new TreeView();
+            ctxTreeNode = new ContextMenuStrip(components);
+            menuAddToPlayList = new ToolStripMenuItem();
             treeview_icons = new ImageList(components);
             btnExit = new Button();
             volumeSlider1 = new VolumeSlider();
@@ -45,7 +47,18 @@ namespace MusicLibrary
             lblSeekMax = new Label();
             tmrSeekBar = new System.Windows.Forms.Timer(components);
             btnStop = new Button();
+            grpDetails = new GroupBox();
+            txtAlbum = new TextBox();
+            txtArtist = new TextBox();
+            txtTitle = new TextBox();
+            lblAlbum = new Label();
+            lblArtist = new Label();
+            lblTitle = new Label();
+            grdNowPlaying = new DataGridView();
+            ctxTreeNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
+            grpDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)grdNowPlaying).BeginInit();
             SuspendLayout();
             // 
             // lblHeader
@@ -61,6 +74,7 @@ namespace MusicLibrary
             // 
             // trvDirectories
             // 
+            trvDirectories.ContextMenuStrip = ctxTreeNode;
             trvDirectories.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             trvDirectories.ImageIndex = 0;
             trvDirectories.ImageList = treeview_icons;
@@ -70,6 +84,20 @@ namespace MusicLibrary
             trvDirectories.Size = new Size(234, 385);
             trvDirectories.TabIndex = 6;
             trvDirectories.NodeMouseDoubleClick += trvDirectories_NodeMouseDoubleClick;
+            trvDirectories.MouseClick += trvDirectories_MouseClick;
+            // 
+            // ctxTreeNode
+            // 
+            ctxTreeNode.Items.AddRange(new ToolStripItem[] { menuAddToPlayList });
+            ctxTreeNode.Name = "ctxTreeNode";
+            ctxTreeNode.Size = new Size(192, 26);
+            ctxTreeNode.ItemClicked += ctxTreeNode_ItemClicked;
+            // 
+            // menuAddToPlayList
+            // 
+            menuAddToPlayList.Name = "menuAddToPlayList";
+            menuAddToPlayList.Size = new Size(191, 22);
+            menuAddToPlayList.Text = "Add to current playlist";
             // 
             // treeview_icons
             // 
@@ -82,7 +110,7 @@ namespace MusicLibrary
             // btnExit
             // 
             btnExit.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnExit.Location = new Point(700, 414);
+            btnExit.Location = new Point(597, 358);
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(100, 37);
             btnExit.TabIndex = 7;
@@ -93,10 +121,10 @@ namespace MusicLibrary
             // volumeSlider1
             // 
             volumeSlider1.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            volumeSlider1.Location = new Point(260, 122);
+            volumeSlider1.Location = new Point(426, 57);
             volumeSlider1.Margin = new Padding(4, 5, 4, 5);
             volumeSlider1.Name = "volumeSlider1";
-            volumeSlider1.Size = new Size(94, 29);
+            volumeSlider1.Size = new Size(94, 18);
             volumeSlider1.TabIndex = 8;
             volumeSlider1.Volume = 0.6F;
             volumeSlider1.VolumeChanged += volumeSlider1_VolumeChanged;
@@ -166,7 +194,6 @@ namespace MusicLibrary
             // 
             // tmrSeekBar
             // 
-            tmrSeekBar.Interval = 1;
             tmrSeekBar.Tick += tmrSeekBar_Tick;
             // 
             // btnStop
@@ -182,11 +209,93 @@ namespace MusicLibrary
             btnStop.UseVisualStyleBackColor = true;
             btnStop.Click += btnStop_Click;
             // 
+            // grpDetails
+            // 
+            grpDetails.Controls.Add(txtAlbum);
+            grpDetails.Controls.Add(txtArtist);
+            grpDetails.Controls.Add(txtTitle);
+            grpDetails.Controls.Add(lblAlbum);
+            grpDetails.Controls.Add(lblArtist);
+            grpDetails.Controls.Add(lblTitle);
+            grpDetails.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            grpDetails.Location = new Point(240, 298);
+            grpDetails.Name = "grpDetails";
+            grpDetails.Size = new Size(264, 153);
+            grpDetails.TabIndex = 15;
+            grpDetails.TabStop = false;
+            grpDetails.Text = "Details";
+            // 
+            // txtAlbum
+            // 
+            txtAlbum.Enabled = false;
+            txtAlbum.Location = new Point(80, 117);
+            txtAlbum.Name = "txtAlbum";
+            txtAlbum.Size = new Size(178, 30);
+            txtAlbum.TabIndex = 5;
+            // 
+            // txtArtist
+            // 
+            txtArtist.Enabled = false;
+            txtArtist.Location = new Point(80, 71);
+            txtArtist.Name = "txtArtist";
+            txtArtist.Size = new Size(178, 30);
+            txtArtist.TabIndex = 4;
+            // 
+            // txtTitle
+            // 
+            txtTitle.Enabled = false;
+            txtTitle.Location = new Point(80, 26);
+            txtTitle.Name = "txtTitle";
+            txtTitle.Size = new Size(178, 30);
+            txtTitle.TabIndex = 3;
+            // 
+            // lblAlbum
+            // 
+            lblAlbum.AutoSize = true;
+            lblAlbum.Location = new Point(13, 120);
+            lblAlbum.Name = "lblAlbum";
+            lblAlbum.Size = new Size(60, 23);
+            lblAlbum.TabIndex = 2;
+            lblAlbum.Text = "Album";
+            // 
+            // lblArtist
+            // 
+            lblArtist.AutoSize = true;
+            lblArtist.Location = new Point(13, 74);
+            lblArtist.Name = "lblArtist";
+            lblArtist.Size = new Size(50, 23);
+            lblArtist.TabIndex = 1;
+            lblArtist.Text = "Artist";
+            // 
+            // lblTitle
+            // 
+            lblTitle.AutoSize = true;
+            lblTitle.Location = new Point(13, 29);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(42, 23);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "Title";
+            // 
+            // grdNowPlaying
+            // 
+            grdNowPlaying.AllowUserToAddRows = false;
+            grdNowPlaying.AllowUserToDeleteRows = false;
+            grdNowPlaying.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            grdNowPlaying.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            grdNowPlaying.Enabled = false;
+            grdNowPlaying.Location = new Point(240, 120);
+            grdNowPlaying.Name = "grdNowPlaying";
+            grdNowPlaying.ReadOnly = true;
+            grdNowPlaying.Size = new Size(557, 172);
+            grdNowPlaying.TabIndex = 16;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(grdNowPlaying);
+            Controls.Add(grpDetails);
             Controls.Add(btnStop);
             Controls.Add(lblSeekMax);
             Controls.Add(lblSeekMin);
@@ -200,7 +309,11 @@ namespace MusicLibrary
             Name = "Main";
             Text = "Main";
             Load += Main_Load;
+            ctxTreeNode.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)trbSeeker).EndInit();
+            grpDetails.ResumeLayout(false);
+            grpDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)grdNowPlaying).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -220,5 +333,15 @@ namespace MusicLibrary
         private System.Windows.Forms.Timer tmrSeekBar;
         private ImageList treeview_icons;
         private Button btnStop;
+        private ContextMenuStrip ctxTreeNode;
+        private ToolStripMenuItem menuAddToPlayList;
+        private GroupBox grpDetails;
+        private Label lblAlbum;
+        private Label lblArtist;
+        private Label lblTitle;
+        private TextBox txtAlbum;
+        private TextBox txtArtist;
+        private TextBox txtTitle;
+        private DataGridView grdNowPlaying;
     }
 }

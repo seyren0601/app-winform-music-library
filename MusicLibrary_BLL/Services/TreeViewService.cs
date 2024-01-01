@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MusicLibrary_BLL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,7 +48,7 @@ namespace MusicLibrary_BLL.Services
                                         .OrderBy(c => c.Name))
             {
                 var fileNode = new TreeNode(fileInfo.Name);
-                fileNode.Tag = fileInfo;
+                fileNode.Tag = new MusicFile(fileInfo);
                 fileNode.SelectedImageIndex = fileNode.ImageIndex = 1;
                 folderNode.Nodes.Add(fileNode);
             }

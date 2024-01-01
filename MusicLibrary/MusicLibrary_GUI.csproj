@@ -26,10 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FormControls\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.0" />
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="NAudio.WinForms" Version="2.2.1" />
@@ -37,6 +33,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MusicLibrary_BLL\MusicLibrary_BLL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FormControls\" />
   </ItemGroup>
 
 </Project>

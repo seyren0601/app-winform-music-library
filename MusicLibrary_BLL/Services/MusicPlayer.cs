@@ -5,14 +5,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MusicLibrary_BLL.Models;
+using System.Linq;
+using WinRT;
 
 namespace MusicLibrary_BLL.Services
 {
     public class MusicPlayer
     {
-        AudioFileReader FileReader;
+        public enum RepeatMode
+        {
+            RepeatOne,
+            RepeatList,
+            Default
+        }
+        // Universal reader for audio files
+        // CAUTION: this will cause wrong file duration reading if file is not .mp3 (only tested on .mp3 and .flac)
+        public AudioFileReader FileReader;
         public IWavePlayer? waveOut = null;
         static MusicPlayer Instance;
+        public MusicList PlayList { get; set; } = new MusicList();
+        public int NowPlayingIndex{ get; set; }
+        public RepeatMode Repeat { get; set; } = RepeatMode.RepeatList;
         public static MusicPlayer GetInstance()
         {
             if(Instance == null) return Instance = new MusicPlayer();
@@ -40,19 +54,17 @@ namespace MusicLibrary_BLL.Services
 
         public TimeSpan GetPosition()
         {
-            
             return FileReader.CurrentTime;
         }
 
         public void SetPosition(TimeSpan position)
         {
-            
             FileReader.CurrentTime = position;
         }
 
-        public void PlayFile(FileInfo file)
+        public void PlayFile(MusicFile file)
         {
-            FileReader = new AudioFileReader(file.FullName);
+            FileReader = new AudioFileReader(file.FilePath);
             if(waveOut != null)
             {
                 waveOut.Dispose();
@@ -60,7 +72,18 @@ namespace MusicLibrary_BLL.Services
             waveOut = new WaveOut();
             waveOut.Init(FileReader);
             waveOut.Play();
-            //waveOut.PlaybackStopped += OnPlaybackStopped;
+        }
+
+        public void PlayFile(FileInfo file)
+        {
+            FileReader = new AudioFileReader(file.FullName);
+            if (waveOut != null)
+            {
+                waveOut.Dispose();
+            }
+            waveOut = new WaveOut();
+            waveOut.Init(FileReader);
+            waveOut.Play();
         }
 
         public void Stop()
@@ -68,17 +91,33 @@ namespace MusicLibrary_BLL.Services
             if (waveOut != null && waveOut.PlaybackState == PlaybackState.Playing)
                 waveOut.Stop();
         }
-
         #endregion
 
-        #region Delegates
-        private void OnPlaybackStopped(object sender, EventArgs e)
+        public void OnPlaybackStopped()
         {
-            Console.WriteLine("asdfa");
-            waveOut.Dispose();
-            FileReader.Dispose();
+            switch (Repeat)
+            {
+                case RepeatMode.RepeatList:
+                    if (NowPlayingIndex == PlayList.Count - 1)
+                    {
+                        NowPlayingIndex = 0;
+                    }
+                    else
+                    {
+                        NowPlayingIndex += 1;
+                    }
+                    PlayFile(PlayList[NowPlayingIndex]);
+                    Console.WriteLine("In repeat list");
+                    break;
+                case RepeatMode.Default:
+                    waveOut!.Stop();
+                    Console.WriteLine("In no repeat");
+                    break;
+                default:
+                    Console.WriteLine("In default");
+                    break;
+            }
+            Console.WriteLine("out of switch");
         }
-
-        #endregion
     }
 }
