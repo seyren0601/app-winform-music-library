@@ -59,10 +59,15 @@ namespace MusicLibrary
             grdNowPlaying = new DataGridView();
             btnNext = new Button();
             btnPrevious = new Button();
+            rdDefault = new RadioButton();
+            rdRepeatList = new RadioButton();
+            rdRepeatOne = new RadioButton();
+            grpRepeat = new GroupBox();
             ctxTreeNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
             grpDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdNowPlaying).BeginInit();
+            grpRepeat.SuspendLayout();
             SuspendLayout();
             // 
             // lblHeader
@@ -114,7 +119,7 @@ namespace MusicLibrary
             // btnExit
             // 
             btnExit.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnExit.Location = new Point(681, 422);
+            btnExit.Location = new Point(813, 422);
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(100, 37);
             btnExit.TabIndex = 7;
@@ -224,7 +229,7 @@ namespace MusicLibrary
             grpDetails.Controls.Add(lblArtist);
             grpDetails.Controls.Add(lblTitle);
             grpDetails.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            grpDetails.Location = new Point(345, 358);
+            grpDetails.Location = new Point(249, 358);
             grpDetails.Name = "grpDetails";
             grpDetails.Size = new Size(264, 153);
             grpDetails.TabIndex = 15;
@@ -337,11 +342,58 @@ namespace MusicLibrary
             btnPrevious.UseVisualStyleBackColor = true;
             btnPrevious.Click += btnPrevious_Click;
             // 
+            // rdDefault
+            // 
+            rdDefault.AutoSize = true;
+            rdDefault.Location = new Point(10, 29);
+            rdDefault.Name = "rdDefault";
+            rdDefault.Size = new Size(77, 19);
+            rdDefault.TabIndex = 19;
+            rdDefault.TabStop = true;
+            rdDefault.Text = "No repeat";
+            rdDefault.UseVisualStyleBackColor = true;
+            // 
+            // rdRepeatList
+            // 
+            rdRepeatList.AutoSize = true;
+            rdRepeatList.Checked = true;
+            rdRepeatList.Location = new Point(10, 71);
+            rdRepeatList.Name = "rdRepeatList";
+            rdRepeatList.Size = new Size(79, 19);
+            rdRepeatList.TabIndex = 20;
+            rdRepeatList.TabStop = true;
+            rdRepeatList.Text = "Repeat list";
+            rdRepeatList.UseVisualStyleBackColor = true;
+            // 
+            // rdRepeatOne
+            // 
+            rdRepeatOne.AutoSize = true;
+            rdRepeatOne.Location = new Point(10, 117);
+            rdRepeatOne.Name = "rdRepeatOne";
+            rdRepeatOne.Size = new Size(84, 19);
+            rdRepeatOne.TabIndex = 21;
+            rdRepeatOne.TabStop = true;
+            rdRepeatOne.Text = "Repeat one";
+            rdRepeatOne.UseVisualStyleBackColor = true;
+            // 
+            // grpRepeat
+            // 
+            grpRepeat.Controls.Add(rdRepeatOne);
+            grpRepeat.Controls.Add(rdRepeatList);
+            grpRepeat.Controls.Add(rdDefault);
+            grpRepeat.Location = new Point(519, 358);
+            grpRepeat.Name = "grpRepeat";
+            grpRepeat.Size = new Size(132, 153);
+            grpRepeat.TabIndex = 22;
+            grpRepeat.TabStop = false;
+            grpRepeat.Text = "Repeat mode";
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(925, 513);
+            Controls.Add(grpRepeat);
             Controls.Add(btnPrevious);
             Controls.Add(btnNext);
             Controls.Add(grdNowPlaying);
@@ -364,6 +416,8 @@ namespace MusicLibrary
             grpDetails.ResumeLayout(false);
             grpDetails.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)grdNowPlaying).EndInit();
+            grpRepeat.ResumeLayout(false);
+            grpRepeat.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -395,5 +449,9 @@ namespace MusicLibrary
         private DataGridView grdNowPlaying;
         private Button btnNext;
         private Button btnPrevious;
+        private RadioButton rdDefault;
+        private RadioButton rdRepeatList;
+        private RadioButton rdRepeatOne;
+        private GroupBox grpRepeat;
     }
 }

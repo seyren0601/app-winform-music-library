@@ -23,9 +23,10 @@ namespace MusicLibrary_BLL.Services
                 if(control is TextBox)
                 {
                     TextBox textbox = (TextBox)control;
-                    if (textbox.Name == "txtTitle") textbox.Text = f.Tag.Title;
-                    if (textbox.Name == "txtArtist") textbox.Text = f.Tag.AlbumArtists.First();
-                    if (textbox.Name == "txtAlbum") textbox.Text = f.Tag.Album;
+                    if (textbox.Name == "txtTitle" && f.Tag.Title != null) textbox.Text = f.Tag.Title;
+                    if (textbox.Name == "txtArtist" && f.Tag.AlbumArtists.Count() > 0) textbox.Text = f.Tag.AlbumArtists.First();
+                    else if (textbox.Name == "txtArtist" && f.Tag.Artists.Count() > 0) textbox.Text = f.Tag.Artists.First();
+                    if (textbox.Name == "txtAlbum" && f.Tag.Album != null) textbox.Text = f.Tag.Album;
                 }
                 
             }

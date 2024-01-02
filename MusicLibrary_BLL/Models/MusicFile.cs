@@ -23,8 +23,10 @@ namespace MusicLibrary_BLL.Models
                 MusicBrainzID = file.Tag.MusicBrainzTrackId;
                 FilePath = fileInfo.FullName;
                 Title = file.Tag.Title;
-                if(file.Tag.Artists != null)
+                if(file.Tag.Artists.Count() > 0)
                     Artist = file.Tag.Artists.First();
+                else if(file.Tag.AlbumArtists.Count() > 0)
+                    Artist = file.Tag.AlbumArtists.First();
                 Album = file.Tag.Album;
                 PlayTime = new AudioFileReader(FilePath).TotalTime;
             }
