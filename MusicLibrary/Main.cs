@@ -52,6 +52,7 @@ namespace MusicLibrary
             {
                 MusicFile file = e.Node.Tag as MusicFile;
                 // Read and Play media (mp3/flac)
+                mp.NowPlayingIndex = 0;
                 mp.PlayFile(file);
 
                 // Clear current playlist
@@ -88,13 +89,41 @@ namespace MusicLibrary
             mp.SetPosition(TimeSpan.Zero);
         }
 
+        private void btnPrevious_Click(object sender, EventArgs e)
+        {
+            if (mp.NowPlayingIndex > 0)
+            {
+                mp.NowPlayingIndex -= 1;
+            }
+            else
+            {
+                mp.NowPlayingIndex = NowPlaying.Count - 1;
+            }
+            mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+            SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (mp.NowPlayingIndex < NowPlaying.Count - 1)
+            {
+                mp.NowPlayingIndex += 1;
+            }
+            else
+            {
+                mp.NowPlayingIndex = 0;
+            }
+            mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+            SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
+        }
+
         // Timer tick
         private void tmrSeekBar_Tick(object sender, EventArgs e)
         {
             if (mp.waveOut != null && mp.waveOut.PlaybackState == PlaybackState.Playing)
             {
                 TimeSpan currentTime = mp.GetPosition();
-                if(currentTime < mp.GetMaxDuration())
+                if (currentTime < mp.GetMaxDuration())
                 {
                     trbSeeker.Value = (int)Math.Floor((double)currentTime.TotalSeconds);
                     lblSeekMin.Text = string.Format("{0:D2}:{1:D2}", currentTime.Minutes, currentTime.Seconds);
@@ -138,7 +167,7 @@ namespace MusicLibrary
 
         private void ctxTreeNode_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            if (e.ClickedItem == ctxTreeNode.Items[0])
+            if (e.ClickedItem == ctxTreeNode.Items["menuAddToPlayList"])
             {
                 if (trvDirectories.SelectedNode.Tag is MusicFile)
                 {
@@ -147,6 +176,7 @@ namespace MusicLibrary
                     mp.PlayList = NowPlaying;
                     if (mp.PlayList.Count == 1)
                     {
+                        mp.NowPlayingIndex = 0;
                         mp.PlayFile(file);
                         SetupPlayFile(file);
                     }
@@ -156,19 +186,20 @@ namespace MusicLibrary
                     TreeNode root = trvDirectories.SelectedNode;
                     _treeViewSerivce.AddFolderToPlaylist(root, NowPlaying);
                     MusicFile file = NowPlaying[0];
-                    bool PlayListIsEmpty = mp.PlayList.Count == 0;
+                    bool PlayListIsEmpty = (mp.PlayList.Count == 0);
                     mp.PlayList = NowPlaying;
                     if (PlayListIsEmpty)
                     {
                         mp.PlayFile(file);
+                        mp.NowPlayingIndex = 0;
                         SetupPlayFile(file);
                     }
                 }
             }
             Console.WriteLine("Current playlist: ");
-            foreach(MusicFile file in mp.PlayList)
+            for(int i = 0; i < NowPlaying.Count; i++)
             {
-                Console.WriteLine(file.Title);
+                Console.WriteLine(i + ". " + NowPlaying[i].Title);
             }
         }
 
@@ -176,10 +207,10 @@ namespace MusicLibrary
         {
             trvDirectories.SelectedNode = trvDirectories.GetNodeAt(new Point(e.X, e.Y));
             if (e.Clicks == 2) trvDirectories_NodeMouseDoubleClick(
-                sender, 
-                new TreeNodeMouseClickEventArgs(trvDirectories.SelectedNode, 
-                                                e.Button, 
-                                                e.Clicks, 
+                sender,
+                new TreeNodeMouseClickEventArgs(trvDirectories.SelectedNode,
+                                                e.Button,
+                                                e.Clicks,
                                                 e.X, e.Y)); ;
         }
 
@@ -197,7 +228,7 @@ namespace MusicLibrary
 
             // Highlight row in data grid view
             grdNowPlaying.ClearSelection();
-            foreach(DataGridViewCell cell in grdNowPlaying.Rows[mp.NowPlayingIndex].Cells)
+            foreach (DataGridViewCell cell in grdNowPlaying.Rows[mp.NowPlayingIndex].Cells)
             {
                 cell.Selected = true;
             }

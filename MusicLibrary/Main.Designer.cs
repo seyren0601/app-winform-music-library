@@ -55,6 +55,8 @@ namespace MusicLibrary
             lblArtist = new Label();
             lblTitle = new Label();
             grdNowPlaying = new DataGridView();
+            btnNext = new Button();
+            btnPrevious = new Button();
             ctxTreeNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
             grpDetails.SuspendLayout();
@@ -81,7 +83,7 @@ namespace MusicLibrary
             trvDirectories.Location = new Point(0, 66);
             trvDirectories.Name = "trvDirectories";
             trvDirectories.SelectedImageIndex = 1;
-            trvDirectories.Size = new Size(234, 385);
+            trvDirectories.Size = new Size(234, 445);
             trvDirectories.TabIndex = 6;
             trvDirectories.NodeMouseDoubleClick += trvDirectories_NodeMouseDoubleClick;
             trvDirectories.MouseClick += trvDirectories_MouseClick;
@@ -110,7 +112,7 @@ namespace MusicLibrary
             // btnExit
             // 
             btnExit.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnExit.Location = new Point(597, 358);
+            btnExit.Location = new Point(681, 422);
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(100, 37);
             btnExit.TabIndex = 7;
@@ -121,7 +123,7 @@ namespace MusicLibrary
             // volumeSlider1
             // 
             volumeSlider1.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            volumeSlider1.Location = new Point(426, 57);
+            volumeSlider1.Location = new Point(497, 136);
             volumeSlider1.Margin = new Padding(4, 5, 4, 5);
             volumeSlider1.Name = "volumeSlider1";
             volumeSlider1.Size = new Size(94, 18);
@@ -137,6 +139,8 @@ namespace MusicLibrary
             media_icons.Images.SetKeyName(0, "play-button.png");
             media_icons.Images.SetKeyName(1, "pause.png");
             media_icons.Images.SetKeyName(2, "stop.png");
+            media_icons.Images.SetKeyName(3, "next.png");
+            media_icons.Images.SetKeyName(4, "previous.png");
             // 
             // btnPlay
             // 
@@ -144,9 +148,9 @@ namespace MusicLibrary
             btnPlay.FlatStyle = FlatStyle.Flat;
             btnPlay.ImageIndex = 0;
             btnPlay.ImageList = media_icons;
-            btnPlay.Location = new Point(240, 66);
+            btnPlay.Location = new Point(288, 129);
             btnPlay.Name = "btnPlay";
-            btnPlay.Size = new Size(48, 48);
+            btnPlay.Size = new Size(48, 42);
             btnPlay.TabIndex = 9;
             btnPlay.UseVisualStyleBackColor = true;
             btnPlay.Click += btnPlay_Click;
@@ -157,18 +161,18 @@ namespace MusicLibrary
             btnPause.FlatStyle = FlatStyle.Flat;
             btnPause.ImageIndex = 1;
             btnPause.ImageList = media_icons;
-            btnPause.Location = new Point(284, 66);
+            btnPause.Location = new Point(342, 128);
             btnPause.Name = "btnPause";
-            btnPause.Size = new Size(55, 48);
+            btnPause.Size = new Size(44, 42);
             btnPause.TabIndex = 10;
             btnPause.UseVisualStyleBackColor = true;
             btnPause.Click += btnPause_Click;
             // 
             // trbSeeker
             // 
-            trbSeeker.Location = new Point(426, 83);
+            trbSeeker.Location = new Point(288, 83);
             trbSeeker.Name = "trbSeeker";
-            trbSeeker.Size = new Size(321, 45);
+            trbSeeker.Size = new Size(581, 45);
             trbSeeker.TabIndex = 11;
             trbSeeker.TickStyle = TickStyle.None;
             trbSeeker.MouseDown += trbSeeker_MouseDown;
@@ -177,7 +181,7 @@ namespace MusicLibrary
             // lblSeekMin
             // 
             lblSeekMin.AutoSize = true;
-            lblSeekMin.Location = new Point(392, 83);
+            lblSeekMin.Location = new Point(249, 83);
             lblSeekMin.Name = "lblSeekMin";
             lblSeekMin.Size = new Size(28, 15);
             lblSeekMin.TabIndex = 12;
@@ -186,7 +190,7 @@ namespace MusicLibrary
             // lblSeekMax
             // 
             lblSeekMax.AutoSize = true;
-            lblSeekMax.Location = new Point(753, 83);
+            lblSeekMax.Location = new Point(875, 83);
             lblSeekMax.Name = "lblSeekMax";
             lblSeekMax.Size = new Size(28, 15);
             lblSeekMax.TabIndex = 13;
@@ -202,7 +206,7 @@ namespace MusicLibrary
             btnStop.FlatStyle = FlatStyle.Flat;
             btnStop.ImageIndex = 2;
             btnStop.ImageList = media_icons;
-            btnStop.Location = new Point(345, 73);
+            btnStop.Location = new Point(449, 132);
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(41, 35);
             btnStop.TabIndex = 14;
@@ -218,7 +222,7 @@ namespace MusicLibrary
             grpDetails.Controls.Add(lblArtist);
             grpDetails.Controls.Add(lblTitle);
             grpDetails.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            grpDetails.Location = new Point(240, 298);
+            grpDetails.Location = new Point(345, 358);
             grpDetails.Name = "grpDetails";
             grpDetails.Size = new Size(264, 153);
             grpDetails.TabIndex = 15;
@@ -282,17 +286,45 @@ namespace MusicLibrary
             grdNowPlaying.AllowUserToDeleteRows = false;
             grdNowPlaying.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             grdNowPlaying.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            grdNowPlaying.Location = new Point(240, 120);
+            grdNowPlaying.Location = new Point(240, 175);
             grdNowPlaying.Name = "grdNowPlaying";
             grdNowPlaying.ReadOnly = true;
-            grdNowPlaying.Size = new Size(557, 172);
+            grdNowPlaying.Size = new Size(673, 177);
             grdNowPlaying.TabIndex = 16;
+            // 
+            // btnNext
+            // 
+            btnNext.FlatAppearance.BorderColor = SystemColors.Control;
+            btnNext.FlatStyle = FlatStyle.Flat;
+            btnNext.ImageIndex = 3;
+            btnNext.ImageList = media_icons;
+            btnNext.Location = new Point(392, 132);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(51, 36);
+            btnNext.TabIndex = 17;
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Click += btnNext_Click;
+            // 
+            // btnPrevious
+            // 
+            btnPrevious.FlatAppearance.BorderColor = SystemColors.Control;
+            btnPrevious.FlatStyle = FlatStyle.Flat;
+            btnPrevious.ImageIndex = 4;
+            btnPrevious.ImageList = media_icons;
+            btnPrevious.Location = new Point(240, 128);
+            btnPrevious.Name = "btnPrevious";
+            btnPrevious.Size = new Size(51, 43);
+            btnPrevious.TabIndex = 18;
+            btnPrevious.UseVisualStyleBackColor = true;
+            btnPrevious.Click += btnPrevious_Click;
             // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(925, 513);
+            Controls.Add(btnPrevious);
+            Controls.Add(btnNext);
             Controls.Add(grdNowPlaying);
             Controls.Add(grpDetails);
             Controls.Add(btnStop);
@@ -342,5 +374,7 @@ namespace MusicLibrary
         private TextBox txtArtist;
         private TextBox txtTitle;
         private DataGridView grdNowPlaying;
+        private Button btnNext;
+        private Button btnPrevious;
     }
 }

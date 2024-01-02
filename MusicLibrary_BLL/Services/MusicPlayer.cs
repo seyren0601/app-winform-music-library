@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MusicLibrary_BLL.Models;
 using System.Linq;
 using WinRT;
+using System.IO.Pipelines;
 
 namespace MusicLibrary_BLL.Services
 {
@@ -70,6 +71,7 @@ namespace MusicLibrary_BLL.Services
                 waveOut.Dispose();
             }
             waveOut = new WaveOut();
+            Console.WriteLine("Current index: " + NowPlayingIndex + ". Song: " + FileReader.FileName); 
             waveOut.Init(FileReader);
             waveOut.Play();
         }
