@@ -197,7 +197,7 @@ namespace MusicLibrary
                 }
             }
             Console.WriteLine("Current playlist: ");
-            for(int i = 0; i < NowPlaying.Count; i++)
+            for (int i = 0; i < NowPlaying.Count; i++)
             {
                 Console.WriteLine(i + ". " + NowPlaying[i].Title);
             }
@@ -235,6 +235,13 @@ namespace MusicLibrary
 
             // Start timer to update seekbar along with media playback
             tmrSeekBar.Start();
+        }
+
+        private void grdNowPlaying_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            mp.NowPlayingIndex = e.RowIndex;
+            mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+            SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
         }
     }
 }
