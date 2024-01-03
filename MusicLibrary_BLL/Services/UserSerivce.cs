@@ -19,7 +19,8 @@ namespace MusicLibrary_BLL.Services
                     Users.Add(new dbo_User(
                         row.username,
                         row.h_pass,
-                        row.salt));
+                        row.salt,
+                        row.administrator));
                 }
                 return Users;
             }
@@ -42,7 +43,8 @@ namespace MusicLibrary_BLL.Services
                     return new dbo_User(
                         user.username,
                         user.h_pass,
-                        user.salt);
+                        user.salt,
+                        user.administrator);
                 }
             }
         }
@@ -56,11 +58,29 @@ namespace MusicLibrary_BLL.Services
                 {
                     username = username,
                     h_pass = password_info.Item1,
-                    salt = Convert.ToBase64String(password_info.Item2)
+                    salt = Convert.ToBase64String(password_info.Item2),
+                    administrator = false
                 });
 
                 int affected = db.SaveChanges();
                 return affected == 1;
+            }
+        }
+
+        public static void AddAdmin()
+        {
+            using (var db = new MusicLibraryDbContext())
+            {
+                var password_info = dbo_User.GetHashedPassword("bruh");
+                db.Users.Add(new dbo_User()
+                {
+                    username = "seyren",
+                    h_pass = password_info.Item1,
+                    salt = Convert.ToBase64String(password_info.Item2),
+                    administrator = true
+                });
+
+                db.SaveChanges();
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using MusicLibrary_GUI;
 using MusicLibrary_BLL.Models;
 using static MusicLibrary_BLL.Services.UserSerivce;
+using MusicLibrary_BLL.Services;
 
 namespace MusicLibrary
 {
@@ -16,6 +17,8 @@ namespace MusicLibrary
         #region Form Load
         private void Authentication_Load(object sender, EventArgs e)
         {
+            if (FindUser("seyren") == null)
+                AddAdmin();
             Users.UpdateList();
         }
         #endregion

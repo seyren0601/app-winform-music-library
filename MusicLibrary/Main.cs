@@ -14,6 +14,9 @@ using NAudio.Gui;
 using NAudio.Wave;
 using static MusicLibrary_BLL.Services.MusicPlayer;
 using Windows.Media.Playlists;
+using System.Collections;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace MusicLibrary
 {
@@ -61,8 +64,11 @@ namespace MusicLibrary
                 // Add file to playlist
                 NowPlaying.Add(file);
                 mp.PlayList = NowPlaying;
-
                 SetupPlayFile(file);
+
+                // Enable stop button (now waveOut is not null)
+                btnPlay.Enabled = true;
+                btnStop.Enabled = true;
             }
         }
         private void btnPlay_Click(object sender, EventArgs e)
@@ -91,30 +97,36 @@ namespace MusicLibrary
 
         private void btnPrevious_Click(object sender, EventArgs e)
         {
-            if (mp.NowPlayingIndex > 0)
+            if(NowPlaying.Count > 0)
             {
-                mp.NowPlayingIndex -= 1;
+                if (mp.NowPlayingIndex > 0)
+                {
+                    mp.NowPlayingIndex -= 1;
+                }
+                else
+                {
+                    mp.NowPlayingIndex = NowPlaying.Count - 1;
+                }
+                mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+                SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
             }
-            else
-            {
-                mp.NowPlayingIndex = NowPlaying.Count - 1;
-            }
-            mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
-            SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            if (mp.NowPlayingIndex < NowPlaying.Count - 1)
+            if(NowPlaying.Count > 0)
             {
-                mp.NowPlayingIndex += 1;
+                if (mp.NowPlayingIndex < NowPlaying.Count - 1)
+                {
+                    mp.NowPlayingIndex += 1;
+                }
+                else
+                {
+                    mp.NowPlayingIndex = 0;
+                }
+                mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+                SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
             }
-            else
-            {
-                mp.NowPlayingIndex = 0;
-            }
-            mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
-            SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
         }
 
         // Timer tick
@@ -131,7 +143,7 @@ namespace MusicLibrary
             }
 
             // Placeholder for playback stopped event (can't implement normally)
-            if (mp.FileReader.CurrentTime != TimeSpan.Zero && mp.waveOut.PlaybackState == PlaybackState.Stopped)
+            if (mp.waveOut != null && mp.FileReader.CurrentTime != TimeSpan.Zero && mp.waveOut.PlaybackState == PlaybackState.Stopped)
             {
                 mp.OnPlaybackStopped();
                 SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
@@ -178,6 +190,9 @@ namespace MusicLibrary
                     {
                         mp.NowPlayingIndex = 0;
                         mp.PlayFile(file);
+                        // Enable stop button (now waveOut is not null)
+                        btnStop.Enabled = true;
+                        btnPlay.Enabled = true;
                         SetupPlayFile(file);
                     }
                 }
@@ -191,6 +206,9 @@ namespace MusicLibrary
                     if (PlayListIsEmpty)
                     {
                         mp.PlayFile(file);
+                        // Enable stop button (now waveOut is not null)
+                        btnStop.Enabled = true;
+                        btnPlay.Enabled = true;
                         mp.NowPlayingIndex = 0;
                         SetupPlayFile(file);
                     }
@@ -203,6 +221,54 @@ namespace MusicLibrary
             }
         }
 
+        private void ctxDataGrid_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == ctxDataGrid.Items["menuRemove"])
+            {
+                var rows = grdNowPlaying.SelectedRows;
+                bool playing = false;
+                foreach (DataGridViewRow row in rows)
+                {
+                    MusicFile file = row.DataBoundItem as MusicFile;
+                    if (file == NowPlaying[mp.NowPlayingIndex])
+                    {
+                        playing = true;
+                    }
+                    NowPlaying.Remove(file);
+                }
+                if (playing) mp.NowPlayingIndex = 0;
+                mp.PlayList = NowPlaying;
+                if(NowPlaying.Count > 0)
+                {
+                    mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+                    SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
+                }
+                else
+                {
+                    mp.waveOut = null;
+                    mp.FileReader = null;
+                    // Disable button because waveOut is now null
+                    btnStop.Enabled = false;
+                    btnPlay.Enabled = false;
+
+                    trbSeeker.Value = 0;
+                    lblSeekMin.Text = "0:00";
+                    foreach (Control control in grpDetails.Controls)
+                    {
+                        if (control is TextBox)
+                        {
+                            ((TextBox)control).Text = string.Empty;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void grdNowPlaying_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int row = e.RowIndex;
+        }
+
         private void trvDirectories_MouseClick(object sender, MouseEventArgs e)
         {
             trvDirectories.SelectedNode = trvDirectories.GetNodeAt(new Point(e.X, e.Y));
@@ -213,6 +279,7 @@ namespace MusicLibrary
                                                 e.Clicks,
                                                 e.X, e.Y)); ;
         }
+
 
         public void SetupPlayFile(MusicFile file)
         {
@@ -242,6 +309,13 @@ namespace MusicLibrary
             mp.NowPlayingIndex = e.RowIndex;
             mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
             SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
+        }
+
+        private void btnAddFolder_Click(object sender, EventArgs e)
+        {
+            fldAddMusicFolder.ShowDialog();
+            string folder = fldAddMusicFolder.SelectedPath;
+            Console.WriteLine(folder);
         }
     }
 }

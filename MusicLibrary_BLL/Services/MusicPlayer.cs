@@ -22,7 +22,7 @@ namespace MusicLibrary_BLL.Services
         }
         // Universal reader for audio files
         // CAUTION: this will cause wrong file duration reading if file is not .mp3 (only tested on .mp3 and .flac)
-        public AudioFileReader FileReader;
+        public AudioFileReader FileReader = null;
         public IWavePlayer? waveOut = null;
         static MusicPlayer Instance;
         public MusicList PlayList { get; set; } = new MusicList();

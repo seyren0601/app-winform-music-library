@@ -32,8 +32,8 @@ namespace MusicLibrary
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             lblHeader = new Label();
             trvDirectories = new TreeView();
             ctxTreeNode = new ContextMenuStrip(components);
@@ -57,16 +57,21 @@ namespace MusicLibrary
             lblArtist = new Label();
             lblTitle = new Label();
             grdNowPlaying = new DataGridView();
+            ctxDataGrid = new ContextMenuStrip(components);
+            menuRemove = new ToolStripMenuItem();
             btnNext = new Button();
             btnPrevious = new Button();
             rdDefault = new RadioButton();
             rdRepeatList = new RadioButton();
             rdRepeatOne = new RadioButton();
             grpRepeat = new GroupBox();
+            btnAddFolder = new Button();
+            fldAddMusicFolder = new FolderBrowserDialog();
             ctxTreeNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
             grpDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdNowPlaying).BeginInit();
+            ctxDataGrid.SuspendLayout();
             grpRepeat.SuspendLayout();
             SuspendLayout();
             // 
@@ -148,9 +153,11 @@ namespace MusicLibrary
             media_icons.Images.SetKeyName(2, "stop.png");
             media_icons.Images.SetKeyName(3, "next.png");
             media_icons.Images.SetKeyName(4, "previous.png");
+            media_icons.Images.SetKeyName(5, "add_folder.png");
             // 
             // btnPlay
             // 
+            btnPlay.Enabled = false;
             btnPlay.FlatAppearance.BorderColor = SystemColors.Control;
             btnPlay.FlatStyle = FlatStyle.Flat;
             btnPlay.ImageIndex = 0;
@@ -209,11 +216,12 @@ namespace MusicLibrary
             // 
             // btnStop
             // 
+            btnStop.Enabled = false;
             btnStop.FlatAppearance.BorderColor = SystemColors.Control;
             btnStop.FlatStyle = FlatStyle.Flat;
             btnStop.ImageIndex = 2;
             btnStop.ImageList = media_icons;
-            btnStop.Location = new Point(449, 132);
+            btnStop.Location = new Point(392, 133);
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(41, 35);
             btnStop.TabIndex = 14;
@@ -289,32 +297,46 @@ namespace MusicLibrary
             // 
             // grdNowPlaying
             // 
-            grdNowPlaying.AllowUserToAddRows = false;
-            grdNowPlaying.AllowUserToDeleteRows = false;
+            grdNowPlaying.AllowUserToOrderColumns = true;
             grdNowPlaying.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Pristina", 13F);
-            dataGridViewCellStyle3.ForeColor = Color.Red;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            grdNowPlaying.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Pristina", 13F);
+            dataGridViewCellStyle1.ForeColor = Color.Red;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            grdNowPlaying.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             grdNowPlaying.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            grdNowPlaying.ContextMenuStrip = ctxDataGrid;
             grdNowPlaying.Location = new Point(240, 175);
             grdNowPlaying.Name = "grdNowPlaying";
             grdNowPlaying.ReadOnly = true;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = SystemColors.Control;
-            dataGridViewCellStyle4.Font = new Font("Pristina", 13F);
-            dataGridViewCellStyle4.ForeColor = Color.Red;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            grdNowPlaying.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = SystemColors.Control;
+            dataGridViewCellStyle2.Font = new Font("Pristina", 13F);
+            dataGridViewCellStyle2.ForeColor = Color.Red;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            grdNowPlaying.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             grdNowPlaying.Size = new Size(673, 177);
             grdNowPlaying.TabIndex = 16;
+            grdNowPlaying.CellClick += grdNowPlaying_CellClick;
             grdNowPlaying.CellDoubleClick += grdNowPlaying_CellDoubleClick;
+            // 
+            // ctxDataGrid
+            // 
+            ctxDataGrid.Items.AddRange(new ToolStripItem[] { menuRemove });
+            ctxDataGrid.Name = "ctxDataGrid";
+            ctxDataGrid.Size = new Size(187, 26);
+            ctxDataGrid.ItemClicked += ctxDataGrid_ItemClicked;
+            // 
+            // menuRemove
+            // 
+            menuRemove.Name = "menuRemove";
+            menuRemove.Size = new Size(186, 22);
+            menuRemove.Text = "Remove from playlist";
             // 
             // btnNext
             // 
@@ -322,7 +344,7 @@ namespace MusicLibrary
             btnNext.FlatStyle = FlatStyle.Flat;
             btnNext.ImageIndex = 3;
             btnNext.ImageList = media_icons;
-            btnNext.Location = new Point(392, 132);
+            btnNext.Location = new Point(439, 133);
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(51, 36);
             btnNext.TabIndex = 17;
@@ -388,11 +410,25 @@ namespace MusicLibrary
             grpRepeat.TabStop = false;
             grpRepeat.Text = "Repeat mode";
             // 
+            // btnAddFolder
+            // 
+            btnAddFolder.FlatAppearance.BorderColor = SystemColors.Control;
+            btnAddFolder.FlatStyle = FlatStyle.Flat;
+            btnAddFolder.ImageIndex = 5;
+            btnAddFolder.ImageList = media_icons;
+            btnAddFolder.Location = new Point(12, 30);
+            btnAddFolder.Name = "btnAddFolder";
+            btnAddFolder.Size = new Size(47, 30);
+            btnAddFolder.TabIndex = 23;
+            btnAddFolder.UseVisualStyleBackColor = true;
+            btnAddFolder.Click += btnAddFolder_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(925, 513);
+            Controls.Add(btnAddFolder);
             Controls.Add(grpRepeat);
             Controls.Add(btnPrevious);
             Controls.Add(btnNext);
@@ -416,6 +452,7 @@ namespace MusicLibrary
             grpDetails.ResumeLayout(false);
             grpDetails.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)grdNowPlaying).EndInit();
+            ctxDataGrid.ResumeLayout(false);
             grpRepeat.ResumeLayout(false);
             grpRepeat.PerformLayout();
             ResumeLayout(false);
@@ -453,5 +490,9 @@ namespace MusicLibrary
         private RadioButton rdRepeatList;
         private RadioButton rdRepeatOne;
         private GroupBox grpRepeat;
+        private Button btnAddFolder;
+        private FolderBrowserDialog fldAddMusicFolder;
+        private ContextMenuStrip ctxDataGrid;
+        private ToolStripMenuItem menuRemove;
     }
 }

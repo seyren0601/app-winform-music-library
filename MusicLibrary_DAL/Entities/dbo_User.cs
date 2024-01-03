@@ -19,6 +19,8 @@ namespace MusicLibrary_DAL.Entities
         public string h_pass { get; set; }
         [StringLength(50)]
         public string salt { get; set; }
+        [Required]
+        public bool administrator { get; set; }
         [NotMapped]
         public byte[] salt_byte
         {
@@ -30,11 +32,12 @@ namespace MusicLibrary_DAL.Entities
         }
 
         public dbo_User() { }
-        public dbo_User(string username, string h_pass, string salt)
+        public dbo_User(string username, string h_pass, string salt, bool administrator)
         {
             this.username = username;
             this.h_pass = h_pass;
             this.salt = salt;
+            this.administrator = administrator;
         }
         public static (string, byte[]) GetHashedPassword(string password)
         {
