@@ -138,7 +138,7 @@
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(788, 358);
+            ClientSize = new Size(800, 366);
             Controls.Add(lblFooter);
             Controls.Add(btnExit);
             Controls.Add(btnSignUp);

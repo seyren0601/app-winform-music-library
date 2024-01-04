@@ -7,13 +7,14 @@ CREATE TABLE dbo_user(
 	username char(50),
     h_pass char(50),
     salt char(50),
+	administrator tinyint,
     PRIMARY KEY (username)
 );
 
 CREATE TABLE dbo_Artist(
 	ArtistID char(50),
     ArtistName char(50),
-    DebutYear date,
+    DebutYear int,
     PRIMARY KEY (ArtistID)
 );
 
@@ -21,7 +22,7 @@ CREATE TABLE dbo_Album(
 	AlbumID char(50),
     ArtistID char(50),
     Title char(50) charset utf8mb4,
-    ReleaseYear date,
+    ReleaseYear int,
     PRIMARY KEY (AlbumID),
     FOREIGN KEY (ArtistID) REFERENCES dbo_Artist(ArtistID)
 );
@@ -58,4 +59,7 @@ CREATE TABLE dbo_PlaylistInfo(
     PRIMARY KEY (PlaylistID, SongID)
 );
 
-SELECT * from dbo_user
+SELECT * from dbo_Artist
+INNER JOIN dbo_Album ON dbo_Artist.ArtistID = dbo_Album.ArtistID;
+SELECT * from dbo_Album;
+SELECT * from hanghoa;

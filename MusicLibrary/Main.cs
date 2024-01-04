@@ -17,6 +17,7 @@ using Windows.Media.Playlists;
 using System.Collections;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using MusicLibrary_GUI;
 
 namespace MusicLibrary
 {
@@ -27,6 +28,7 @@ namespace MusicLibrary
         MusicPlayer mp = MusicPlayer.GetInstance();
         MediaTag mt = MediaTag.GetInstance();
         MusicList NowPlaying = MusicList.GetInstance();
+        AddFolder Form_AddFolder;
 
         public Main()
         {
@@ -225,19 +227,9 @@ namespace MusicLibrary
         {
             if (e.ClickedItem == ctxDataGrid.Items["menuRemove"])
             {
-                var rows = grdNowPlaying.SelectedRows;
-                bool playing = false;
-                foreach (DataGridViewRow row in rows)
-                {
-                    MusicFile file = row.DataBoundItem as MusicFile;
-                    if (file == NowPlaying[mp.NowPlayingIndex])
-                    {
-                        playing = true;
-                    }
-                    NowPlaying.Remove(file);
-                }
-                if (playing) mp.NowPlayingIndex = 0;
-                mp.PlayList = NowPlaying;
+                if (RemoveRows(grdNowPlaying.SelectedRows)) 
+                    mp.NowPlayingIndex = 0;
+
                 if(NowPlaying.Count > 0)
                 {
                     mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
@@ -251,8 +243,11 @@ namespace MusicLibrary
                     btnStop.Enabled = false;
                     btnPlay.Enabled = false;
 
+                    // Reset seekbar
                     trbSeeker.Value = 0;
-                    lblSeekMin.Text = "0:00";
+                    lblSeekMax.Text = "0:00";
+
+                    // Reset details' textboxes
                     foreach (Control control in grpDetails.Controls)
                     {
                         if (control is TextBox)
@@ -313,9 +308,11 @@ namespace MusicLibrary
 
         private void btnAddFolder_Click(object sender, EventArgs e)
         {
-            fldAddMusicFolder.ShowDialog();
-            string folder = fldAddMusicFolder.SelectedPath;
-            Console.WriteLine(folder);
+            Form_AddFolder = new AddFolder();
+            Form_AddFolder.ShowDialog();
+            string folderPath = Form_AddFolder.FolderPath;
+            string artistID = Form_AddFolder.ArtistID;
+            string albumID = Form_AddFolder.AlbumID;
         }
     }
 }

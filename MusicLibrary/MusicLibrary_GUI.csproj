@@ -35,8 +35,4 @@
     <ProjectReference Include="..\MusicLibrary_BLL\MusicLibrary_BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="FormControls\" />
-  </ItemGroup>
-
 </Project>
