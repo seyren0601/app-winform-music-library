@@ -74,6 +74,7 @@ namespace MusicLibrary_BLL.Services
             Console.WriteLine("Current index: " + NowPlayingIndex + ". Song: " + FileReader.FileName); 
             waveOut.Init(FileReader);
             waveOut.Play();
+            FilePlay.Invoke(this, new MusicPlayerEventArgs(file));
         }
 
         public void PlayFile(FileInfo file)
@@ -93,6 +94,19 @@ namespace MusicLibrary_BLL.Services
             if (waveOut != null && waveOut.PlaybackState == PlaybackState.Playing)
                 waveOut.Stop();
         }
+        #endregion
+
+        #region Events
+        public class MusicPlayerEventArgs : EventArgs
+        {
+            public MusicFile FiledPlayed { get; set; }
+            public MusicPlayerEventArgs(MusicFile filedPlayed)
+            {
+                FiledPlayed = filedPlayed;
+            }
+        }
+        public delegate void MusicPlayerEventHandler(MusicPlayer sender, MusicPlayerEventArgs e);
+        public event MusicPlayerEventHandler FilePlay;
         #endregion
 
         public void OnPlaybackStopped()

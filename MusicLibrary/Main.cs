@@ -42,6 +42,7 @@ namespace MusicLibrary
             grdNowPlaying.DataSource = NowPlaying.FileList;
             grdNowPlaying.Columns[0].Visible = false;
             grdNowPlaying.Columns[1].Visible = false;
+            mp.FilePlay += mp_OnFilePlay;
         }
 
         #region Events
@@ -58,15 +59,14 @@ namespace MusicLibrary
                 MusicFile file = e.Node.Tag as MusicFile;
                 // Read and Play media (mp3/flac)
                 mp.NowPlayingIndex = 0;
-                mp.PlayFile(file);
-
                 // Clear current playlist
                 NowPlaying.FileList.Clear();
 
                 // Add file to playlist
                 NowPlaying.Add(file);
                 mp.PlayList = NowPlaying;
-                SetupPlayFile(file);
+
+                mp.PlayFile(file);
 
                 // Enable stop button (now waveOut is not null)
                 btnPlay.Enabled = true;
@@ -110,7 +110,6 @@ namespace MusicLibrary
                     mp.NowPlayingIndex = NowPlaying.Count - 1;
                 }
                 mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
-                SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
             }
         }
 
@@ -127,7 +126,6 @@ namespace MusicLibrary
                     mp.NowPlayingIndex = 0;
                 }
                 mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
-                SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
             }
         }
 
@@ -148,7 +146,7 @@ namespace MusicLibrary
             if (mp.waveOut != null && mp.FileReader.CurrentTime != TimeSpan.Zero && mp.waveOut.PlaybackState == PlaybackState.Stopped)
             {
                 mp.OnPlaybackStopped();
-                SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
+                mp_OnFilePlay(mp, new MusicPlayerEventArgs(NowPlaying[mp.NowPlayingIndex]));
             }
         }
         #endregion
@@ -195,7 +193,6 @@ namespace MusicLibrary
                         // Enable stop button (now waveOut is not null)
                         btnStop.Enabled = true;
                         btnPlay.Enabled = true;
-                        SetupPlayFile(file);
                     }
                 }
                 else
@@ -212,7 +209,6 @@ namespace MusicLibrary
                         btnStop.Enabled = true;
                         btnPlay.Enabled = true;
                         mp.NowPlayingIndex = 0;
-                        SetupPlayFile(file);
                     }
                 }
             }
@@ -233,7 +229,6 @@ namespace MusicLibrary
                 if(NowPlaying.Count > 0)
                 {
                     mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
-                    SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
                 }
                 else
                 {
@@ -276,8 +271,9 @@ namespace MusicLibrary
         }
 
 
-        public void SetupPlayFile(MusicFile file)
+        public void mp_OnFilePlay(MusicPlayer mp, MusicPlayerEventArgs e)
         {
+            var file = e.FiledPlayed;
             // Get playtime of file, add file to playlist and update playlist to player
             TimeSpan maxSeconds = mp.GetMaxDuration();
 
@@ -303,7 +299,6 @@ namespace MusicLibrary
         {
             mp.NowPlayingIndex = e.RowIndex;
             mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
-            SetupPlayFile(NowPlaying[mp.NowPlayingIndex]);
         }
 
         private void btnAddFolder_Click(object sender, EventArgs e)
