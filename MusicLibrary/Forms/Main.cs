@@ -18,17 +18,31 @@ using System.Collections;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using MusicLibrary_GUI;
+using MusicLibrary_DAL.Entities;
+using Windows.System;
+using System.Diagnostics.Eventing.Reader;
 
 namespace MusicLibrary
 {
     public partial class Main : Form
     {
         public string RootDirectory = "..\\..\\..\\Music";
+
         TreeViewService _treeViewSerivce = TreeViewService.GetInstance();
+        DatabaseService _database = DatabaseService.GetInstance();
+
         MusicPlayer mp = MusicPlayer.GetInstance();
         MediaTag mt = MediaTag.GetInstance();
         MusicList NowPlaying = MusicList.GetInstance();
+
+        // Forms
         AddFolder Form_AddFolder;
+
+
+        // Properties for adding new album
+        public string Add_FilePath { get; set; }
+        public dbo_Artist Add_Artist { get; set; }
+        public dbo_Album Add_Album { get; set; }
 
         public Main()
         {
@@ -301,13 +315,33 @@ namespace MusicLibrary
             mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
         }
 
-        private void btnAddFolder_Click(object sender, EventArgs e)
+        private async void btnAddFolder_Click(object sender, EventArgs e)
         {
             Form_AddFolder = new AddFolder();
-            Form_AddFolder.ShowDialog();
-            string folderPath = Form_AddFolder.FolderPath;
-            string artistID = Form_AddFolder.ArtistID;
-            string albumID = Form_AddFolder.AlbumID;
+            var result = Form_AddFolder.ShowDialog();
+            if(result == DialogResult.OK)
+            {
+                Add_FilePath = Form_AddFolder.FolderPath;
+                Add_Artist = Form_AddFolder.Artist;
+                Add_Album = Form_AddFolder.Album;
+                Add_Album.ArtistID = Add_Artist.ArtistID;
+            }
+            if(_database.FindAlbum(Add_Album.Title) == null)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                if (_database.FindArtist(Add_Artist) == null) _database.AddArtist(Add_Artist);
+                _database.AddAlbum(Add_Album);
+                List<dbo_MusicFile> Added_Files = await _treeViewSerivce.AddAlbum(Add_FilePath, RootDirectory, Add_Artist, Add_Album);
+                _database.AddFiles(Added_Files, Add_Album);
+                MessageBox.Show("Album added successfully");
+                Cursor.Current = Cursors.Default;
+                trvDirectories.Nodes.Clear();
+                _treeViewSerivce.BindDirectoryToTreeView(trvDirectories, RootDirectory);
+            }
+            else
+            {
+                MessageBox.Show("Album already exists.");
+            }
         }
     }
 }

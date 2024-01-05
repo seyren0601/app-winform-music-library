@@ -11,14 +11,12 @@ namespace MusicLibrary_DAL.Entities
     [Table("dbo_MusicFile", Schema = "musiclibrary")]
     public class dbo_MusicFile
     {
-        [Key, StringLength(50), Required]
+        [Key]
         public string SongID { get; set; }
-        [ForeignKey("dbo_Artist")]
         public string ArtistID { get; set; }
-        public dbo_Artist artist { get; set; }
-        [StringLength(100)]
+        public dbo_Artist Artist { get; set; }
         public string FilePath { get; set; }
-        [StringLength(50)]
         public string Title { get; set; }
+        public ICollection<dbo_AlbumInfo> Albums { get; set; }
     }
 }

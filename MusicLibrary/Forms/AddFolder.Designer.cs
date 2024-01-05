@@ -44,6 +44,7 @@
             rdAlbum = new RadioButton();
             rdSingle = new RadioButton();
             grpReleaseType = new GroupBox();
+            btnAddAlbum = new Button();
             grpReleaseType.SuspendLayout();
             SuspendLayout();
             // 
@@ -69,6 +70,7 @@
             // 
             // txtFilePath
             // 
+            txtFilePath.Enabled = false;
             txtFilePath.Location = new Point(54, 41);
             txtFilePath.Margin = new Padding(4, 5, 4, 5);
             txtFilePath.Name = "txtFilePath";
@@ -137,7 +139,7 @@
             rdEP.TabIndex = 10;
             rdEP.Text = "EP";
             rdEP.UseVisualStyleBackColor = true;
-            rdEP.CheckedChanged += rdEP_CheckedChanged;
+            rdEP.CheckedChanged += RdioReleaseType_CheckChanged;
             // 
             // rdAlbum
             // 
@@ -150,7 +152,7 @@
             rdAlbum.TabStop = true;
             rdAlbum.Text = "Album";
             rdAlbum.UseVisualStyleBackColor = true;
-            rdAlbum.CheckedChanged += rdAlbum_CheckedChanged;
+            rdAlbum.CheckedChanged += RdioReleaseType_CheckChanged;
             // 
             // rdSingle
             // 
@@ -161,7 +163,7 @@
             rdSingle.TabIndex = 12;
             rdSingle.Text = "Single";
             rdSingle.UseVisualStyleBackColor = true;
-            rdSingle.CheckedChanged += rdSingle_CheckedChanged;
+            rdSingle.CheckedChanged += RdioReleaseType_CheckChanged;
             // 
             // grpReleaseType
             // 
@@ -175,11 +177,22 @@
             grpReleaseType.TabStop = false;
             grpReleaseType.Text = "Release Type";
             // 
+            // btnAddAlbum
+            // 
+            btnAddAlbum.Location = new Point(54, 251);
+            btnAddAlbum.Name = "btnAddAlbum";
+            btnAddAlbum.Size = new Size(102, 56);
+            btnAddAlbum.TabIndex = 14;
+            btnAddAlbum.Text = "Add Album";
+            btnAddAlbum.UseVisualStyleBackColor = true;
+            btnAddAlbum.Click += btnAddAlbum_Click;
+            // 
             // AddFolder
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(723, 330);
+            Controls.Add(btnAddAlbum);
             Controls.Add(grpReleaseType);
             Controls.Add(cmbAlbum);
             Controls.Add(cmbArtist);
@@ -218,5 +231,6 @@
         private RadioButton rdAlbum;
         private RadioButton rdSingle;
         private GroupBox grpReleaseType;
+        private Button btnAddAlbum;
     }
 }

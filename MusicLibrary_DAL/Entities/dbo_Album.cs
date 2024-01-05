@@ -11,15 +11,12 @@ namespace MusicLibrary_DAL.Entities
     [Table("dbo_Album", Schema = "musiclibrary")]
     public class dbo_Album
     {
-        [Key, StringLength(50), Required]
+        [Key]
         public string AlbumID { get; set; }
-        [Required,  StringLength(50)]
         public string ArtistID { get; set; }
-        [StringLength(50)]
         public string Title { get; set; }
-        public int ReleaseYear { get; set; }
-        //[ForeignKey(nameof(AlbumID))]
-        //[InverseProperty(nameof(Artist.Albums))]
+        public int? ReleaseYear { get; set; }
         public virtual dbo_Artist Artist { get; set; }
+        public virtual ICollection<dbo_AlbumInfo> Recordings { get; set; }
     }
 }

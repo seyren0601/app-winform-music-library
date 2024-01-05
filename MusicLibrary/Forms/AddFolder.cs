@@ -21,8 +21,8 @@ namespace MusicLibrary_GUI
     public partial class AddFolder : Form
     {
         public string FolderPath { get; set; }
-        public string ArtistID { get; set; }
-        public string AlbumID { get; set; }
+        public dbo_Artist Artist { get; set; }
+        public dbo_Album Album { get; set; }
         MusicBrainz _musicBrainz = MusicBrainz.GetInstance();
         public AddFolder()
         {
@@ -50,8 +50,9 @@ namespace MusicLibrary_GUI
             {
                 btnFindArtist.Enabled = false;
                 txtFindArtist.Enabled = false;
+                cmbArtist.Enabled = false;
                 List<dbo_Artist> artistsFound = await _musicBrainz.FindArtists(txtFindArtist.Text);
-
+                cmbArtist.Enabled = true;
                 cmbArtist.DataSource = artistsFound;
                 cmbArtist.DisplayMember = "ArtistName";
             }
@@ -70,7 +71,7 @@ namespace MusicLibrary_GUI
             cmbAlbum.DisplayMember = "Title";
         }
 
-        private async void rdAlbum_CheckedChanged(object sender, EventArgs e)
+        private void RdioReleaseType_CheckChanged(object sender, EventArgs e)
         {
             if (cmbArtist.Items.Count > 0)
             {
@@ -78,19 +79,19 @@ namespace MusicLibrary_GUI
             }
         }
 
-        private void rdEP_CheckedChanged(object sender, EventArgs e)
+        private void btnAddAlbum_Click(object sender, EventArgs e)
         {
-            if (cmbArtist.Items.Count > 0)
+            if (txtFilePath.Text != "" && cmbAlbum.SelectedItem != null && cmbArtist.SelectedItem != null)
             {
-                cmbArtist_SelectedValueChanged(sender, e);
-            }
-        }
-
-        private void rdSingle_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cmbArtist.Items.Count > 0)
-            {
-                cmbArtist_SelectedValueChanged(sender, e);
+                var result = MessageBox.Show($"Add album?", "Alert", MessageBoxButtons.OKCancel);
+                if (result == DialogResult.OK)
+                {
+                    FolderPath = txtFilePath.Text;
+                    Artist = cmbArtist.SelectedItem as dbo_Artist;
+                    Album = cmbAlbum.SelectedItem as dbo_Album;
+                    DialogResult = DialogResult.OK;
+                    this.Close();
+                }
             }
         }
     }

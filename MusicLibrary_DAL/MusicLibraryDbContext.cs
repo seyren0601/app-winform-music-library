@@ -13,6 +13,7 @@ namespace MusicLibrary_DAL
         public DbSet<dbo_Artist> Artists { get; set; }
         public DbSet<dbo_Album> Albums { get; set; }
         public DbSet<dbo_MusicFile> MusicFiles { get; set; }
+        public DbSet<dbo_AlbumInfo> AlbumInfos { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySQL(ConnectionString);
@@ -24,7 +25,17 @@ namespace MusicLibrary_DAL
             modelBuilder.Entity<dbo_Artist>()
                 .Navigation(e => e.ALBUMS);
             modelBuilder.Entity<dbo_Album>()
-                .Navigation(c => c.Artist);
+                .Navigation(e => e.Artist);
+            modelBuilder.Entity<dbo_Album>()
+                .Navigation(e => e.Recordings);
+            modelBuilder.Entity<dbo_MusicFile>()
+                .Navigation(e => e.Artist);
+            modelBuilder.Entity<dbo_MusicFile>()
+                .Navigation(e => e.Albums);
+            modelBuilder.Entity<dbo_AlbumInfo>()
+                .Navigation(e => e.Album);
+            modelBuilder.Entity<dbo_AlbumInfo>()
+                .Navigation(e => e.MusicFile);
         }
     }
 }

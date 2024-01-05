@@ -35,4 +35,8 @@
     <ProjectReference Include="..\MusicLibrary_BLL\MusicLibrary_BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Music\" />
+  </ItemGroup>
+
 </Project>

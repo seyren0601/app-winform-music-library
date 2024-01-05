@@ -59,7 +59,11 @@ CREATE TABLE dbo_PlaylistInfo(
     PRIMARY KEY (PlaylistID, SongID)
 );
 
-SELECT * from dbo_Artist
-INNER JOIN dbo_Album ON dbo_Artist.ArtistID = dbo_Album.ArtistID;
-SELECT * from dbo_Album;
-SELECT * from hanghoa;
+
+select * from dbo_artist;
+select dbo_album.Title, dbo_musicfile.songid, dbo_musicfile.Title from dbo_album
+inner join dbo_albuminfo on dbo_album.albumid = dbo_albuminfo.albumid
+inner join dbo_musicfile on dbo_albuminfo.songid = dbo_musicfile.songid
+inner join dbo_artist on dbo_artist.artistid = dbo_musicfile.artistid
+where artistname = "yoasobi"
+order by dbo_album.Title
