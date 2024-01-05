@@ -30,6 +30,7 @@ namespace MusicLibrary
 
         TreeViewService _treeViewSerivce = TreeViewService.GetInstance();
         DatabaseService _database = DatabaseService.GetInstance();
+        MusicBrainz _musicBrainz = MusicBrainz.GetInstance();
 
         MusicPlayer mp = MusicPlayer.GetInstance();
         MediaTag mt = MediaTag.GetInstance();
@@ -140,6 +141,35 @@ namespace MusicLibrary
                     mp.NowPlayingIndex = 0;
                 }
                 mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+            }
+        }
+
+        private async void btnAddFolder_Click(object sender, EventArgs e)
+        {
+            Form_AddFolder = new AddFolder();
+            var result = Form_AddFolder.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                Add_FilePath = Form_AddFolder.FolderPath;
+                Add_Artist = Form_AddFolder.Artist;
+                Add_Album = Form_AddFolder.Album;
+                Add_Album.ArtistID = Add_Artist.ArtistID;
+            }
+            if (_database.FindAlbum(Add_Album.Title) == null)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                if (_database.FindArtist(Add_Artist) == null) _database.AddArtist(Add_Artist);
+                _database.AddAlbum(Add_Album);
+                List<dbo_MusicFile> Added_Files = await AddAlbum(Add_FilePath, RootDirectory, Add_Artist, Add_Album);
+                _database.AddFiles(Added_Files, Add_Album);
+                MessageBox.Show("Album added successfully");
+                Cursor.Current = Cursors.Default;
+                trvDirectories.Nodes.Clear();
+                _treeViewSerivce.BindDirectoryToTreeView(trvDirectories, RootDirectory);
+            }
+            else
+            {
+                MessageBox.Show("Album already exists.");
             }
         }
 
@@ -284,7 +314,6 @@ namespace MusicLibrary
                                                 e.X, e.Y)); ;
         }
 
-
         public void mp_OnFilePlay(MusicPlayer mp, MusicPlayerEventArgs e)
         {
             var file = e.FiledPlayed;
@@ -313,35 +342,6 @@ namespace MusicLibrary
         {
             mp.NowPlayingIndex = e.RowIndex;
             mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
-        }
-
-        private async void btnAddFolder_Click(object sender, EventArgs e)
-        {
-            Form_AddFolder = new AddFolder();
-            var result = Form_AddFolder.ShowDialog();
-            if(result == DialogResult.OK)
-            {
-                Add_FilePath = Form_AddFolder.FolderPath;
-                Add_Artist = Form_AddFolder.Artist;
-                Add_Album = Form_AddFolder.Album;
-                Add_Album.ArtistID = Add_Artist.ArtistID;
-            }
-            if(_database.FindAlbum(Add_Album.Title) == null)
-            {
-                Cursor.Current = Cursors.WaitCursor;
-                if (_database.FindArtist(Add_Artist) == null) _database.AddArtist(Add_Artist);
-                _database.AddAlbum(Add_Album);
-                List<dbo_MusicFile> Added_Files = await _treeViewSerivce.AddAlbum(Add_FilePath, RootDirectory, Add_Artist, Add_Album);
-                _database.AddFiles(Added_Files, Add_Album);
-                MessageBox.Show("Album added successfully");
-                Cursor.Current = Cursors.Default;
-                trvDirectories.Nodes.Clear();
-                _treeViewSerivce.BindDirectoryToTreeView(trvDirectories, RootDirectory);
-            }
-            else
-            {
-                MessageBox.Show("Album already exists.");
-            }
         }
     }
 }
