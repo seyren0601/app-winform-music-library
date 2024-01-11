@@ -374,6 +374,7 @@ namespace MusicLibrary
             rdDefault.TabStop = true;
             rdDefault.Text = "No repeat";
             rdDefault.UseVisualStyleBackColor = true;
+            rdDefault.CheckedChanged += rdRepeat_CheckedChanged;
             // 
             // rdRepeatList
             // 
@@ -386,6 +387,7 @@ namespace MusicLibrary
             rdRepeatList.TabStop = true;
             rdRepeatList.Text = "Repeat list";
             rdRepeatList.UseVisualStyleBackColor = true;
+            rdRepeatList.CheckedChanged += rdRepeat_CheckedChanged;
             // 
             // rdRepeatOne
             // 
@@ -397,6 +399,7 @@ namespace MusicLibrary
             rdRepeatOne.TabStop = true;
             rdRepeatOne.Text = "Repeat one";
             rdRepeatOne.UseVisualStyleBackColor = true;
+            rdRepeatOne.CheckedChanged += rdRepeat_CheckedChanged;
             // 
             // grpRepeat
             // 

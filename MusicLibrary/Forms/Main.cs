@@ -58,6 +58,10 @@ namespace MusicLibrary
             grdNowPlaying.Columns[0].Visible = false;
             grdNowPlaying.Columns[1].Visible = false;
             mp.FilePlay += mp_OnFilePlay;
+
+            rdDefault.Tag = RepeatMode.Default;
+            rdRepeatList.Tag = RepeatMode.RepeatList;
+            rdRepeatOne.Tag = RepeatMode.RepeatOne;
         }
 
         #region Events
@@ -114,7 +118,7 @@ namespace MusicLibrary
 
         private void btnPrevious_Click(object sender, EventArgs e)
         {
-            if(NowPlaying.Count > 0)
+            if (NowPlaying.Count > 0)
             {
                 if (mp.NowPlayingIndex > 0)
                 {
@@ -130,7 +134,7 @@ namespace MusicLibrary
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            if(NowPlaying.Count > 0)
+            if (NowPlaying.Count > 0)
             {
                 if (mp.NowPlayingIndex < NowPlaying.Count - 1)
                 {
@@ -267,10 +271,10 @@ namespace MusicLibrary
         {
             if (e.ClickedItem == ctxDataGrid.Items["menuRemove"])
             {
-                if (RemoveRows(grdNowPlaying.SelectedRows)) 
+                if (RemoveRows(grdNowPlaying.SelectedRows))
                     mp.NowPlayingIndex = 0;
 
-                if(NowPlaying.Count > 0)
+                if (NowPlaying.Count > 0)
                 {
                     mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
                 }

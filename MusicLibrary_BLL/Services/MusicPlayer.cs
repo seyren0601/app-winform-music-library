@@ -126,8 +126,20 @@ namespace MusicLibrary_BLL.Services
                     Console.WriteLine("In repeat list");
                     break;
                 case RepeatMode.Default:
-                    waveOut!.Stop();
-                    Console.WriteLine("In no repeat");
+                    if(NowPlayingIndex == PlayList.Count - 1)
+                    {
+                        waveOut!.Stop();
+                        SetPosition(TimeSpan.Zero);
+                    }
+                    else
+                    {
+                        NowPlayingIndex += 1;
+                    }
+                    Console.WriteLine("In no repeat (default)");
+                    break;
+                case RepeatMode.RepeatOne:
+                    PlayFile(PlayList[NowPlayingIndex]);
+                    Console.WriteLine("In repeat one");
                     break;
                 default:
                     Console.WriteLine("In default");

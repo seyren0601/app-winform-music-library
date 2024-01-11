@@ -14,6 +14,7 @@ using MetaBrainz.MusicBrainz.Interfaces.Entities;
 using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore;
+using MySqlX.XDevAPI.Common;
 
 namespace MusicLibrary_DAL
 {
@@ -22,58 +23,12 @@ namespace MusicLibrary_DAL
         public static void Main(string[] args)
         {
             var q = new Query();
-            var result = q.FindArtists("YOASOBI");
-            var artistID = result.Results[0].Item.Id;
-            var artist = q.LookupArtist(artistID);
-
-
-            /*var inp_artist = new dbo_Artist()
+            string artistID = "df6c619f-4334-43e2-8b6a-4a32af1e4f85";
+            string albumID = "1489b651-808d-465b-b92e-15fee371a158";
+            var query = q.LookupRelease(new Guid("1489b651-808d-465b-b92e-15fee371a158"), Include.Recordings).Media[0];
+            foreach(var track in query.Tracks)
             {
-                ArtistID = artist.Id.ToString(),
-                ArtistName = artist.Name,
-                DebutYear = artist.LifeSpan.Begin.Year.Value
-            };
-            using (var Context = new MusicLibraryDbContext())
-            {
-                if (Context.Artists.Count(x => x.ArtistID == inp_artist.ArtistID) == 0)
-                {
-                    Context.Artists.Add(inp_artist);
-                    int affected = Context.SaveChanges();
-                    Console.WriteLine("Affected = " + affected);
-                }
-            }*/
-
-            var album = q.LookupRelease(new Guid("e4ac4709-e6df-4438-b411-9ab6c96d94fe"), Include.Recordings);
-            using(var Context = new MusicLibraryDbContext())
-            {
-                var inp_album = new dbo_Album()
-                {
-                    AlbumID = album.Id.ToString(),
-                    ArtistID = artist.Id.ToString(),
-                    Title = album.Title,
-                    ReleaseYear = album.Date.Year.Value
-                };
-                if(Context.Albums.Count(x=>x.AlbumID == inp_album.AlbumID) == 0)
-                {
-                    Context.Albums.Add(inp_album);
-                    Console.WriteLine("Affected = " + Context.SaveChanges());
-                }
-            }
-
-            using (var Context = new MusicLibraryDbContext())
-            {
-                var artists = Context.Artists.Include(artist => artist.ALBUMS).ToList();
-                foreach(dbo_Artist at in artists)
-                {
-                    Console.WriteLine($"Artist name: {at.ArtistName}");
-                    Console.WriteLine($"No of albums: {at.ALBUMS.Count}\n");
-                    foreach(dbo_Album alb in at.ALBUMS)
-                    {
-                        Console.WriteLine($"AlbumID: {alb.AlbumID}");
-                        Console.WriteLine($"Album: {alb.Title}");
-                        Console.WriteLine();
-                    }
-                }
+                Console.WriteLine(track.Title + $" ({track.Number})");
             }
         }
     }
