@@ -13,7 +13,6 @@ using MusicLibrary_BLL.Services;
 using NAudio.Gui;
 using NAudio.Wave;
 using static MusicLibrary_BLL.Services.MusicPlayer;
-using Windows.Media.Playlists;
 using System.Collections;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
@@ -24,9 +23,17 @@ using System.Diagnostics.Eventing.Reader;
 
 namespace MusicLibrary
 {
+    public enum Role
+    {
+        admin,
+        user
+    }
     public partial class Main : Form
     {
+        
         public string RootDirectory = "..\\..\\..\\Music";
+        string username;
+        Role userRole;
 
         TreeViewService _treeViewSerivce = TreeViewService.GetInstance();
         DatabaseService _database = DatabaseService.GetInstance();
@@ -34,7 +41,22 @@ namespace MusicLibrary
 
         MusicPlayer mp = MusicPlayer.GetInstance();
         MediaTag mt = MediaTag.GetInstance();
-        MusicList NowPlaying = MusicList.GetInstance();
+        MusicList NowPlaying = new MusicList();
+        Playlist CurrentPlaylist = new Playlist() { PlaylistID = -1, PlaylistName = "Current playing"};
+        BindingList<Playlist> Playlists = new BindingList<Playlist>();
+
+        // Form constructors
+        public Main(string username, Role role)
+        {
+            this.username = username;
+            userRole = role;
+            InitializeComponent();
+        }
+
+        public Main()
+        {
+            InitializeComponent();
+        }
 
         // Forms
         AddFolder Form_AddFolder;
@@ -45,13 +67,10 @@ namespace MusicLibrary
         public dbo_Artist Add_Artist { get; set; }
         public dbo_Album Add_Album { get; set; }
 
-        public Main()
-        {
-            InitializeComponent();
-        }
-
         private void Main_Load(object sender, EventArgs e)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8; // for testing unicode in console
+
             _treeViewSerivce.BindDirectoryToTreeView(trvDirectories, RootDirectory);
             mp.ChangeVolume(volumeSlider1.Volume);
             grdNowPlaying.DataSource = NowPlaying.FileList;
@@ -62,6 +81,13 @@ namespace MusicLibrary
             rdDefault.Tag = RepeatMode.Default;
             rdRepeatList.Tag = RepeatMode.RepeatList;
             rdRepeatOne.Tag = RepeatMode.RepeatOne;
+
+            CurrentPlaylist.Add(NowPlaying);
+            Playlists.Add(CurrentPlaylist);
+            NowPlaying.AddEvent += CurrentPlaylist.UpdateList;
+            NowPlaying.RemoveEvent += CurrentPlaylist.UpdateList;
+            cmbPlaylist.DataSource = Playlists;
+            cmbPlaylist.DisplayMember = "PlaylistName";
         }
 
         #region Events

@@ -9,6 +9,7 @@ using MusicLibrary_BLL.Models;
 using System.Linq;
 using WinRT;
 using System.IO.Pipelines;
+using MusicLibrary_DAL.Entities;
 
 namespace MusicLibrary_BLL.Services
 {

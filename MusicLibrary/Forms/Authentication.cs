@@ -38,7 +38,7 @@ namespace MusicLibrary
                 var result = MessageBox.Show("Login thành công", "Thông báo");
                 if (result != DialogResult.None)
                 {
-                    Main main = new Main();
+                    Main main = new Main(txtUsername.Text, txtUsername.Text == "seyren"?Role.admin:Role.user);
                     Hide();
                     main.ShowDialog();
                     Close();

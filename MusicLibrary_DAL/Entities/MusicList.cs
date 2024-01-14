@@ -6,18 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TagLib;
+using System.Runtime.CompilerServices;
 
-namespace MusicLibrary_BLL.Models
+namespace MusicLibrary_DAL.Entities
 {
     public class MusicList:IEnumerable
     {
         public BindingList<MusicFile> FileList = new BindingList<MusicFile>();
         public int Count => FileList.Count;
-        static MusicList Instance;
-        public static MusicList GetInstance()
+        public int PlaylistID { get; set; }
+        public MusicList() { }
+        public MusicList(int playlistID)
         {
-            if (Instance == null) return Instance = new MusicList();
-            return Instance;
+            PlaylistID = playlistID;
         }
         
         public MusicFile Add(FileInfo file, TimeSpan playTime)
@@ -32,6 +33,7 @@ namespace MusicLibrary_BLL.Models
                 Album = f.Tag.Album,
                 PlayTime = playTime
             });
+            AddEvent.Invoke(this, new EventArgs());
             return FileList.Last();
         }
 
@@ -39,9 +41,14 @@ namespace MusicLibrary_BLL.Models
         {
             FileList.Add(file);
         }
-        public void Remove(MusicFile file) => FileList.Remove(file);
-
-
+        public void Remove(MusicFile file)
+        {
+            FileList.Remove(file);
+            RemoveEvent.Invoke(this, new EventArgs());
+        }
+        public delegate void MusicListEventhandler(MusicList list, EventArgs e);
+        public event MusicListEventhandler AddEvent;
+        public event MusicListEventhandler RemoveEvent;
 
         IEnumerator IEnumerable.GetEnumerator() { return FileList.GetEnumerator(); }
         public MusicFile this[int index]

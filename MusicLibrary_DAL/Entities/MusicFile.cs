@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicLibrary_BLL.Models
+namespace MusicLibrary_DAL.Entities
 {
     public class MusicFile
     {

@@ -67,6 +67,7 @@ namespace MusicLibrary
             grpRepeat = new GroupBox();
             btnAddFolder = new Button();
             fldAddMusicFolder = new FolderBrowserDialog();
+            cmbPlaylist = new ComboBox();
             ctxTreeNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
             grpDetails.SuspendLayout();
@@ -426,11 +427,20 @@ namespace MusicLibrary
             btnAddFolder.UseVisualStyleBackColor = true;
             btnAddFolder.Click += btnAddFolder_Click;
             // 
+            // cmbPlaylist
+            // 
+            cmbPlaylist.FormattingEnabled = true;
+            cmbPlaylist.Location = new Point(782, 139);
+            cmbPlaylist.Name = "cmbPlaylist";
+            cmbPlaylist.Size = new Size(121, 23);
+            cmbPlaylist.TabIndex = 24;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(925, 513);
+            Controls.Add(cmbPlaylist);
             Controls.Add(btnAddFolder);
             Controls.Add(grpRepeat);
             Controls.Add(btnPrevious);
@@ -497,5 +507,6 @@ namespace MusicLibrary
         private FolderBrowserDialog fldAddMusicFolder;
         private ContextMenuStrip ctxDataGrid;
         private ToolStripMenuItem menuRemove;
+        private ComboBox cmbPlaylist;
     }
 }
