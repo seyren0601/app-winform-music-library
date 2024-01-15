@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Authentication));
             lblUsername = new Label();
             lblPassword = new Label();
             txtUsername = new TextBox();
@@ -42,6 +43,8 @@
             // lblUsername
             // 
             lblUsername.AutoSize = true;
+            lblUsername.BackColor = Color.Transparent;
+            lblUsername.ForeColor = Color.LawnGreen;
             lblUsername.Location = new Point(201, 104);
             lblUsername.Margin = new Padding(4, 0, 4, 0);
             lblUsername.Name = "lblUsername";
@@ -53,6 +56,8 @@
             // lblPassword
             // 
             lblPassword.AutoSize = true;
+            lblPassword.BackColor = Color.Transparent;
+            lblPassword.ForeColor = Color.LawnGreen;
             lblPassword.Location = new Point(201, 157);
             lblPassword.Margin = new Padding(4, 0, 4, 0);
             lblPassword.Name = "lblPassword";
@@ -81,6 +86,7 @@
             // lblHeader
             // 
             lblHeader.AutoSize = true;
+            lblHeader.BackColor = Color.Transparent;
             lblHeader.BorderStyle = BorderStyle.FixedSingle;
             lblHeader.Font = new Font("Segoe UI", 24.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblHeader.ForeColor = Color.Blue;
@@ -93,24 +99,28 @@
             // 
             // btnLogIn
             // 
+            btnLogIn.BackColor = Color.Transparent;
+            btnLogIn.ForeColor = Color.Black;
             btnLogIn.Location = new Point(232, 207);
             btnLogIn.Name = "btnLogIn";
             btnLogIn.Size = new Size(75, 32);
             btnLogIn.TabIndex = 5;
             btnLogIn.TabStop = false;
             btnLogIn.Text = "Log In";
-            btnLogIn.UseVisualStyleBackColor = true;
+            btnLogIn.UseVisualStyleBackColor = false;
             btnLogIn.Click += btnLogIn_Click;
             // 
             // btnSignUp
             // 
+            btnSignUp.BackColor = Color.Transparent;
+            btnSignUp.ForeColor = Color.Black;
             btnSignUp.Location = new Point(353, 207);
             btnSignUp.Name = "btnSignUp";
             btnSignUp.Size = new Size(88, 32);
             btnSignUp.TabIndex = 6;
             btnSignUp.TabStop = false;
             btnSignUp.Text = "Sign Up";
-            btnSignUp.UseVisualStyleBackColor = true;
+            btnSignUp.UseVisualStyleBackColor = false;
             btnSignUp.Click += btnSignUp_Click;
             // 
             // btnExit
@@ -127,6 +137,8 @@
             // lblFooter
             // 
             lblFooter.AutoSize = true;
+            lblFooter.BackColor = Color.Transparent;
+            lblFooter.ForeColor = Color.LawnGreen;
             lblFooter.Location = new Point(322, 285);
             lblFooter.Name = "lblFooter";
             lblFooter.Size = new Size(153, 69);
@@ -138,6 +150,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(800, 366);
             Controls.Add(lblFooter);

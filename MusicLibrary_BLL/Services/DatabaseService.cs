@@ -156,7 +156,7 @@ namespace MusicLibrary_BLL.Services
         {
             using (MusicLibraryDbContext dbContext = new MusicLibraryDbContext())
             {
-                IQueryable<Playlist> queryResult = dbContext.Playlists.(p=>p.username == input);
+                IQueryable<Playlist> queryResult = dbContext.Playlists.Where(p=>p.username == input);
                 if(queryResult.Count() > 0)
                 {
                     List<Playlist> PlaylistList = new List<Playlist>();
