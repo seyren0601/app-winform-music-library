@@ -12,11 +12,12 @@ namespace MusicLibrary
     {
         bool RemoveRows(DataGridViewSelectedRowCollection rows)
         {
+            var currentPlayingFile = NowPlaying[mp.NowPlayingIndex];
             bool playing = false;
             foreach (DataGridViewRow row in rows)
             {
                 MusicFile file = row.DataBoundItem as MusicFile;
-                if (file == NowPlaying[mp.NowPlayingIndex])
+                if (file == currentPlayingFile)
                 {
                     playing = true;
                 }

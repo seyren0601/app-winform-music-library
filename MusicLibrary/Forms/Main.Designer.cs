@@ -126,7 +126,7 @@ namespace MusicLibrary
             // btnExit
             // 
             btnExit.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnExit.Location = new Point(813, 422);
+            btnExit.Location = new Point(803, 429);
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(100, 37);
             btnExit.TabIndex = 7;
@@ -142,7 +142,7 @@ namespace MusicLibrary
             volumeSlider1.Name = "volumeSlider1";
             volumeSlider1.Size = new Size(94, 18);
             volumeSlider1.TabIndex = 8;
-            volumeSlider1.Volume = 0.6F;
+            volumeSlider1.Volume = 0.15F;
             volumeSlider1.VolumeChanged += volumeSlider1_VolumeChanged;
             // 
             // media_icons

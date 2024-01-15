@@ -64,6 +64,18 @@ namespace MusicLibrary_BLL.Services
             FileReader.CurrentTime = position;
         }
 
+        public void InitFile(MusicFile file)
+        {
+            FileReader = new AudioFileReader(file.FilePath);
+            if (waveOut != null)
+            {
+                waveOut.Dispose();
+            }
+            waveOut = new WaveOut();
+            Console.WriteLine("Current index: " + NowPlayingIndex + ". Song: " + FileReader.FileName);
+            waveOut.Init(FileReader);
+        }
+
         public void PlayFile(MusicFile file)
         {
             FileReader = new AudioFileReader(file.FilePath);

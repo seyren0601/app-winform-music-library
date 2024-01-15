@@ -91,6 +91,7 @@ namespace MusicLibrary
                     Playlists.Add(playlist);
                 }
                 NowPlaying.FileList =  _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID);
+                mp.PlayList = NowPlaying;
             }
             else
             {
@@ -109,6 +110,15 @@ namespace MusicLibrary
             grdNowPlaying.Columns[0].Visible = false;
             grdNowPlaying.Columns[1].Visible = false;
 
+            if(NowPlaying.Count > 0)
+            {
+                mp.NowPlayingIndex = 0;
+                mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+                mp.waveOut.Pause();
+                btnPlay.Enabled = true;
+                btnStop.Enabled = true;
+            }
+
             Console.OutputEncoding = System.Text.Encoding.UTF8; // for testing unicode in console
         }
 
@@ -116,7 +126,12 @@ namespace MusicLibrary
         // Buttons click
         private void btnExit_Click(object sender, EventArgs e)
         {
-            Close();
+            var result = MessageBox.Show("Bạn sẽ logout khỏi ứng dụng", "", MessageBoxButtons.OKCancel);
+            if(result == DialogResult.OK)
+            {
+                tmrSeekBar.Stop();
+                Close();
+            }
         }
 
         private void trvDirectories_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -289,28 +304,25 @@ namespace MusicLibrary
                     {
                         mp.NowPlayingIndex = 0;
                         mp.PlayFile(file);
-                        // Enable stop button (now waveOut is not null)
-                        btnStop.Enabled = true;
-                        btnPlay.Enabled = true;
                     }
                 }
                 else
                 {
+                    bool PlayListIsEmpty = NowPlaying.Count == 0;
                     TreeNode root = trvDirectories.SelectedNode;
                     _treeViewSerivce.AddFolderToPlaylist(root, NowPlaying);
                     MusicFile file = NowPlaying[0];
-                    bool PlayListIsEmpty = (mp.PlayList.Count == 0);
                     mp.PlayList = NowPlaying;
                     _database.UpdatePlaylist(CurrentPlaylist, NowPlaying);
                     if (PlayListIsEmpty)
                     {
                         mp.PlayFile(file);
-                        // Enable stop button (now waveOut is not null)
-                        btnStop.Enabled = true;
-                        btnPlay.Enabled = true;
                         mp.NowPlayingIndex = 0;
                     }
                 }
+                // Enable stop button (now waveOut is not null)
+                btnStop.Enabled = true;
+                btnPlay.Enabled = true;
             }
             Console.WriteLine("Current playlist: ");
             for (int i = 0; i < NowPlaying.Count; i++)
@@ -323,15 +335,26 @@ namespace MusicLibrary
         {
             if (e.ClickedItem == ctxDataGrid.Items["menuRemove"])
             {
-                if (RemoveRows(grdNowPlaying.SelectedRows))
+                var currentPlayingFile = NowPlaying[mp.NowPlayingIndex];
+                bool deletePlayingFile = RemoveRows(grdNowPlaying.SelectedRows);
+                if (deletePlayingFile && NowPlaying.Count > 0)
+                {
                     mp.NowPlayingIndex = 0;
+                    mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+                    mp.waveOut.Pause();
+                }
+                else if(NowPlaying.Count > 0)
+                {
+                    mp.NowPlayingIndex = NowPlaying.FileList.IndexOf(currentPlayingFile);
+                }
 
                 if (NowPlaying.Count > 0)
                 {
-                    mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+                    mp.waveOut.Play();
                 }
                 else
                 {
+                    mp.Stop();
                     mp.waveOut = null;
                     mp.FileReader = null;
                     // Disable button because waveOut is now null
@@ -340,6 +363,7 @@ namespace MusicLibrary
 
                     // Reset seekbar
                     trbSeeker.Value = 0;
+                    lblSeekMin.Text = "0:00";
                     lblSeekMax.Text = "0:00";
 
                     // Reset details' textboxes

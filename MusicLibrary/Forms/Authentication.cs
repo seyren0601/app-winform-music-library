@@ -38,10 +38,10 @@ namespace MusicLibrary
                 var result = MessageBox.Show("Login thành công", "Thông báo");
                 if (result != DialogResult.None)
                 {
-                    Main main = new Main(txtUsername.Text, txtUsername.Text == "seyren"?Role.admin:Role.user);
+                    Main main = new Main(txtUsername.Text, txtUsername.Text == "seyren" ? Role.admin : Role.user);
                     Hide();
                     main.ShowDialog();
-                    Close();
+                    Show();
                 }
             }
             else
@@ -67,6 +67,15 @@ namespace MusicLibrary
         private void txtPassword_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter) btnLogIn_Click(sender, new EventArgs());
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Bạn có muốn thoát khỏi ứng dụng?", "", MessageBoxButtons.YesNo);
+            if(result == DialogResult.Yes)
+            {
+                Close();
+            }
         }
     }
 }
