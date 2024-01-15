@@ -41,6 +41,8 @@ namespace MusicLibrary
                     Main main = new Main(txtUsername.Text, txtUsername.Text == "seyren" ? Role.admin : Role.user);
                     Hide();
                     main.ShowDialog();
+                    txtUsername.Text = "";
+                    txtPassword.Text = "";
                     Show();
                 }
             }

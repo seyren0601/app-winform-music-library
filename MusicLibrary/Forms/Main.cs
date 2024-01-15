@@ -72,7 +72,7 @@ namespace MusicLibrary
             CurrentPlaylist = new Playlist() { PlaylistName = "Current playing", username = FormUsername };
             _treeViewSerivce.BindDirectoryToTreeView(trvDirectories, RootDirectory);
             mp.ChangeVolume(volumeSlider1.Volume);
-            
+
             mp.FilePlay += mp_OnFilePlay;
 
             rdDefault.Tag = RepeatMode.Default;
@@ -80,9 +80,9 @@ namespace MusicLibrary
             rdRepeatOne.Tag = RepeatMode.RepeatOne;
 
             List<Playlist> UserPlaylists = _database.FetchUserPlaylists(FormUsername);
-            if(UserPlaylists != null)
+            if (UserPlaylists != null)
             {
-                foreach(Playlist playlist in UserPlaylists)
+                foreach (Playlist playlist in UserPlaylists)
                 {
                     if (playlist.PlaylistName == "Current playing")
                     {
@@ -90,7 +90,7 @@ namespace MusicLibrary
                     }
                     Playlists.Add(playlist);
                 }
-                NowPlaying.FileList =  _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID);
+                NowPlaying.FileList = _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID);
                 mp.PlayList = NowPlaying;
             }
             else
@@ -101,7 +101,7 @@ namespace MusicLibrary
             }
             NowPlaying.AddEvent += CurrentPlaylist.UpdateList;
             NowPlaying.RemoveEvent += CurrentPlaylist.UpdateList;
-            
+
 
             cmbPlaylist.DataSource = Playlists;
             cmbPlaylist.DisplayMember = "PlaylistName";
@@ -110,7 +110,7 @@ namespace MusicLibrary
             grdNowPlaying.Columns[0].Visible = false;
             grdNowPlaying.Columns[1].Visible = false;
 
-            if(NowPlaying.Count > 0)
+            if (NowPlaying.Count > 0)
             {
                 mp.NowPlayingIndex = 0;
                 mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
@@ -127,7 +127,7 @@ namespace MusicLibrary
         private void btnExit_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("Bạn sẽ logout khỏi ứng dụng", "", MessageBoxButtons.OKCancel);
-            if(result == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 tmrSeekBar.Stop();
                 Close();
@@ -343,7 +343,7 @@ namespace MusicLibrary
                     mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
                     mp.waveOut.Pause();
                 }
-                else if(NowPlaying.Count > 0)
+                else if (NowPlaying.Count > 0)
                 {
                     mp.NowPlayingIndex = NowPlaying.FileList.IndexOf(currentPlayingFile);
                 }
@@ -426,14 +426,122 @@ namespace MusicLibrary
 
         private void btnCreatePlaylist_Click(object sender, EventArgs e)
         {
-            if(Playlists.Count(e=>e.PlaylistName == cmbPlaylist.Text) == 0)
+            if (Playlists.Count(e => e.PlaylistName == cmbPlaylist.Text) == 0)
             {
-                Playlist playlist = new Playlist() { PlaylistName = cmbPlaylist.Text};
+                Playlist playlist = new Playlist() { PlaylistName = cmbPlaylist.Text, username = FormUsername };
+                Playlists.Add(playlist);
                 _database.AddPlaylist(playlist);
             }
             else
             {
                 MessageBox.Show("Tên playlist trùng!");
+            }
+        }
+
+        private void cmbPlaylist_SelectedValueChanged(object sender, EventArgs e)
+        {
+            CurrentPlaylist = cmbPlaylist.SelectedItem as Playlist;
+            NowPlaying.FileList = _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID);
+            grdNowPlaying.DataSource = CurrentPlaylist.PlaylistInfo;
+            mp.PlayList = NowPlaying;
+            grdNowPlaying.DataSource = NowPlaying.FileList;
+            grdNowPlaying.Columns[0].Visible = false;
+            grdNowPlaying.Columns[1].Visible = false;
+            if (NowPlaying.Count > 0)
+            {
+                mp.NowPlayingIndex = 0;
+                trbSeeker.Value = 0;
+                lblSeekMin.Text = "0:00";
+                mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+                mp.waveOut.Pause();
+                btnPlay.Enabled = true;
+                btnStop.Enabled = true;
+            }
+            else
+            {
+                mp.Stop();
+                mp.waveOut = null;
+                mp.FileReader = null;
+                // Disable button because waveOut is now null
+                btnStop.Enabled = false;
+                btnPlay.Enabled = false;
+
+                // Reset seekbar
+                trbSeeker.Value = 0;
+                lblSeekMin.Text = "0:00";
+                lblSeekMax.Text = "0:00";
+
+                // Reset details' textboxes
+                foreach (Control control in grpDetails.Controls)
+                {
+                    if (control is TextBox)
+                    {
+                        ((TextBox)control).Text = string.Empty;
+                    }
+                }
+            }
+        }
+
+        private void btnDeletePlaylist_Click(object sender, EventArgs e)
+        {
+            var playlist = cmbPlaylist.SelectedItem as Playlist;
+            if(playlist != null)
+            {
+                if (playlist.PlaylistName == "Current playing")
+                {
+                    MessageBox.Show("Không thể xóa playlist [Current playing]\n(Playlist mặc định).");
+                }
+                else
+                {
+                    var result = MessageBox.Show($"Bạn có muốn xóa playlist [{playlist.PlaylistName}] không?", "", MessageBoxButtons.YesNo);
+                    if(result == DialogResult.Yes)
+                    {
+                        Playlists.Remove(playlist);
+                        _database.RemovePlaylist(playlist, FormUsername);
+
+                        CurrentPlaylist = cmbPlaylist.Items[0] as Playlist;
+                        cmbPlaylist.SelectedIndex = 0;
+                        NowPlaying.FileList = _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID);
+                        grdNowPlaying.DataSource = CurrentPlaylist.PlaylistInfo;
+                        mp.PlayList = NowPlaying;
+                        grdNowPlaying.DataSource = NowPlaying.FileList;
+                        grdNowPlaying.Columns[0].Visible = false;
+                        grdNowPlaying.Columns[1].Visible = false;
+                        if (NowPlaying.Count > 0)
+                        {
+                            mp.NowPlayingIndex = 0;
+                            trbSeeker.Value = 0;
+                            lblSeekMin.Text = "0:00";
+                            mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+                            mp.waveOut.Pause();
+                            btnPlay.Enabled = true;
+                            btnStop.Enabled = true;
+                        }
+                        else
+                        {
+                            mp.Stop();
+                            mp.waveOut = null;
+                            mp.FileReader = null;
+                            // Disable button because waveOut is now null
+                            btnStop.Enabled = false;
+                            btnPlay.Enabled = false;
+
+                            // Reset seekbar
+                            trbSeeker.Value = 0;
+                            lblSeekMin.Text = "0:00";
+                            lblSeekMax.Text = "0:00";
+
+                            // Reset details' textboxes
+                            foreach (Control control in grpDetails.Controls)
+                            {
+                                if (control is TextBox)
+                                {
+                                    ((TextBox)control).Text = string.Empty;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

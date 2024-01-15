@@ -113,6 +113,23 @@ namespace MusicLibrary_BLL.Services
             }
         }
 
+        public void RemovePlaylist(Playlist playlist, string username) 
+        {
+            using(MusicLibraryDbContext dbContext = new MusicLibraryDbContext())
+            {
+                IQueryable<MusicList> playlistSongs = from s in dbContext.PlaylistInfo
+                                                      join p in dbContext.Playlists on s.PlaylistID equals p.PlaylistID
+                                                      where s.PlaylistID == playlist.PlaylistID && p.username == username
+                                                      select s;
+                foreach(MusicList song in playlistSongs)
+                {
+                    dbContext.PlaylistInfo.Remove(song);
+                }
+                dbContext.Playlists.Remove(playlist);
+                dbContext.SaveChanges();
+            }
+        }
+
         public async void UpdatePlaylist(Playlist playlist, MusicList musiclist)
         {
             using (MusicLibraryDbContext dbContext = new MusicLibraryDbContext())
@@ -139,7 +156,7 @@ namespace MusicLibrary_BLL.Services
         {
             using (MusicLibraryDbContext dbContext = new MusicLibraryDbContext())
             {
-                IQueryable<Playlist> queryResult = dbContext.Playlists.Where(p=>p.username == input);
+                IQueryable<Playlist> queryResult = dbContext.Playlists.(p=>p.username == input);
                 if(queryResult.Count() > 0)
                 {
                     List<Playlist> PlaylistList = new List<Playlist>();
@@ -166,6 +183,7 @@ namespace MusicLibrary_BLL.Services
                                   join info in dbContext.PlaylistInfo on p.PlaylistID equals info.PlaylistID
                                   join s in dbContext.MusicFiles on info.SongID equals s.SongID
                                   join a in dbContext.Albums on s.Albums.ToList().First().AlbumID equals a.AlbumID
+                                  orderby s.FilePath
                                   where p.PlaylistID == playlistID
                                   select new MusicFile()
                                   {

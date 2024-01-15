@@ -32,8 +32,8 @@ namespace MusicLibrary
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             lblHeader = new Label();
             trvDirectories = new TreeView();
             ctxTreeNode = new ContextMenuStrip(components);
@@ -69,6 +69,7 @@ namespace MusicLibrary
             fldAddMusicFolder = new FolderBrowserDialog();
             cmbPlaylist = new ComboBox();
             btnCreatePlaylist = new Button();
+            btnDeletePlaylist = new Button();
             ctxTreeNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
             grpDetails.SuspendLayout();
@@ -157,6 +158,7 @@ namespace MusicLibrary
             media_icons.Images.SetKeyName(4, "previous.png");
             media_icons.Images.SetKeyName(5, "add_folder.png");
             media_icons.Images.SetKeyName(6, "add-list.png");
+            media_icons.Images.SetKeyName(7, "delete-list.png");
             // 
             // btnPlay
             // 
@@ -302,27 +304,27 @@ namespace MusicLibrary
             // 
             grdNowPlaying.AllowUserToOrderColumns = true;
             grdNowPlaying.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Pristina", 13F);
-            dataGridViewCellStyle1.ForeColor = Color.Red;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            grdNowPlaying.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Pristina", 13F);
+            dataGridViewCellStyle3.ForeColor = Color.Red;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            grdNowPlaying.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             grdNowPlaying.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             grdNowPlaying.ContextMenuStrip = ctxDataGrid;
             grdNowPlaying.Location = new Point(240, 175);
             grdNowPlaying.Name = "grdNowPlaying";
             grdNowPlaying.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Pristina", 13F);
-            dataGridViewCellStyle2.ForeColor = Color.Red;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            grdNowPlaying.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = SystemColors.Control;
+            dataGridViewCellStyle4.Font = new Font("Pristina", 13F);
+            dataGridViewCellStyle4.ForeColor = Color.Red;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            grdNowPlaying.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             grdNowPlaying.Size = new Size(673, 177);
             grdNowPlaying.TabIndex = 16;
             grdNowPlaying.CellClick += grdNowPlaying_CellClick;
@@ -436,6 +438,7 @@ namespace MusicLibrary
             cmbPlaylist.Name = "cmbPlaylist";
             cmbPlaylist.Size = new Size(121, 23);
             cmbPlaylist.TabIndex = 24;
+            cmbPlaylist.SelectedValueChanged += cmbPlaylist_SelectedValueChanged;
             // 
             // btnCreatePlaylist
             // 
@@ -443,18 +446,32 @@ namespace MusicLibrary
             btnCreatePlaylist.FlatStyle = FlatStyle.Flat;
             btnCreatePlaylist.ImageIndex = 6;
             btnCreatePlaylist.ImageList = media_icons;
-            btnCreatePlaylist.Location = new Point(741, 134);
+            btnCreatePlaylist.Location = new Point(694, 135);
             btnCreatePlaylist.Name = "btnCreatePlaylist";
             btnCreatePlaylist.Size = new Size(35, 34);
             btnCreatePlaylist.TabIndex = 25;
             btnCreatePlaylist.UseVisualStyleBackColor = true;
             btnCreatePlaylist.Click += btnCreatePlaylist_Click;
             // 
+            // btnDeletePlaylist
+            // 
+            btnDeletePlaylist.FlatAppearance.BorderColor = SystemColors.Control;
+            btnDeletePlaylist.FlatStyle = FlatStyle.Flat;
+            btnDeletePlaylist.ImageIndex = 7;
+            btnDeletePlaylist.ImageList = media_icons;
+            btnDeletePlaylist.Location = new Point(735, 134);
+            btnDeletePlaylist.Name = "btnDeletePlaylist";
+            btnDeletePlaylist.Size = new Size(41, 35);
+            btnDeletePlaylist.TabIndex = 26;
+            btnDeletePlaylist.UseVisualStyleBackColor = true;
+            btnDeletePlaylist.Click += btnDeletePlaylist_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(925, 513);
+            Controls.Add(btnDeletePlaylist);
             Controls.Add(btnCreatePlaylist);
             Controls.Add(cmbPlaylist);
             Controls.Add(btnAddFolder);
@@ -474,6 +491,7 @@ namespace MusicLibrary
             Controls.Add(lblHeader);
             Controls.Add(volumeSlider1);
             Name = "Main";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Main";
             Load += Main_Load;
             ctxTreeNode.ResumeLayout(false);
@@ -525,5 +543,6 @@ namespace MusicLibrary
         private ToolStripMenuItem menuRemove;
         private ComboBox cmbPlaylist;
         private Button btnCreatePlaylist;
+        private Button btnDeletePlaylist;
     }
 }
