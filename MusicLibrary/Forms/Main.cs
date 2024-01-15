@@ -30,9 +30,9 @@ namespace MusicLibrary
     }
     public partial class Main : Form
     {
-        
+
         public string RootDirectory = "..\\..\\..\\Music";
-        string username;
+        string FormUsername;
         Role userRole;
 
         TreeViewService _treeViewSerivce = TreeViewService.GetInstance();
@@ -42,13 +42,13 @@ namespace MusicLibrary
         MusicPlayer mp = MusicPlayer.GetInstance();
         MediaTag mt = MediaTag.GetInstance();
         MusicList NowPlaying = new MusicList();
-        Playlist CurrentPlaylist = new Playlist() { PlaylistID = -1, PlaylistName = "Current playing"};
+        Playlist CurrentPlaylist;
         BindingList<Playlist> Playlists = new BindingList<Playlist>();
 
         // Form constructors
         public Main(string username, Role role)
         {
-            this.username = username;
+            FormUsername = username;
             userRole = role;
             InitializeComponent();
         }
@@ -69,25 +69,47 @@ namespace MusicLibrary
 
         private void Main_Load(object sender, EventArgs e)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8; // for testing unicode in console
-
+            CurrentPlaylist = new Playlist() { PlaylistName = "Current playing", username = FormUsername };
             _treeViewSerivce.BindDirectoryToTreeView(trvDirectories, RootDirectory);
             mp.ChangeVolume(volumeSlider1.Volume);
-            grdNowPlaying.DataSource = NowPlaying.FileList;
-            grdNowPlaying.Columns[0].Visible = false;
-            grdNowPlaying.Columns[1].Visible = false;
+            
             mp.FilePlay += mp_OnFilePlay;
 
             rdDefault.Tag = RepeatMode.Default;
             rdRepeatList.Tag = RepeatMode.RepeatList;
             rdRepeatOne.Tag = RepeatMode.RepeatOne;
 
-            CurrentPlaylist.Add(NowPlaying);
-            Playlists.Add(CurrentPlaylist);
+            List<Playlist> UserPlaylists = _database.FetchUserPlaylists(FormUsername);
+            if(UserPlaylists != null)
+            {
+                foreach(Playlist playlist in UserPlaylists)
+                {
+                    if (playlist.PlaylistName == "Current playing")
+                    {
+                        CurrentPlaylist = playlist;
+                    }
+                    Playlists.Add(playlist);
+                }
+                NowPlaying.FileList =  _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID);
+            }
+            else
+            {
+                CurrentPlaylist.Add(NowPlaying);
+                Playlists.Add(CurrentPlaylist);
+                _database.AddPlaylist(CurrentPlaylist);
+            }
             NowPlaying.AddEvent += CurrentPlaylist.UpdateList;
             NowPlaying.RemoveEvent += CurrentPlaylist.UpdateList;
+            
+
             cmbPlaylist.DataSource = Playlists;
             cmbPlaylist.DisplayMember = "PlaylistName";
+
+            grdNowPlaying.DataSource = NowPlaying.FileList;
+            grdNowPlaying.Columns[0].Visible = false;
+            grdNowPlaying.Columns[1].Visible = false;
+
+            Console.OutputEncoding = System.Text.Encoding.UTF8; // for testing unicode in console
         }
 
         #region Events
@@ -110,6 +132,8 @@ namespace MusicLibrary
                 // Add file to playlist
                 NowPlaying.Add(file);
                 mp.PlayList = NowPlaying;
+                CurrentPlaylist.PlaylistInfo = NowPlaying;
+                _database.UpdatePlaylist(CurrentPlaylist, NowPlaying);
 
                 mp.PlayFile(file);
 
@@ -260,6 +284,7 @@ namespace MusicLibrary
                     MusicFile file = trvDirectories.SelectedNode.Tag as MusicFile;
                     NowPlaying.Add(file);
                     mp.PlayList = NowPlaying;
+                    _database.UpdatePlaylist(CurrentPlaylist, NowPlaying);
                     if (mp.PlayList.Count == 1)
                     {
                         mp.NowPlayingIndex = 0;
@@ -276,6 +301,7 @@ namespace MusicLibrary
                     MusicFile file = NowPlaying[0];
                     bool PlayListIsEmpty = (mp.PlayList.Count == 0);
                     mp.PlayList = NowPlaying;
+                    _database.UpdatePlaylist(CurrentPlaylist, NowPlaying);
                     if (PlayListIsEmpty)
                     {
                         mp.PlayFile(file);
@@ -372,6 +398,19 @@ namespace MusicLibrary
         {
             mp.NowPlayingIndex = e.RowIndex;
             mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+        }
+
+        private void btnCreatePlaylist_Click(object sender, EventArgs e)
+        {
+            if(Playlists.Count(e=>e.PlaylistName == cmbPlaylist.Text) == 0)
+            {
+                Playlist playlist = new Playlist() { PlaylistName = cmbPlaylist.Text};
+                _database.AddPlaylist(playlist);
+            }
+            else
+            {
+                MessageBox.Show("Tên playlist trùng!");
+            }
         }
     }
 }

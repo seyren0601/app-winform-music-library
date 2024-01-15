@@ -36,6 +36,10 @@ namespace MusicLibrary
 
                             // Copy file to app's library destination if a match is found
                             System.IO.File.Copy(oldPath, newPath, true);
+                            TagLib.File file = TagLib.File.Create(newPath);
+                            file.Tag.MusicBrainzTrackId = item_found.SongID;
+                            file.Tag.MusicBrainzReleaseArtistId = item_found.ArtistID;
+                            file.Save();
                         }
                         catch (Exception ex)
                         {
@@ -45,7 +49,7 @@ namespace MusicLibrary
                     else
                     {
                         // Using file title property to query
-                        TagLib.File file = TagLib.File.Create(newPath); 
+                        TagLib.File file = TagLib.File.Create(oldPath); 
                         songName = file.Tag.Title;
                         item_found = await _musicBrainz.FindRecording(Artist, Album, songName);
                         if (item_found != null)
@@ -57,6 +61,10 @@ namespace MusicLibrary
 
                                 // Copy file to app's library destination if a match is found
                                 System.IO.File.Copy(oldPath, newPath, true);
+                                file = TagLib.File.Create(newPath);
+                                file.Tag.MusicBrainzTrackId = item_found.SongID;
+                                file.Tag.MusicBrainzReleaseArtistId = item_found.ArtistID;
+                                file.Save();
                             }
                             catch (Exception ex)
                             {

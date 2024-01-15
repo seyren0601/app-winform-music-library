@@ -16,7 +16,5 @@ namespace MusicLibrary_DAL.Entities
         public string AlbumID { get; set; }
         [ForeignKey("dbo_MusicFile")]
         public string SongID { get; set; }
-        public dbo_Album Album { get; set; }
-        public dbo_MusicFile MusicFile { get; set; }
     }
 }

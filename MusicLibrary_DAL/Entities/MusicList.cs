@@ -7,14 +7,27 @@ using System.Text;
 using System.Threading.Tasks;
 using TagLib;
 using System.Runtime.CompilerServices;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace MusicLibrary_DAL.Entities
 {
+    [Table("dbo_PlaylistInfo", Schema="musiclibrary"), PrimaryKey("PlaylistID", "SongID")]
     public class MusicList:IEnumerable
     {
-        public BindingList<MusicFile> FileList = new BindingList<MusicFile>();
-        public int Count => FileList.Count;
+        [ForeignKey("dbo_Playlist")]
         public int PlaylistID { get; set; }
+        [ForeignKey("dbo_MusicFile")]
+        public string SongID { get; set; }
+        public dbo_MusicFile Song { get; set; }
+        public Playlist Playlist { get; set; }
+        [NotMapped]
+        public BindingList<MusicFile> FileList = new BindingList<MusicFile>();
+        [NotMapped]
+        public int Count => FileList.Count;
+
+
         public MusicList() { }
         public MusicList(int playlistID)
         {
@@ -46,11 +59,13 @@ namespace MusicLibrary_DAL.Entities
             FileList.Remove(file);
             RemoveEvent.Invoke(this, new EventArgs());
         }
+
         public delegate void MusicListEventhandler(MusicList list, EventArgs e);
         public event MusicListEventhandler AddEvent;
         public event MusicListEventhandler RemoveEvent;
 
         IEnumerator IEnumerable.GetEnumerator() { return FileList.GetEnumerator(); }
+        [NotMapped]
         public MusicFile this[int index]
         {
             get { return FileList[index]; }

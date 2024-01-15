@@ -11,6 +11,14 @@ CREATE TABLE dbo_user(
     PRIMARY KEY (username)
 );
 
+CREATE TABLE dbo_Playlist(
+	PlaylistID int auto_increment unique,
+    PlaylistName char(100) char set utf8mb4,
+    username char(50),
+    PRIMARY KEY (PlaylistID),
+    FOREIGN KEY (username) REFERENCES dbo_user(username)
+);
+
 CREATE TABLE dbo_Artist(
 	ArtistID char(50),
     ArtistName char(50),
@@ -27,18 +35,11 @@ CREATE TABLE dbo_Album(
     FOREIGN KEY (ArtistID) REFERENCES dbo_Artist(ArtistID)
 );
 
-CREATE TABLE dbo_Playlist(
-	PlaylistID int auto_increment,
-    username char(50),
-    PRIMARY KEY (PlaylistID),
-    FOREIGN KEY (username) REFERENCES dbo_user(username)
-);
-
 CREATE TABLE dbo_MusicFile(
 	SongID char(50),
     ArtistID char(50),
     FilePath char(100),
-	Title char(50),
+	Title char(50) charset utf8mb4,
     FOREIGN KEY (ArtistID) REFERENCES dbo_Artist(ArtistID),
     PRIMARY KEY (SongID)
 );
@@ -59,11 +60,15 @@ CREATE TABLE dbo_PlaylistInfo(
     PRIMARY KEY (PlaylistID, SongID)
 );
 
-
 select * from dbo_artist;
 select dbo_album.Title, dbo_musicfile.songid, dbo_musicfile.Title from dbo_album
 inner join dbo_albuminfo on dbo_album.albumid = dbo_albuminfo.albumid
 inner join dbo_musicfile on dbo_albuminfo.songid = dbo_musicfile.songid
 inner join dbo_artist on dbo_artist.artistid = dbo_musicfile.artistid
 where artistname = "yoasobi"
-order by dbo_album.Title
+order by dbo_album.Title;
+
+insert into dbo_playlist values (-1, "current", "seyren");
+select * from dbo_user;
+select * from dbo_playlist;
+select * from dbo_playlistinfo;

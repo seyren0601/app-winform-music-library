@@ -10,10 +10,12 @@ namespace MusicLibrary_DAL
     {
         string ConnectionString = "server=localhost;database=musiclibrary;user=root;password=porsche0601";
         public DbSet<dbo_User> Users { get; set; }
+        public DbSet<Playlist> Playlists { get; set; }
         public DbSet<dbo_Artist> Artists { get; set; }
         public DbSet<dbo_Album> Albums { get; set; }
         public DbSet<dbo_MusicFile> MusicFiles { get; set; }
         public DbSet<dbo_AlbumInfo> AlbumInfos { get; set; }
+        public DbSet<MusicList> PlaylistInfo { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySQL(ConnectionString);
@@ -22,20 +24,26 @@ namespace MusicLibrary_DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Playlist>()
+                .Navigation(e => e.MusicLists);
+
             modelBuilder.Entity<dbo_Artist>()
                 .Navigation(e => e.ALBUMS);
+
+
             modelBuilder.Entity<dbo_Album>()
                 .Navigation(e => e.Artist);
             modelBuilder.Entity<dbo_Album>()
                 .Navigation(e => e.Recordings);
+
+
             modelBuilder.Entity<dbo_MusicFile>()
                 .Navigation(e => e.Artist);
             modelBuilder.Entity<dbo_MusicFile>()
                 .Navigation(e => e.Albums);
-            modelBuilder.Entity<dbo_AlbumInfo>()
-                .Navigation(e => e.Album);
-            modelBuilder.Entity<dbo_AlbumInfo>()
-                .Navigation(e => e.MusicFile);
+            modelBuilder.Entity<dbo_MusicFile>()
+                .Navigation(e => e.Playlists);
         }
     }
 }

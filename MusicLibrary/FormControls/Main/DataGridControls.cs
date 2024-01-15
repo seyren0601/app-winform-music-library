@@ -21,6 +21,8 @@ namespace MusicLibrary
                     playing = true;
                 }
                 NowPlaying.Remove(file);
+                CurrentPlaylist.PlaylistInfo = NowPlaying;
+                _database.RemovePlaylistSong(CurrentPlaylist, file);
             }
             mp.PlayList = NowPlaying;
             return playing;

@@ -68,6 +68,7 @@ namespace MusicLibrary
             btnAddFolder = new Button();
             fldAddMusicFolder = new FolderBrowserDialog();
             cmbPlaylist = new ComboBox();
+            btnCreatePlaylist = new Button();
             ctxTreeNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
             grpDetails.SuspendLayout();
@@ -155,6 +156,7 @@ namespace MusicLibrary
             media_icons.Images.SetKeyName(3, "next.png");
             media_icons.Images.SetKeyName(4, "previous.png");
             media_icons.Images.SetKeyName(5, "add_folder.png");
+            media_icons.Images.SetKeyName(6, "add-list.png");
             // 
             // btnPlay
             // 
@@ -435,11 +437,25 @@ namespace MusicLibrary
             cmbPlaylist.Size = new Size(121, 23);
             cmbPlaylist.TabIndex = 24;
             // 
+            // btnCreatePlaylist
+            // 
+            btnCreatePlaylist.FlatAppearance.BorderColor = SystemColors.Control;
+            btnCreatePlaylist.FlatStyle = FlatStyle.Flat;
+            btnCreatePlaylist.ImageIndex = 6;
+            btnCreatePlaylist.ImageList = media_icons;
+            btnCreatePlaylist.Location = new Point(741, 134);
+            btnCreatePlaylist.Name = "btnCreatePlaylist";
+            btnCreatePlaylist.Size = new Size(35, 34);
+            btnCreatePlaylist.TabIndex = 25;
+            btnCreatePlaylist.UseVisualStyleBackColor = true;
+            btnCreatePlaylist.Click += btnCreatePlaylist_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(925, 513);
+            Controls.Add(btnCreatePlaylist);
             Controls.Add(cmbPlaylist);
             Controls.Add(btnAddFolder);
             Controls.Add(grpRepeat);
@@ -508,5 +524,6 @@ namespace MusicLibrary
         private ContextMenuStrip ctxDataGrid;
         private ToolStripMenuItem menuRemove;
         private ComboBox cmbPlaylist;
+        private Button btnCreatePlaylist;
     }
 }

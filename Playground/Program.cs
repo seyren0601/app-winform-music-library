@@ -22,13 +22,26 @@ namespace MusicLibrary_DAL
     {
         public static void Main(string[] args)
         {
-            var q = new Query();
-            string artistID = "df6c619f-4334-43e2-8b6a-4a32af1e4f85";
-            string albumID = "1489b651-808d-465b-b92e-15fee371a158";
-            var query = q.LookupRelease(new Guid("1489b651-808d-465b-b92e-15fee371a158"), Include.Recordings).Media[0];
-            foreach(var track in query.Tracks)
+            /*using (var db = new MusicLibraryDbContext())
             {
-                Console.WriteLine(track.Title + $" ({track.Number})");
+                var password_info = dbo_User.GetHashedPassword("bruh");
+                db.Users.Add(new dbo_User()
+                {
+                    username = "seyren",
+                    h_pass = password_info.Item1,
+                    salt = Convert.ToBase64String(password_info.Item2),
+                    administrator = true
+                });
+
+                db.SaveChanges();
+            }*/
+
+            using (var db = new MusicLibraryDbContext())
+            {
+                var playlist = db.Playlists.First();
+                Console.WriteLine(playlist.PlaylistID);
+                Console.WriteLine(playlist.PlaylistName);
+                Console.WriteLine(playlist.username);
             }
         }
     }
