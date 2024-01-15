@@ -205,6 +205,7 @@
             Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(4, 5, 4, 5);
             Name = "AddFolder";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "AddFolder";
             Load += AddFolder_Load;
             grpReleaseType.ResumeLayout(false);

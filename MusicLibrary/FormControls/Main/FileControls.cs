@@ -10,15 +10,28 @@ namespace MusicLibrary
 {
     public partial class Main
     {
+        public class FileOperationEventArgs : EventArgs
+        {
+            public readonly int progress;
+            public FileOperationEventArgs(int progress)
+            {
+                this.progress = progress;
+            }
+        }
+        public delegate void FileOperationEventHandler(object o, FileOperationEventArgs e);
+        public event FileOperationEventHandler SongAddSuccessfulEvent;
         public async Task<List<dbo_MusicFile>> AddAlbum(string filePath, string root, dbo_Artist Artist, dbo_Album Album)
         {
             string AlbumDirectoryPath = root + $"\\{Artist.ArtistName}\\{Album.Title}";
             DirectoryInfo directoryInfo = new DirectoryInfo(root + $"\\{Artist.ArtistName}");
             Directory.CreateDirectory(AlbumDirectoryPath);
+            var oldFiles = Directory.GetFiles(filePath);
+            var fileNum = oldFiles.Count(x => x.Contains(".mp3")); // Count number of .mp3 file that will be add
+            int progress = 0;
 
             List<dbo_MusicFile> Add_Files = new List<dbo_MusicFile>();
 
-            foreach (string oldPath in Directory.GetFiles(filePath))
+            foreach (string oldPath in oldFiles)
             {
                 FileInfo f = new FileInfo(oldPath);
                 if (f.Extension == ".mp3")
@@ -40,6 +53,7 @@ namespace MusicLibrary
                             file.Tag.MusicBrainzTrackId = item_found.SongID;
                             file.Tag.MusicBrainzReleaseArtistId = item_found.ArtistID;
                             file.Save();
+                            SongAddSuccessfulEvent.Invoke(this, new FileOperationEventArgs((int)(++progress/(double)fileNum * 100)));
                         }
                         catch (Exception ex)
                         {
@@ -65,6 +79,7 @@ namespace MusicLibrary
                                 file.Tag.MusicBrainzTrackId = item_found.SongID;
                                 file.Tag.MusicBrainzReleaseArtistId = item_found.ArtistID;
                                 file.Save();
+                                SongAddSuccessfulEvent.Invoke(this, new FileOperationEventArgs((int)(++progress / (double)fileNum * 100)));
                             }
                             catch (Exception ex)
                             {
@@ -79,7 +94,6 @@ namespace MusicLibrary
                         }
                     }
                 }
-
             }
             return Add_Files;
         }

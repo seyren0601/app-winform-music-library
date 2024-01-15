@@ -119,6 +119,8 @@ namespace MusicLibrary
                 btnStop.Enabled = true;
             }
 
+            SongAddSuccessfulEvent += ProgressBarUpdate;
+
             Console.OutputEncoding = System.Text.Encoding.UTF8; // for testing unicode in console
         }
 
@@ -226,12 +228,14 @@ namespace MusicLibrary
             }
             if (_database.FindAlbum(Add_Album.Title) == null)
             {
+                prgAddAlbum.Show();
                 Cursor.Current = Cursors.WaitCursor;
                 if (_database.FindArtist(Add_Artist) == null) _database.AddArtist(Add_Artist);
                 _database.AddAlbum(Add_Album);
                 List<dbo_MusicFile> Added_Files = await AddAlbum(Add_FilePath, RootDirectory, Add_Artist, Add_Album);
                 _database.AddFiles(Added_Files, Add_Album);
                 MessageBox.Show("Album added successfully");
+                prgAddAlbum.Hide();
                 Cursor.Current = Cursors.Default;
                 trvDirectories.Nodes.Clear();
                 _treeViewSerivce.BindDirectoryToTreeView(trvDirectories, RootDirectory);
@@ -543,6 +547,11 @@ namespace MusicLibrary
                     }
                 }
             }
+        }
+
+        private void ProgressBarUpdate(object sender, FileOperationEventArgs e)
+        {
+            prgAddAlbum.Value = e.progress;
         }
     }
 }
