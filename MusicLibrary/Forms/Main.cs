@@ -226,6 +226,10 @@ namespace MusicLibrary
                 Add_Album = Form_AddFolder.Album;
                 Add_Album.ArtistID = Add_Artist.ArtistID;
             }
+            else
+            {
+                return;
+            }
             if (_database.FindAlbum(Add_Album.Title) == null)
             {
                 prgAddAlbum.Show();

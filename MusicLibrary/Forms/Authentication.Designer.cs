@@ -44,7 +44,7 @@
             // 
             lblUsername.AutoSize = true;
             lblUsername.BackColor = Color.Transparent;
-            lblUsername.ForeColor = Color.LawnGreen;
+            lblUsername.ForeColor = Color.Silver;
             lblUsername.Location = new Point(201, 104);
             lblUsername.Margin = new Padding(4, 0, 4, 0);
             lblUsername.Name = "lblUsername";
@@ -57,7 +57,7 @@
             // 
             lblPassword.AutoSize = true;
             lblPassword.BackColor = Color.Transparent;
-            lblPassword.ForeColor = Color.LawnGreen;
+            lblPassword.ForeColor = Color.Silver;
             lblPassword.Location = new Point(201, 157);
             lblPassword.Margin = new Padding(4, 0, 4, 0);
             lblPassword.Name = "lblPassword";
@@ -89,7 +89,7 @@
             lblHeader.BackColor = Color.Transparent;
             lblHeader.BorderStyle = BorderStyle.FixedSingle;
             lblHeader.Font = new Font("Segoe UI", 24.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblHeader.ForeColor = Color.Blue;
+            lblHeader.ForeColor = Color.White;
             lblHeader.Location = new Point(186, 9);
             lblHeader.Name = "lblHeader";
             lblHeader.Size = new Size(418, 47);
@@ -99,7 +99,8 @@
             // 
             // btnLogIn
             // 
-            btnLogIn.BackColor = Color.Transparent;
+            btnLogIn.BackColor = Color.FromArgb(170, 240, 240, 240);
+            btnLogIn.FlatStyle = FlatStyle.Flat;
             btnLogIn.ForeColor = Color.Black;
             btnLogIn.Location = new Point(232, 207);
             btnLogIn.Name = "btnLogIn";
@@ -112,7 +113,8 @@
             // 
             // btnSignUp
             // 
-            btnSignUp.BackColor = Color.Transparent;
+            btnSignUp.BackColor = Color.FromArgb(170, 240, 240, 240);
+            btnSignUp.FlatStyle = FlatStyle.Flat;
             btnSignUp.ForeColor = Color.Black;
             btnSignUp.Location = new Point(353, 207);
             btnSignUp.Name = "btnSignUp";
@@ -125,20 +127,22 @@
             // 
             // btnExit
             // 
+            btnExit.BackColor = Color.FromArgb(170, 240, 240, 240);
+            btnExit.FlatStyle = FlatStyle.Flat;
             btnExit.Location = new Point(494, 207);
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(91, 32);
             btnExit.TabIndex = 7;
             btnExit.TabStop = false;
             btnExit.Text = "Exit";
-            btnExit.UseVisualStyleBackColor = true;
+            btnExit.UseVisualStyleBackColor = false;
             btnExit.Click += btnExit_Click;
             // 
             // lblFooter
             // 
             lblFooter.AutoSize = true;
             lblFooter.BackColor = Color.Transparent;
-            lblFooter.ForeColor = Color.LawnGreen;
+            lblFooter.ForeColor = Color.Silver;
             lblFooter.Location = new Point(322, 285);
             lblFooter.Name = "lblFooter";
             lblFooter.Size = new Size(153, 69);

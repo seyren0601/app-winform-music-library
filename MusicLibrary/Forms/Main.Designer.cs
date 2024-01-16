@@ -32,8 +32,8 @@ namespace MusicLibrary
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             lblHeader = new Label();
             trvDirectories = new TreeView();
             ctxTreeNode = new ContextMenuStrip(components);
@@ -71,18 +71,21 @@ namespace MusicLibrary
             btnCreatePlaylist = new Button();
             btnDeletePlaylist = new Button();
             prgAddAlbum = new ProgressBar();
+            grpTreeView = new GroupBox();
             ctxTreeNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
             grpDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdNowPlaying).BeginInit();
             ctxDataGrid.SuspendLayout();
             grpRepeat.SuspendLayout();
+            grpTreeView.SuspendLayout();
             SuspendLayout();
             // 
             // lblHeader
             // 
-            lblHeader.Font = new Font("Segoe UI", 24.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblHeader.ForeColor = Color.Blue;
+            lblHeader.BackColor = Color.Transparent;
+            lblHeader.Font = new Font("Segoe UI", 30F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblHeader.ForeColor = Color.White;
             lblHeader.Location = new Point(179, -4);
             lblHeader.Name = "lblHeader";
             lblHeader.Size = new Size(614, 47);
@@ -92,14 +95,18 @@ namespace MusicLibrary
             // 
             // trvDirectories
             // 
+            trvDirectories.BackColor = Color.Black;
+            trvDirectories.BorderStyle = BorderStyle.None;
             trvDirectories.ContextMenuStrip = ctxTreeNode;
             trvDirectories.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            trvDirectories.ForeColor = Color.White;
             trvDirectories.ImageIndex = 0;
             trvDirectories.ImageList = treeview_icons;
-            trvDirectories.Location = new Point(0, 66);
+            trvDirectories.LineColor = Color.White;
+            trvDirectories.Location = new Point(6, 22);
             trvDirectories.Name = "trvDirectories";
             trvDirectories.SelectedImageIndex = 1;
-            trvDirectories.Size = new Size(234, 445);
+            trvDirectories.Size = new Size(210, 396);
             trvDirectories.TabIndex = 6;
             trvDirectories.NodeMouseDoubleClick += trvDirectories_NodeMouseDoubleClick;
             trvDirectories.MouseClick += trvDirectories_MouseClick;
@@ -127,17 +134,22 @@ namespace MusicLibrary
             // 
             // btnExit
             // 
+            btnExit.BackColor = Color.Transparent;
+            btnExit.FlatAppearance.BorderColor = Color.White;
+            btnExit.FlatStyle = FlatStyle.Flat;
             btnExit.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnExit.Location = new Point(803, 429);
+            btnExit.ForeColor = Color.White;
+            btnExit.Location = new Point(803, 422);
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(100, 37);
             btnExit.TabIndex = 7;
             btnExit.Text = "Exit";
-            btnExit.UseVisualStyleBackColor = true;
+            btnExit.UseVisualStyleBackColor = false;
             btnExit.Click += btnExit_Click;
             // 
             // volumeSlider1
             // 
+            volumeSlider1.BackColor = SystemColors.Control;
             volumeSlider1.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             volumeSlider1.Location = new Point(460, 144);
             volumeSlider1.Margin = new Padding(4, 5, 4, 5);
@@ -163,8 +175,9 @@ namespace MusicLibrary
             // 
             // btnPlay
             // 
+            btnPlay.BackColor = Color.Transparent;
             btnPlay.Enabled = false;
-            btnPlay.FlatAppearance.BorderColor = SystemColors.Control;
+            btnPlay.FlatAppearance.BorderSize = 0;
             btnPlay.FlatStyle = FlatStyle.Flat;
             btnPlay.ImageIndex = 0;
             btnPlay.ImageList = media_icons;
@@ -172,12 +185,13 @@ namespace MusicLibrary
             btnPlay.Name = "btnPlay";
             btnPlay.Size = new Size(36, 36);
             btnPlay.TabIndex = 9;
-            btnPlay.UseVisualStyleBackColor = true;
+            btnPlay.UseVisualStyleBackColor = false;
             btnPlay.Click += btnPlay_Click;
             // 
             // btnPause
             // 
-            btnPause.FlatAppearance.BorderColor = SystemColors.Control;
+            btnPause.BackColor = Color.Transparent;
+            btnPause.FlatAppearance.BorderSize = 0;
             btnPause.FlatStyle = FlatStyle.Flat;
             btnPause.ImageIndex = 1;
             btnPause.ImageList = media_icons;
@@ -185,14 +199,15 @@ namespace MusicLibrary
             btnPause.Name = "btnPause";
             btnPause.Size = new Size(36, 36);
             btnPause.TabIndex = 10;
-            btnPause.UseVisualStyleBackColor = true;
+            btnPause.UseVisualStyleBackColor = false;
             btnPause.Click += btnPause_Click;
             // 
             // trbSeeker
             // 
+            trbSeeker.AutoSize = false;
             trbSeeker.Location = new Point(288, 83);
             trbSeeker.Name = "trbSeeker";
-            trbSeeker.Size = new Size(581, 45);
+            trbSeeker.Size = new Size(581, 30);
             trbSeeker.TabIndex = 11;
             trbSeeker.TickStyle = TickStyle.None;
             trbSeeker.MouseDown += trbSeeker_MouseDown;
@@ -201,18 +216,24 @@ namespace MusicLibrary
             // lblSeekMin
             // 
             lblSeekMin.AutoSize = true;
-            lblSeekMin.Location = new Point(249, 83);
+            lblSeekMin.BackColor = Color.Transparent;
+            lblSeekMin.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblSeekMin.ForeColor = Color.White;
+            lblSeekMin.Location = new Point(240, 83);
             lblSeekMin.Name = "lblSeekMin";
-            lblSeekMin.Size = new Size(28, 15);
+            lblSeekMin.Size = new Size(41, 23);
             lblSeekMin.TabIndex = 12;
             lblSeekMin.Text = "0:00";
             // 
             // lblSeekMax
             // 
             lblSeekMax.AutoSize = true;
+            lblSeekMax.BackColor = Color.Transparent;
+            lblSeekMax.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblSeekMax.ForeColor = Color.White;
             lblSeekMax.Location = new Point(875, 83);
             lblSeekMax.Name = "lblSeekMax";
-            lblSeekMax.Size = new Size(28, 15);
+            lblSeekMax.Size = new Size(41, 23);
             lblSeekMax.TabIndex = 13;
             lblSeekMax.Text = "0:00";
             // 
@@ -222,8 +243,9 @@ namespace MusicLibrary
             // 
             // btnStop
             // 
+            btnStop.BackColor = Color.Transparent;
             btnStop.Enabled = false;
-            btnStop.FlatAppearance.BorderColor = SystemColors.Control;
+            btnStop.FlatAppearance.BorderSize = 0;
             btnStop.FlatStyle = FlatStyle.Flat;
             btnStop.ImageIndex = 2;
             btnStop.ImageList = media_icons;
@@ -231,11 +253,12 @@ namespace MusicLibrary
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(36, 36);
             btnStop.TabIndex = 14;
-            btnStop.UseVisualStyleBackColor = true;
+            btnStop.UseVisualStyleBackColor = false;
             btnStop.Click += btnStop_Click;
             // 
             // grpDetails
             // 
+            grpDetails.BackColor = Color.Transparent;
             grpDetails.Controls.Add(txtAlbum);
             grpDetails.Controls.Add(txtArtist);
             grpDetails.Controls.Add(txtTitle);
@@ -243,6 +266,7 @@ namespace MusicLibrary
             grpDetails.Controls.Add(lblArtist);
             grpDetails.Controls.Add(lblTitle);
             grpDetails.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            grpDetails.ForeColor = Color.White;
             grpDetails.Location = new Point(249, 358);
             grpDetails.Name = "grpDetails";
             grpDetails.Size = new Size(264, 153);
@@ -305,27 +329,28 @@ namespace MusicLibrary
             // 
             grdNowPlaying.AllowUserToOrderColumns = true;
             grdNowPlaying.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Pristina", 13F);
-            dataGridViewCellStyle1.ForeColor = Color.Red;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            grdNowPlaying.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            grdNowPlaying.BackgroundColor = Color.Black;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Pristina", 13F);
+            dataGridViewCellStyle3.ForeColor = Color.Red;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            grdNowPlaying.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             grdNowPlaying.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             grdNowPlaying.ContextMenuStrip = ctxDataGrid;
             grdNowPlaying.Location = new Point(240, 175);
             grdNowPlaying.Name = "grdNowPlaying";
             grdNowPlaying.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Pristina", 13F);
-            dataGridViewCellStyle2.ForeColor = Color.Red;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            grdNowPlaying.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = SystemColors.Control;
+            dataGridViewCellStyle4.Font = new Font("Pristina", 13F);
+            dataGridViewCellStyle4.ForeColor = Color.Red;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            grdNowPlaying.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             grdNowPlaying.Size = new Size(673, 177);
             grdNowPlaying.TabIndex = 16;
             grdNowPlaying.CellClick += grdNowPlaying_CellClick;
@@ -346,7 +371,8 @@ namespace MusicLibrary
             // 
             // btnNext
             // 
-            btnNext.FlatAppearance.BorderColor = SystemColors.Control;
+            btnNext.BackColor = Color.Transparent;
+            btnNext.FlatAppearance.BorderSize = 0;
             btnNext.FlatStyle = FlatStyle.Flat;
             btnNext.ImageIndex = 3;
             btnNext.ImageList = media_icons;
@@ -354,12 +380,13 @@ namespace MusicLibrary
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(36, 36);
             btnNext.TabIndex = 17;
-            btnNext.UseVisualStyleBackColor = true;
+            btnNext.UseVisualStyleBackColor = false;
             btnNext.Click += btnNext_Click;
             // 
             // btnPrevious
             // 
-            btnPrevious.FlatAppearance.BorderColor = SystemColors.Control;
+            btnPrevious.BackColor = Color.Transparent;
+            btnPrevious.FlatAppearance.BorderSize = 0;
             btnPrevious.FlatStyle = FlatStyle.Flat;
             btnPrevious.ImageIndex = 4;
             btnPrevious.ImageList = media_icons;
@@ -367,7 +394,7 @@ namespace MusicLibrary
             btnPrevious.Name = "btnPrevious";
             btnPrevious.Size = new Size(36, 36);
             btnPrevious.TabIndex = 18;
-            btnPrevious.UseVisualStyleBackColor = true;
+            btnPrevious.UseVisualStyleBackColor = false;
             btnPrevious.Click += btnPrevious_Click;
             // 
             // rdDefault
@@ -375,7 +402,7 @@ namespace MusicLibrary
             rdDefault.AutoSize = true;
             rdDefault.Location = new Point(10, 29);
             rdDefault.Name = "rdDefault";
-            rdDefault.Size = new Size(77, 19);
+            rdDefault.Size = new Size(105, 27);
             rdDefault.TabIndex = 19;
             rdDefault.TabStop = true;
             rdDefault.Text = "No repeat";
@@ -388,7 +415,7 @@ namespace MusicLibrary
             rdRepeatList.Checked = true;
             rdRepeatList.Location = new Point(10, 71);
             rdRepeatList.Name = "rdRepeatList";
-            rdRepeatList.Size = new Size(79, 19);
+            rdRepeatList.Size = new Size(107, 27);
             rdRepeatList.TabIndex = 20;
             rdRepeatList.TabStop = true;
             rdRepeatList.Text = "Repeat list";
@@ -400,7 +427,7 @@ namespace MusicLibrary
             rdRepeatOne.AutoSize = true;
             rdRepeatOne.Location = new Point(10, 117);
             rdRepeatOne.Name = "rdRepeatOne";
-            rdRepeatOne.Size = new Size(84, 19);
+            rdRepeatOne.Size = new Size(115, 27);
             rdRepeatOne.TabIndex = 21;
             rdRepeatOne.TabStop = true;
             rdRepeatOne.Text = "Repeat one";
@@ -409,9 +436,12 @@ namespace MusicLibrary
             // 
             // grpRepeat
             // 
+            grpRepeat.BackColor = Color.Transparent;
             grpRepeat.Controls.Add(rdRepeatOne);
             grpRepeat.Controls.Add(rdRepeatList);
             grpRepeat.Controls.Add(rdDefault);
+            grpRepeat.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            grpRepeat.ForeColor = Color.White;
             grpRepeat.Location = new Point(519, 358);
             grpRepeat.Name = "grpRepeat";
             grpRepeat.Size = new Size(132, 153);
@@ -421,15 +451,16 @@ namespace MusicLibrary
             // 
             // btnAddFolder
             // 
-            btnAddFolder.FlatAppearance.BorderColor = SystemColors.Control;
+            btnAddFolder.BackColor = Color.Transparent;
+            btnAddFolder.BackgroundImageLayout = ImageLayout.Stretch;
             btnAddFolder.FlatStyle = FlatStyle.Flat;
             btnAddFolder.ImageIndex = 5;
             btnAddFolder.ImageList = media_icons;
-            btnAddFolder.Location = new Point(12, 30);
+            btnAddFolder.Location = new Point(12, 41);
             btnAddFolder.Name = "btnAddFolder";
             btnAddFolder.Size = new Size(36, 36);
             btnAddFolder.TabIndex = 23;
-            btnAddFolder.UseVisualStyleBackColor = true;
+            btnAddFolder.UseVisualStyleBackColor = false;
             btnAddFolder.Click += btnAddFolder_Click;
             // 
             // cmbPlaylist
@@ -443,43 +474,64 @@ namespace MusicLibrary
             // 
             // btnCreatePlaylist
             // 
-            btnCreatePlaylist.FlatAppearance.BorderColor = SystemColors.Control;
+            btnCreatePlaylist.BackColor = Color.Transparent;
+            btnCreatePlaylist.FlatAppearance.BorderSize = 0;
             btnCreatePlaylist.FlatStyle = FlatStyle.Flat;
+            btnCreatePlaylist.ForeColor = Color.White;
             btnCreatePlaylist.ImageIndex = 6;
             btnCreatePlaylist.ImageList = media_icons;
             btnCreatePlaylist.Location = new Point(694, 135);
             btnCreatePlaylist.Name = "btnCreatePlaylist";
             btnCreatePlaylist.Size = new Size(36, 36);
             btnCreatePlaylist.TabIndex = 25;
-            btnCreatePlaylist.UseVisualStyleBackColor = true;
+            btnCreatePlaylist.UseVisualStyleBackColor = false;
             btnCreatePlaylist.Click += btnCreatePlaylist_Click;
             // 
             // btnDeletePlaylist
             // 
-            btnDeletePlaylist.FlatAppearance.BorderColor = SystemColors.Control;
+            btnDeletePlaylist.BackColor = Color.Transparent;
+            btnDeletePlaylist.FlatAppearance.BorderSize = 0;
             btnDeletePlaylist.FlatStyle = FlatStyle.Flat;
+            btnDeletePlaylist.ForeColor = Color.White;
             btnDeletePlaylist.ImageIndex = 7;
             btnDeletePlaylist.ImageList = media_icons;
             btnDeletePlaylist.Location = new Point(735, 134);
             btnDeletePlaylist.Name = "btnDeletePlaylist";
             btnDeletePlaylist.Size = new Size(36, 36);
             btnDeletePlaylist.TabIndex = 26;
-            btnDeletePlaylist.UseVisualStyleBackColor = true;
+            btnDeletePlaylist.UseVisualStyleBackColor = false;
             btnDeletePlaylist.Click += btnDeletePlaylist_Click;
             // 
             // prgAddAlbum
             // 
-            prgAddAlbum.Location = new Point(134, 37);
+            prgAddAlbum.Location = new Point(134, 54);
             prgAddAlbum.Name = "prgAddAlbum";
             prgAddAlbum.Size = new Size(100, 23);
             prgAddAlbum.TabIndex = 27;
             prgAddAlbum.Visible = false;
             // 
+            // grpTreeView
+            // 
+            grpTreeView.BackColor = Color.Transparent;
+            grpTreeView.Controls.Add(trvDirectories);
+            grpTreeView.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            grpTreeView.ForeColor = Color.White;
+            grpTreeView.Location = new Point(12, 83);
+            grpTreeView.Name = "grpTreeView";
+            grpTreeView.Size = new Size(222, 428);
+            grpTreeView.TabIndex = 28;
+            grpTreeView.TabStop = false;
+            grpTreeView.Text = "Library";
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Black;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(925, 513);
+            Controls.Add(grpTreeView);
             Controls.Add(prgAddAlbum);
             Controls.Add(btnDeletePlaylist);
             Controls.Add(btnCreatePlaylist);
@@ -497,7 +549,6 @@ namespace MusicLibrary
             Controls.Add(btnPause);
             Controls.Add(btnPlay);
             Controls.Add(btnExit);
-            Controls.Add(trvDirectories);
             Controls.Add(lblHeader);
             Controls.Add(volumeSlider1);
             Name = "Main";
@@ -512,6 +563,7 @@ namespace MusicLibrary
             ctxDataGrid.ResumeLayout(false);
             grpRepeat.ResumeLayout(false);
             grpRepeat.PerformLayout();
+            grpTreeView.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -555,5 +607,6 @@ namespace MusicLibrary
         private Button btnCreatePlaylist;
         private Button btnDeletePlaylist;
         private ProgressBar prgAddAlbum;
+        private GroupBox grpTreeView;
     }
 }
