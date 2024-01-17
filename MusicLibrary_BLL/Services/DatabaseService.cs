@@ -251,7 +251,6 @@ namespace MusicLibrary_BLL.Services
                                         PlayTime = new AudioFileReader(s.FilePath).TotalTime,
                                         Number = s.TrackOffset
                                   };
-                Console.WriteLine(queryResult.Count());
                 BindingList<MusicFile> Songs = new BindingList<MusicFile>(queryResult.ToList());
                 return Songs;
             }
