@@ -16,7 +16,9 @@ CREATE TABLE dbo_Playlist(
     PlaylistName char(100) char set utf8mb4,
     username char(50),
     PRIMARY KEY (PlaylistID),
-    FOREIGN KEY (username) REFERENCES dbo_user(username)
+    FOREIGN KEY (username) 
+		REFERENCES dbo_user(username)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE dbo_Artist(
@@ -32,7 +34,9 @@ CREATE TABLE dbo_Album(
     Title char(50) charset utf8mb4,
     ReleaseYear int,
     PRIMARY KEY (AlbumID),
-    FOREIGN KEY (ArtistID) REFERENCES dbo_Artist(ArtistID)
+    FOREIGN KEY (ArtistID) 
+		REFERENCES dbo_Artist(ArtistID)
+		ON DELETE CASCADE
 );
 
 CREATE TABLE dbo_MusicFile(
@@ -40,23 +44,33 @@ CREATE TABLE dbo_MusicFile(
     ArtistID char(50),
     FilePath char(100),
 	Title char(50) charset utf8mb4,
-    FOREIGN KEY (ArtistID) REFERENCES dbo_Artist(ArtistID),
+    FOREIGN KEY (ArtistID)
+		REFERENCES dbo_Artist(ArtistID)
+        ON DELETE CASCADE,
     PRIMARY KEY (SongID)
 );
 
 CREATE TABLE dbo_AlbumInfo(
 	SongID char(50),
     AlbumID char(50),
-    FOREIGN KEY (SongID) REFERENCES dbo_MusicFile(SongID),
-    FOREIGN KEY (AlbumID) REFERENCES dbo_Album(AlbumID),
+    FOREIGN KEY (SongID)
+		REFERENCES dbo_MusicFile(SongID)
+        ON DELETE CASCADE,
+    FOREIGN KEY (AlbumID) 
+		REFERENCES dbo_Album(AlbumID)
+        ON DELETE CASCADE,
     PRIMARY KEY (SongID, AlbumID)
 );
 
 CREATE TABLE dbo_PlaylistInfo(
 	PlaylistID int,
     SongID char(50),
-    FOREIGN KEY (SongID) REFERENCES dbo_MusicFile(SongID),
-    FOREIGN KEY (PlaylistID) REFERENCES dbo_Playlist(PlaylistID),
+    FOREIGN KEY (SongID) 
+		REFERENCES dbo_MusicFile(SongID)
+		ON DELETE CASCADE,
+    FOREIGN KEY (PlaylistID)
+		REFERENCES dbo_Playlist(PlaylistID)
+        ON DELETE CASCADE,
     PRIMARY KEY (PlaylistID, SongID)
 );
 
@@ -68,7 +82,13 @@ inner join dbo_artist on dbo_artist.artistid = dbo_musicfile.artistid
 where artistname = "yoasobi"
 order by dbo_album.Title;
 
-insert into dbo_playlist values (-1, "current", "seyren");
+select dbo_user.username, dbo_playlistinfo.playlistid, dbo_playlistinfo.songid from dbo_user
+inner join dbo_playlist on dbo_user.username = dbo_playlist.username
+inner join dbo_playlistinfo on dbo_playlistinfo.playlistid = dbo_playlist.playlistid;
+
+select * from dbo_musicfiles;
+select * from dbo_album;
+select * from dbo_albuminfo;
 select * from dbo_user;
 select * from dbo_playlist;
 select * from dbo_playlistinfo;

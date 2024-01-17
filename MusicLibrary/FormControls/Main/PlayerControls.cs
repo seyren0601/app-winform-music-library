@@ -18,5 +18,32 @@ namespace MusicLibrary
                 Console.WriteLine($"Repeat: {mp.Repeat}");
             }
         }
+
+        private void ResetNowPlaying()
+        {
+            if(mp.waveOut != null)
+            {
+                mp.Stop();
+                mp.waveOut = null;
+                mp.FileReader = null;
+                // Disable button because waveOut is now null
+                btnStop.Enabled = false;
+                btnPlay.Enabled = false;
+
+                // Reset seekbar
+                trbSeeker.Value = 0;
+                lblSeekMin.Text = "0:00";
+                lblSeekMax.Text = "0:00";
+
+                // Reset details' textboxes
+                foreach (Control control in grpDetails.Controls)
+                {
+                    if (control is TextBox)
+                    {
+                        ((TextBox)control).Text = string.Empty;
+                    }
+                }
+            }
+        }
     }
 }
