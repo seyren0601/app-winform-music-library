@@ -55,10 +55,10 @@ namespace MusicLibrary_BLL.Services
                     Title = album.Title,
                     ArtistID = artistID,
                     ReleaseYear = album.Date != null?
-                                    album.Date.Year.Value:null
+                                  album.Date.Year.Value:null
                 });
             });
-            return albums;
+            return albums.OrderBy(x=>x.Title).ToList();
         }
 
         public async Task<dbo_MusicFile> FindRecording(dbo_Artist artist, dbo_Album album, string songName)
@@ -81,8 +81,7 @@ namespace MusicLibrary_BLL.Services
                     SongID = found.Id.ToString(),
                     ArtistID = artist.ArtistID,
                     Title = found.Title!,
-                    Artist = artist,
-                    Number = found.Releases[0].Media[0].TrackOffset
+                    TrackOffset = (int)found.Releases[0].Media[0].TrackOffset + 1
                 };
         }
     }

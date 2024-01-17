@@ -248,8 +248,10 @@ namespace MusicLibrary_BLL.Services
                                         Album = a.Title,
                                         FilePath = s.FilePath,
                                         Title = s.Title,
-                                        PlayTime = new AudioFileReader(s.FilePath).TotalTime
+                                        PlayTime = new AudioFileReader(s.FilePath).TotalTime,
+                                        Number = s.TrackOffset
                                   };
+                Console.WriteLine(queryResult.Count());
                 BindingList<MusicFile> Songs = new BindingList<MusicFile>(queryResult.ToList());
                 return Songs;
             }
