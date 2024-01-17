@@ -20,6 +20,7 @@ using MusicLibrary_GUI;
 using MusicLibrary_DAL.Entities;
 using Windows.System;
 using System.Diagnostics.Eventing.Reader;
+using MySqlX.XDevAPI.Common;
 
 namespace MusicLibrary
 {
@@ -43,7 +44,7 @@ namespace MusicLibrary
         MediaTag mt = MediaTag.GetInstance();
         MusicList NowPlaying = new MusicList();
         Playlist CurrentPlaylist;
-        BindingList<Playlist> Playlists = new BindingList<Playlist>();
+        BindingList<Playlist> Playlists;
 
         // Form constructors
         public Main(string username, Role role)
@@ -82,6 +83,7 @@ namespace MusicLibrary
             List<Playlist> UserPlaylists = _database.FetchUserPlaylists(FormUsername);
             if (UserPlaylists != null)
             {
+                Playlists = new BindingList<Playlist>();
                 foreach (Playlist playlist in UserPlaylists)
                 {
                     if (playlist.PlaylistName == "Current playing")
@@ -90,7 +92,7 @@ namespace MusicLibrary
                     }
                     Playlists.Add(playlist);
                 }
-                NowPlaying.FileList = _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID);
+                NowPlaying.FileList = _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID, FormUsername);
                 mp.PlayList = NowPlaying;
             }
             else
@@ -99,9 +101,9 @@ namespace MusicLibrary
                 Playlists.Add(CurrentPlaylist);
                 _database.AddPlaylist(CurrentPlaylist);
             }
+
             NowPlaying.AddEvent += CurrentPlaylist.UpdateList;
             NowPlaying.RemoveEvent += CurrentPlaylist.UpdateList;
-
 
             cmbPlaylist.DataSource = Playlists;
             cmbPlaylist.DisplayMember = "PlaylistName";
@@ -449,7 +451,7 @@ namespace MusicLibrary
         private void cmbPlaylist_SelectedValueChanged(object sender, EventArgs e)
         {
             CurrentPlaylist = cmbPlaylist.SelectedItem as Playlist;
-            NowPlaying.FileList = _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID);
+            NowPlaying.FileList = _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID, FormUsername);
             grdNowPlaying.DataSource = CurrentPlaylist.PlaylistInfo;
             mp.PlayList = NowPlaying;
             grdNowPlaying.DataSource = NowPlaying.FileList;
@@ -493,7 +495,7 @@ namespace MusicLibrary
         private void btnDeletePlaylist_Click(object sender, EventArgs e)
         {
             var playlist = cmbPlaylist.SelectedItem as Playlist;
-            if(playlist != null)
+            if (playlist != null)
             {
                 if (playlist.PlaylistName == "Current playing")
                 {
@@ -502,14 +504,15 @@ namespace MusicLibrary
                 else
                 {
                     var result = MessageBox.Show($"Bạn có muốn xóa playlist [{playlist.PlaylistName}] không?", "", MessageBoxButtons.YesNo);
-                    if(result == DialogResult.Yes)
+                    if (result == DialogResult.Yes)
                     {
                         Playlists.Remove(playlist);
                         _database.RemovePlaylist(playlist, FormUsername);
 
                         CurrentPlaylist = cmbPlaylist.Items[0] as Playlist;
                         cmbPlaylist.SelectedIndex = 0;
-                        NowPlaying.FileList = _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID);
+                        cmbPlaylist.DataSource = Playlists;
+                        NowPlaying.FileList = _database.FetchPlaylistSongs(CurrentPlaylist.PlaylistID, FormUsername);
                         grdNowPlaying.DataSource = CurrentPlaylist.PlaylistInfo;
                         mp.PlayList = NowPlaying;
                         grdNowPlaying.DataSource = NowPlaying.FileList;
@@ -527,26 +530,7 @@ namespace MusicLibrary
                         }
                         else
                         {
-                            mp.Stop();
-                            mp.waveOut = null;
-                            mp.FileReader = null;
-                            // Disable button because waveOut is now null
-                            btnStop.Enabled = false;
-                            btnPlay.Enabled = false;
-
-                            // Reset seekbar
-                            trbSeeker.Value = 0;
-                            lblSeekMin.Text = "0:00";
-                            lblSeekMax.Text = "0:00";
-
-                            // Reset details' textboxes
-                            foreach (Control control in grpDetails.Controls)
-                            {
-                                if (control is TextBox)
-                                {
-                                    ((TextBox)control).Text = string.Empty;
-                                }
-                            }
+                            ResetNowPlaying();
                         }
                     }
                 }
@@ -556,6 +540,49 @@ namespace MusicLibrary
         private void ProgressBarUpdate(object sender, FileOperationEventArgs e)
         {
             prgAddAlbum.Value = e.progress;
+        }
+
+        private void btnDeleteFolder_Click(object sender, EventArgs e)
+        {
+            if(trvDirectories.SelectedNode == null || trvDirectories.SelectedNode.Level == 3 || trvDirectories.SelectedNode.Level == 0)
+            {
+                MessageBox.Show("Vui lòng chọn một album hoặc artist");
+            }
+            else
+            {
+                DirectoryInfo folder = Directory.CreateDirectory(trvDirectories.SelectedNode.Tag.ToString());
+                var result = MessageBox.Show("Bạn có muốn xóa " + (trvDirectories.SelectedNode.Level == 1 ? "Artist" : "Album") + $" {trvDirectories.SelectedNode.Text}?", "", MessageBoxButtons.YesNo);
+                if(result == DialogResult.Yes)
+                {
+                    if(trvDirectories.SelectedNode.Level == 2)
+                    {
+                        if (_database.RemoveAlbum(trvDirectories.SelectedNode.Text))
+                        {
+                            trvDirectories.SelectedNode.Remove();
+                            MessageBox.Show("Xóa thành công.");
+                            RefreshPlaylists();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Xóa thất bại.");
+                        }
+                    }
+                    else
+                    {
+                        if (_database.RemoveArtist(trvDirectories.SelectedNode.Text))
+                        {
+                            trvDirectories.SelectedNode.Remove();
+                            MessageBox.Show("Xóa thành công.");
+                            RefreshPlaylists();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Xóa thất bại.");
+                        }
+                    }
+                    folder.Delete(true);
+                }
+            }
         }
     }
 }

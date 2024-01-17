@@ -72,6 +72,7 @@ namespace MusicLibrary
             btnDeletePlaylist = new Button();
             prgAddAlbum = new ProgressBar();
             grpTreeView = new GroupBox();
+            btnDeleteFolder = new Button();
             ctxTreeNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
             grpDetails.SuspendLayout();
@@ -128,8 +129,8 @@ namespace MusicLibrary
             // 
             treeview_icons.ColorDepth = ColorDepth.Depth32Bit;
             treeview_icons.ImageStream = (ImageListStreamer)resources.GetObject("treeview_icons.ImageStream");
-            treeview_icons.TransparentColor = Color.Transparent;
-            treeview_icons.Images.SetKeyName(0, "pngtree-vector-folder-icon-png-image_3788101.png");
+            treeview_icons.TransparentColor = Color.Black;
+            treeview_icons.Images.SetKeyName(0, "folder.png");
             treeview_icons.Images.SetKeyName(1, "mp3-file.png");
             // 
             // btnExit
@@ -169,9 +170,10 @@ namespace MusicLibrary
             media_icons.Images.SetKeyName(2, "stop.png");
             media_icons.Images.SetKeyName(3, "next.png");
             media_icons.Images.SetKeyName(4, "previous.png");
-            media_icons.Images.SetKeyName(5, "add_folder.png");
+            media_icons.Images.SetKeyName(5, "add-folder.png");
             media_icons.Images.SetKeyName(6, "add-list.png");
             media_icons.Images.SetKeyName(7, "delete-list.png");
+            media_icons.Images.SetKeyName(8, "delete-folder.png");
             // 
             // btnPlay
             // 
@@ -523,6 +525,19 @@ namespace MusicLibrary
             grpTreeView.TabStop = false;
             grpTreeView.Text = "Library";
             // 
+            // btnDeleteFolder
+            // 
+            btnDeleteFolder.BackColor = Color.Transparent;
+            btnDeleteFolder.FlatStyle = FlatStyle.Flat;
+            btnDeleteFolder.ImageIndex = 8;
+            btnDeleteFolder.ImageList = media_icons;
+            btnDeleteFolder.Location = new Point(54, 41);
+            btnDeleteFolder.Name = "btnDeleteFolder";
+            btnDeleteFolder.Size = new Size(36, 36);
+            btnDeleteFolder.TabIndex = 29;
+            btnDeleteFolder.UseVisualStyleBackColor = false;
+            btnDeleteFolder.Click += btnDeleteFolder_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -531,6 +546,7 @@ namespace MusicLibrary
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(925, 513);
+            Controls.Add(btnDeleteFolder);
             Controls.Add(grpTreeView);
             Controls.Add(prgAddAlbum);
             Controls.Add(btnDeletePlaylist);
@@ -608,5 +624,6 @@ namespace MusicLibrary
         private Button btnDeletePlaylist;
         private ProgressBar prgAddAlbum;
         private GroupBox grpTreeView;
+        private Button btnDeleteFolder;
     }
 }

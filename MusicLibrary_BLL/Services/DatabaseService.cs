@@ -53,12 +53,51 @@ namespace MusicLibrary_BLL.Services
             }
         }
 
+        public bool RemoveAlbum(string albumName)
+        {
+            using(MusicLibraryDbContext dbContext = new MusicLibraryDbContext())
+            {
+                dbo_Album albumToDelete = dbContext.Albums.FirstOrDefault(a => a.Title == albumName);
+                if(albumToDelete == null)
+                {
+                    return false;
+                }
+                var songsInAlbum = from a in dbContext.Albums
+                                   join i in dbContext.AlbumInfos on a.AlbumID equals i.AlbumID
+                                   join m in dbContext.MusicFiles on i.SongID equals m.SongID
+                                   where a.Title == albumToDelete.Title
+                                   select m;
+                foreach(var songs in songsInAlbum) // Remove data in musicfiles
+                {
+                    dbContext.MusicFiles.Remove(songs);
+                }
+                dbContext.Albums.Remove(albumToDelete); // Remove data in album
+                dbContext.SaveChanges();
+                return true;
+            }
+        }
+
         public void AddArtist(dbo_Artist Artist)
         {
             using (MusicLibraryDbContext dbContext = new MusicLibraryDbContext())
             {
                 dbContext.Artists.Add(Artist);
                 dbContext.SaveChanges();
+            }
+        }
+
+        public bool RemoveArtist(string artistName)
+        {
+            using(var dbContext = new MusicLibraryDbContext())
+            {
+                var artistToDelete = dbContext.Artists.FirstOrDefault(a => a.ArtistName == artistName);
+                if(artistToDelete == null)
+                {
+                    return false;
+                }
+                dbContext.Artists.Remove(artistToDelete);
+                dbContext.SaveChanges();
+                return true;
             }
         }
 
@@ -76,6 +115,23 @@ namespace MusicLibrary_BLL.Services
                         SongID = file.SongID
                     });
                 }
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void RemoveFile(dbo_MusicFile file)
+        {
+            using(MusicLibraryDbContext dbContext = new MusicLibraryDbContext())
+            {
+                var playlistRecords = from m in dbContext.MusicFiles
+                                        join pi in dbContext.PlaylistInfo on m.SongID equals pi.SongID
+                                        where m.SongID == file.SongID
+                                        select pi;
+                foreach (MusicList musicList in playlistRecords) // Remove playlist records that have deleted songs
+                {
+                    dbContext.PlaylistInfo.Remove(musicList);
+                }
+                dbContext.MusicFiles.Remove(file);
                 dbContext.SaveChanges();
             }
         }
@@ -175,7 +231,7 @@ namespace MusicLibrary_BLL.Services
             }
         }
 
-        public BindingList<MusicFile> FetchPlaylistSongs(int playlistID)
+        public BindingList<MusicFile> FetchPlaylistSongs(int playlistID, string username)
         {
             using (MusicLibraryDbContext dbContext = new MusicLibraryDbContext())
             {
@@ -184,7 +240,7 @@ namespace MusicLibrary_BLL.Services
                                   join s in dbContext.MusicFiles on info.SongID equals s.SongID
                                   join a in dbContext.Albums on s.Albums.ToList().First().AlbumID equals a.AlbumID
                                   orderby s.FilePath
-                                  where p.PlaylistID == playlistID
+                                  where p.PlaylistID == playlistID && p.username == username
                                   select new MusicFile()
                                   {
                                         MusicBrainzID = s.SongID,
