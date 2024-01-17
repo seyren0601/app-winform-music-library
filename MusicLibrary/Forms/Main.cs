@@ -36,12 +36,12 @@ namespace MusicLibrary
         string FormUsername;
         Role userRole;
 
-        TreeViewService _treeViewSerivce = TreeViewService.GetInstance();
-        DatabaseService _database = DatabaseService.GetInstance();
-        MusicBrainz _musicBrainz = MusicBrainz.GetInstance();
+        TreeViewService _treeViewSerivce = new TreeViewService();
+        DatabaseService _database = new DatabaseService();
+        MusicBrainz _musicBrainz = new MusicBrainz();
 
-        MusicPlayer mp = MusicPlayer.GetInstance();
-        MediaTag mt = MediaTag.GetInstance();
+        MusicPlayer mp = new MusicPlayer();
+        MediaTag mt = new MediaTag();
         MusicList NowPlaying = new MusicList();
         Playlist CurrentPlaylist;
         BindingList<Playlist> Playlists;
@@ -109,9 +109,15 @@ namespace MusicLibrary
             cmbPlaylist.DataSource = Playlists;
             cmbPlaylist.DisplayMember = "PlaylistName";
 
-            grdNowPlaying.DataSource = NowPlaying.FileList;
             grdNowPlaying.Columns[0].Visible = false;
             grdNowPlaying.Columns[1].Visible = false;
+            grdNowPlaying.Columns[2].DefaultCellStyle.Format = "D2";
+            grdNowPlaying.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            grdNowPlaying.Columns["PlayTime"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            grdNowPlaying.Columns["PlayTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
+            grdNowPlaying.DataSource = NowPlaying.FileList;
+            
 
             if (NowPlaying.Count > 0)
             {
@@ -135,6 +141,9 @@ namespace MusicLibrary
             if (result == DialogResult.OK)
             {
                 tmrSeekBar.Stop();
+                mp.Stop();
+                mp.waveOut = null;
+                Dispose();
                 Close();
             }
         }

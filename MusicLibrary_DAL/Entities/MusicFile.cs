@@ -15,7 +15,7 @@ namespace MusicLibrary_DAL.Entities
         public string? Title { get; set; }
         public string? Artist { get; set; }
         public string? Album { get; set; }
-        public TimeSpan PlayTime { get; set; }
+        public string PlayTime { get; set; }
         public MusicFile() { }
         public MusicFile(FileInfo fileInfo)
         {
@@ -29,7 +29,10 @@ namespace MusicLibrary_DAL.Entities
                 else if(file.Tag.AlbumArtists.Count() > 0)
                     Artist = file.Tag.AlbumArtists.First();
                 Album = file.Tag.Album;
-                PlayTime = new AudioFileReader(FilePath).TotalTime;
+                using(var playtime = new AudioFileReader(FilePath))
+                {
+                    PlayTime = playtime.TotalTime.Minutes.ToString("D2") + ":" + playtime.TotalTime.Seconds.ToString("D2");
+                }
                 Number = (int)file.Tag.Track;
             }
         }

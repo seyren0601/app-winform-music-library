@@ -248,12 +248,17 @@ namespace MusicLibrary_BLL.Services
                                         Album = a.Title,
                                         FilePath = s.FilePath,
                                         Title = s.Title,
-                                        PlayTime = new AudioFileReader(s.FilePath).TotalTime,
+                                        PlayTime = TimespanToString(new AudioFileReader(s.FilePath).TotalTime),
                                         Number = s.TrackOffset
                                   };
                 BindingList<MusicFile> Songs = new BindingList<MusicFile>(queryResult.ToList());
                 return Songs;
             }
+        }
+
+        public static string TimespanToString(TimeSpan timespan)
+        {
+            return timespan.Minutes.ToString("D2") + ":" + timespan.Seconds.ToString("D2");
         }
     }
 }

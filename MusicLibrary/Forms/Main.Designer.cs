@@ -208,7 +208,7 @@ namespace MusicLibrary
             // trbSeeker
             // 
             trbSeeker.AutoSize = false;
-            trbSeeker.Location = new Point(288, 83);
+            trbSeeker.Location = new Point(291, 90);
             trbSeeker.Name = "trbSeeker";
             trbSeeker.Size = new Size(581, 30);
             trbSeeker.TabIndex = 11;
@@ -222,11 +222,11 @@ namespace MusicLibrary
             lblSeekMin.BackColor = Color.Transparent;
             lblSeekMin.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblSeekMin.ForeColor = Color.White;
-            lblSeekMin.Location = new Point(240, 83);
+            lblSeekMin.Location = new Point(240, 90);
             lblSeekMin.Name = "lblSeekMin";
-            lblSeekMin.Size = new Size(41, 23);
+            lblSeekMin.Size = new Size(50, 23);
             lblSeekMin.TabIndex = 12;
-            lblSeekMin.Text = "0:00";
+            lblSeekMin.Text = "00:00";
             // 
             // lblSeekMax
             // 
@@ -234,7 +234,7 @@ namespace MusicLibrary
             lblSeekMax.BackColor = Color.Transparent;
             lblSeekMax.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblSeekMax.ForeColor = Color.White;
-            lblSeekMax.Location = new Point(875, 83);
+            lblSeekMax.Location = new Point(878, 90);
             lblSeekMax.Name = "lblSeekMax";
             lblSeekMax.Size = new Size(41, 23);
             lblSeekMax.TabIndex = 13;
@@ -330,7 +330,10 @@ namespace MusicLibrary
             // 
             // grdNowPlaying
             // 
+            grdNowPlaying.AllowUserToAddRows = false;
+            grdNowPlaying.AllowUserToDeleteRows = false;
             grdNowPlaying.AllowUserToOrderColumns = true;
+            grdNowPlaying.AllowUserToResizeRows = false;
             grdNowPlaying.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             grdNowPlaying.BackgroundColor = Color.Black;
             grdNowPlaying.BorderStyle = BorderStyle.None;
@@ -366,6 +369,7 @@ namespace MusicLibrary
             grdNowPlaying.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             grdNowPlaying.RowHeadersVisible = false;
             grdNowPlaying.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            grdNowPlaying.ShowCellToolTips = false;
             grdNowPlaying.Size = new Size(673, 177);
             grdNowPlaying.TabIndex = 16;
             grdNowPlaying.CellClick += grdNowPlaying_CellClick;

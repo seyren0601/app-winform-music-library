@@ -44,7 +44,7 @@ namespace MusicLibrary_DAL.Entities
                 Title = f.Tag.Title,
                 Artist = f.Tag.AlbumArtists.First(),
                 Album = f.Tag.Album,
-                PlayTime = playTime
+                PlayTime = playTime.Minutes.ToString("D2") + ":" + playTime.Seconds.ToString("D2")
             });
             AddEvent.Invoke(this, new EventArgs());
             return FileList.Last();
