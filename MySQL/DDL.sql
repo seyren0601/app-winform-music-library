@@ -44,6 +44,7 @@ CREATE TABLE dbo_MusicFile(
     ArtistID char(50),
     FilePath char(100),
 	Title char(50) charset utf8mb4,
+    TrackOffset int,
     FOREIGN KEY (ArtistID)
 		REFERENCES dbo_Artist(ArtistID)
         ON DELETE CASCADE,
@@ -86,7 +87,8 @@ select dbo_user.username, dbo_playlistinfo.playlistid, dbo_playlistinfo.songid f
 inner join dbo_playlist on dbo_user.username = dbo_playlist.username
 inner join dbo_playlistinfo on dbo_playlistinfo.playlistid = dbo_playlist.playlistid;
 
-select * from dbo_musicfiles;
+select * from dbo_artist;
+select * from dbo_musicfile;
 select * from dbo_album;
 select * from dbo_albuminfo;
 select * from dbo_user;

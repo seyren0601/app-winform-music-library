@@ -131,7 +131,7 @@ namespace MusicLibrary
         // Buttons click
         private void btnExit_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("Bạn sẽ logout khỏi ứng dụng", "", MessageBoxButtons.OKCancel);
+            var result = MessageBox.Show("Bạn có muốn logout?", "", MessageBoxButtons.OKCancel);
             if (result == DialogResult.OK)
             {
                 tmrSeekBar.Stop();

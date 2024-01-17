@@ -44,12 +44,15 @@ namespace MusicLibrary
                     {
                         try
                         {
+                            item_found.Title = string.Join("", item_found.Title.Split(Path.GetInvalidFileNameChars()));
+                            newPath = newPath.Replace(songName, item_found.TrackOffset.ToString("D2") + " " + item_found.Title);
                             item_found.FilePath = newPath;
                             Add_Files.Add(item_found);
 
                             // Copy file to app's library destination if a match is found
                             System.IO.File.Copy(oldPath, newPath, true);
                             TagLib.File file = TagLib.File.Create(newPath);
+                            file.Tag.Track = (uint)item_found.TrackOffset;
                             file.Tag.MusicBrainzTrackId = item_found.SongID;
                             file.Tag.MusicBrainzReleaseArtistId = item_found.ArtistID;
                             file.Save();
@@ -70,12 +73,15 @@ namespace MusicLibrary
                         {
                             try
                             {
+                                item_found.Title = string.Join("", item_found.Title.Split(Path.GetInvalidFileNameChars()));
+                                newPath = newPath.Replace(songName, item_found.TrackOffset.ToString("D2") + " " + item_found.Title);
                                 item_found.FilePath = newPath;
                                 Add_Files.Add(item_found);
 
                                 // Copy file to app's library destination if a match is found
                                 System.IO.File.Copy(oldPath, newPath, true);
                                 file = TagLib.File.Create(newPath);
+                                file.Tag.Track = (uint)item_found.TrackOffset;
                                 file.Tag.MusicBrainzTrackId = item_found.SongID;
                                 file.Tag.MusicBrainzReleaseArtistId = item_found.ArtistID;
                                 file.Save();
