@@ -97,6 +97,7 @@ namespace MusicLibrary
             }
             else
             {
+                Playlists = new BindingList<Playlist>();
                 CurrentPlaylist.Add(NowPlaying);
                 Playlists.Add(CurrentPlaylist);
                 _database.AddPlaylist(CurrentPlaylist);

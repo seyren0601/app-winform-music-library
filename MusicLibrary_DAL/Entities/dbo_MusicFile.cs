@@ -20,6 +20,8 @@ namespace MusicLibrary_DAL.Entities
         public dbo_Artist Artist { get; set; }
         public string FilePath { get; set; }
         public string Title { get; set; }
+        [NotMapped]
+        public int? Number { get; set; }
         public ICollection<dbo_AlbumInfo> Albums { get; set; }
         public ICollection<MusicList> Playlists { get; set; }
         public dbo_MusicFile() { }

@@ -80,7 +80,9 @@ namespace MusicLibrary_BLL.Services
                 {
                     SongID = found.Id.ToString(),
                     ArtistID = artist.ArtistID,
-                    Title = found.Title!
+                    Title = found.Title!,
+                    Artist = artist,
+                    Number = found.Releases[0].Media[0].TrackOffset
                 };
         }
     }

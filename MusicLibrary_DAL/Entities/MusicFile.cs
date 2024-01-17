@@ -11,6 +11,7 @@ namespace MusicLibrary_DAL.Entities
     {
         public string? MusicBrainzID { get; set; }
         public string FilePath { get; set; }
+        public int? Number { get; set; }
         public string? Title { get; set; }
         public string? Artist { get; set; }
         public string? Album { get; set; }
@@ -29,6 +30,7 @@ namespace MusicLibrary_DAL.Entities
                     Artist = file.Tag.AlbumArtists.First();
                 Album = file.Tag.Album;
                 PlayTime = new AudioFileReader(FilePath).TotalTime;
+                Number = (int)file.Tag.Track;
             }
         }
     }

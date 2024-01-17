@@ -46,10 +46,10 @@ namespace MusicLibrary
                         {
                             item_found.FilePath = newPath;
                             Add_Files.Add(item_found);
-
                             // Copy file to app's library destination if a match is found
                             System.IO.File.Copy(oldPath, newPath, true);
                             TagLib.File file = TagLib.File.Create(newPath);
+                            file.Tag.Track = (uint)item_found.Number;
                             file.Tag.MusicBrainzTrackId = item_found.SongID;
                             file.Tag.MusicBrainzReleaseArtistId = item_found.ArtistID;
                             file.Save();
@@ -76,6 +76,7 @@ namespace MusicLibrary
                                 // Copy file to app's library destination if a match is found
                                 System.IO.File.Copy(oldPath, newPath, true);
                                 file = TagLib.File.Create(newPath);
+                                file.Tag.Track = (uint)item_found.Number;
                                 file.Tag.MusicBrainzTrackId = item_found.SongID;
                                 file.Tag.MusicBrainzReleaseArtistId = item_found.ArtistID;
                                 file.Save();
