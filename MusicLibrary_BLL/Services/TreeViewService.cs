@@ -62,6 +62,26 @@ namespace MusicLibrary_BLL.Services
             }
         }
 
+        public void AddFile(string path, TreeView tree)
+        {
+            var fileInfo = new FileInfo(path);
+            var fileNode = new TreeNode(fileInfo.Name);
+            fileNode.Tag = new MusicFile(fileInfo);
+            fileNode.SelectedImageIndex = fileNode.ImageIndex = 1;
+            tree.Nodes.Add(fileNode);
+        }
+
+        public List<TreeNode> GetAllNodes(TreeNode node)
+        {
+            List<TreeNode> result = new List<TreeNode>();
+            result.Add(node);
+            foreach(TreeNode child in node.Nodes)
+            {
+                result.AddRange(GetAllNodes(child));
+            }
+            return result;
+        }
+
         public void AddFolderToPlaylist(TreeNode node, MusicList playlist)
         {
             foreach(TreeNode sub_node in node.Nodes)

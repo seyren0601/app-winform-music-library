@@ -117,7 +117,7 @@ namespace MusicLibrary
             grdNowPlaying.Columns["PlayTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
             grdNowPlaying.DataSource = NowPlaying.FileList;
-            
+
 
             if (NowPlaying.Count > 0)
             {
@@ -554,7 +554,7 @@ namespace MusicLibrary
 
         private void btnDeleteFolder_Click(object sender, EventArgs e)
         {
-            if(trvDirectories.SelectedNode == null || trvDirectories.SelectedNode.Level == 3 || trvDirectories.SelectedNode.Level == 0)
+            if (trvDirectories.SelectedNode == null || trvDirectories.SelectedNode.Level == 3 || trvDirectories.SelectedNode.Level == 0)
             {
                 MessageBox.Show("Vui lòng chọn một album hoặc artist");
             }
@@ -562,9 +562,9 @@ namespace MusicLibrary
             {
                 DirectoryInfo folder = Directory.CreateDirectory(trvDirectories.SelectedNode.Tag.ToString());
                 var result = MessageBox.Show("Bạn có muốn xóa " + (trvDirectories.SelectedNode.Level == 1 ? "Artist" : "Album") + $" {trvDirectories.SelectedNode.Text}?", "", MessageBoxButtons.YesNo);
-                if(result == DialogResult.Yes)
+                if (result == DialogResult.Yes)
                 {
-                    if(trvDirectories.SelectedNode.Level == 2)
+                    if (trvDirectories.SelectedNode.Level == 2)
                     {
                         if (_database.RemoveAlbum(trvDirectories.SelectedNode.Text))
                         {
@@ -592,6 +592,56 @@ namespace MusicLibrary
                     }
                     folder.Delete(true);
                 }
+            }
+        }
+
+        private void btnFind_Click(object sender, EventArgs e)
+        {
+            if(btnFind.Text == "Find")
+            {
+                if (cmbFind.Text != "" && txtFind.Text != "")
+                {
+                    List<TreeNode> nodeList = _treeViewSerivce.GetAllNodes(trvDirectories.TopNode);
+                    if(cmbFind.Text == "Song")
+                        nodeList = nodeList.FindAll(n => n.Text.ToLower().Contains(txtFind.Text.ToLower()) && n.Level == 3);
+                    else if(cmbFind.Text == "Artist")
+                        nodeList = nodeList.FindAll(n => n.Text.ToLower().Contains(txtFind.Text.ToLower()) && n.Level == 1);
+                    else
+                        nodeList = nodeList.FindAll(n => n.Text.ToLower().Contains(txtFind.Text.ToLower()) && n.Level == 2);
+                    if(nodeList.Count > 0)
+                    {
+                        trvDirectories.Nodes.Clear();
+                        foreach (TreeNode found in nodeList)
+                        {
+                            string filepath = "";
+                            if (found.Level == 1 || found.Level == 2)
+                            {
+                                filepath = found.Tag.ToString();
+                                _treeViewSerivce.BindDirectoryToTreeView(trvDirectories, filepath);
+                            }
+                            else
+                            {
+                                filepath = ((MusicFile)found.Tag).FilePath;
+                                _treeViewSerivce.AddFile(filepath, trvDirectories);
+                            }
+                        }
+                        btnFind.Text = "Cancel";
+                        btnAddFolder.Enabled = false;
+                        btnDeleteFolder.Enabled = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Không tìm thấy thông tin {cmbFind.Text} vừa nhập");
+                    }
+                }
+            }
+            else
+            {
+                trvDirectories.Nodes.Clear();
+                _treeViewSerivce.BindDirectoryToTreeView(trvDirectories, RootDirectory);
+                btnFind.Text = "Find";
+                btnAddFolder.Enabled = true;
+                btnDeleteFolder.Enabled = true;
             }
         }
     }
