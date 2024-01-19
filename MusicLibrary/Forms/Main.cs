@@ -112,7 +112,7 @@ namespace MusicLibrary
             grdNowPlaying.Columns[0].Visible = false;
             grdNowPlaying.Columns[1].Visible = false;
             grdNowPlaying.Columns[2].DefaultCellStyle.Format = "D2";
-            grdNowPlaying.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            grdNowPlaying.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             grdNowPlaying.Columns["PlayTime"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             grdNowPlaying.Columns["PlayTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 

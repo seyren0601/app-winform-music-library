@@ -35,20 +35,16 @@ namespace MusicLibrary
         {
             if (LoginUser(txtUsername.Text, txtPassword.Text))
             {
-                var result = MessageBox.Show("Login thành công", "Thông báo");
-                if (result != DialogResult.None)
-                {
-                    Main main = new Main(txtUsername.Text, txtUsername.Text == "seyren" ? Role.admin : Role.user);
-                    Hide();
-                    main.ShowDialog();
-                    txtUsername.Text = "";
-                    txtPassword.Text = "";
-                    Show();
-                }
+                Main main = new Main(txtUsername.Text, txtUsername.Text == "seyren" ? Role.admin : Role.user);
+                Hide();
+                main.ShowDialog();
+                txtUsername.Text = "";
+                txtPassword.Text = "";
+                Show();
             }
             else
             {
-                MessageBox.Show("Login thất bại", "Thông báo");
+                MessageBox.Show("Login thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
