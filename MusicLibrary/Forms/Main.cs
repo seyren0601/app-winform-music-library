@@ -440,8 +440,31 @@ namespace MusicLibrary
 
         private void grdNowPlaying_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            mp.NowPlayingIndex = e.RowIndex;
-            mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+            if (e.RowIndex == -1) // double clicked at header
+            {
+                switch (e.ColumnIndex)
+                {
+                    case 2:
+                        NowPlaying.FileList = new BindingList<MusicFile>(NowPlaying.FileList.OrderBy(x => x.Number).ToList());
+                        break;
+                    case 3:
+                        NowPlaying.FileList = new BindingList<MusicFile>(NowPlaying.FileList.OrderBy(x => x.Title).ToList());
+                        break;
+                    case 4:
+                        NowPlaying.FileList = new BindingList<MusicFile>(NowPlaying.FileList.OrderBy(x => x.Artist).ToList());
+                        break;
+                    case 5:
+                        NowPlaying.FileList = new BindingList<MusicFile>(NowPlaying.FileList.OrderBy(x => x.Album).ToList());
+                        break;
+                }
+                grdNowPlaying.DataSource = NowPlaying.FileList;
+
+            }
+            else // double clicked at rows
+            {
+                mp.NowPlayingIndex = e.RowIndex;
+                mp.PlayFile(NowPlaying[mp.NowPlayingIndex]);
+            }
         }
 
         private void btnCreatePlaylist_Click(object sender, EventArgs e)
@@ -597,18 +620,18 @@ namespace MusicLibrary
 
         private void btnFind_Click(object sender, EventArgs e)
         {
-            if(btnFind.Text == "Find")
+            if (btnFind.Text == "Find")
             {
                 if (cmbFind.Text != "" && txtFind.Text != "")
                 {
                     List<TreeNode> nodeList = _treeViewSerivce.GetAllNodes(trvDirectories.TopNode);
-                    if(cmbFind.Text == "Song")
+                    if (cmbFind.Text == "Song")
                         nodeList = nodeList.FindAll(n => n.Text.ToLower().Contains(txtFind.Text.ToLower()) && n.Level == 3);
-                    else if(cmbFind.Text == "Artist")
+                    else if (cmbFind.Text == "Artist")
                         nodeList = nodeList.FindAll(n => n.Text.ToLower().Contains(txtFind.Text.ToLower()) && n.Level == 1);
                     else
                         nodeList = nodeList.FindAll(n => n.Text.ToLower().Contains(txtFind.Text.ToLower()) && n.Level == 2);
-                    if(nodeList.Count > 0)
+                    if (nodeList.Count > 0)
                     {
                         trvDirectories.Nodes.Clear();
                         foreach (TreeNode found in nodeList)
