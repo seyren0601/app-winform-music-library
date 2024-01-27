@@ -77,6 +77,8 @@ namespace MusicLibrary
             txtFind = new TextBox();
             cmbFind = new ComboBox();
             btnDeleteFolder = new Button();
+            lblUsername = new Label();
+            lblRole = new Label();
             ctxTreeNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbSeeker).BeginInit();
             grpDetails.SuspendLayout();
@@ -624,6 +626,28 @@ namespace MusicLibrary
             btnDeleteFolder.UseVisualStyleBackColor = false;
             btnDeleteFolder.Click += btnDeleteFolder_Click;
             // 
+            // lblUsername
+            // 
+            lblUsername.AutoSize = true;
+            lblUsername.BackColor = Color.Transparent;
+            lblUsername.ForeColor = Color.White;
+            lblUsername.Location = new Point(12, 9);
+            lblUsername.Name = "lblUsername";
+            lblUsername.Size = new Size(108, 28);
+            lblUsername.TabIndex = 30;
+            lblUsername.Text = "Username: ";
+            // 
+            // lblRole
+            // 
+            lblRole.AutoSize = true;
+            lblRole.BackColor = Color.Transparent;
+            lblRole.ForeColor = Color.White;
+            lblRole.Location = new Point(12, 43);
+            lblRole.Name = "lblRole";
+            lblRole.Size = new Size(59, 28);
+            lblRole.TabIndex = 31;
+            lblRole.Text = "Role: ";
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
@@ -633,6 +657,8 @@ namespace MusicLibrary
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1453, 958);
             ControlBox = false;
+            Controls.Add(lblRole);
+            Controls.Add(lblUsername);
             Controls.Add(btnDeleteFolder);
             Controls.Add(grpTreeView);
             Controls.Add(prgAddAlbum);
@@ -719,5 +745,7 @@ namespace MusicLibrary
         private ComboBox cmbFind;
         private Button btnFind;
         private TextBox txtFind;
+        private Label lblUsername;
+        private Label lblRole;
     }
 }

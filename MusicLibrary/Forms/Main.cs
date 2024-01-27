@@ -70,6 +70,18 @@ namespace MusicLibrary
 
         private void Main_Load(object sender, EventArgs e)
         {
+            lblUsername.Text += FormUsername;
+            if(userRole != Role.admin) 
+            {
+                lblRole.Text += "User";
+                btnAddFolder.Enabled = false;
+                btnDeleteFolder.Enabled = false;
+            }
+            else
+            {
+                lblRole.Text += "Administrator";
+            }
+
             CurrentPlaylist = new Playlist() { PlaylistName = "Current playing", username = FormUsername };
             _treeViewSerivce.BindDirectoryToTreeView(trvDirectories, RootDirectory);
             mp.ChangeVolume(volumeSlider1.Volume);
