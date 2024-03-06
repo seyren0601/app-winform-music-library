@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SignUp));
             lblUsername = new Label();
             lblPassword = new Label();
             lblRePassword = new Label();
@@ -43,6 +44,8 @@
             // lblUsername
             // 
             lblUsername.AutoSize = true;
+            lblUsername.BackColor = Color.Transparent;
+            lblUsername.ForeColor = Color.Silver;
             lblUsername.Location = new Point(32, 70);
             lblUsername.Margin = new Padding(4, 0, 4, 0);
             lblUsername.Name = "lblUsername";
@@ -53,6 +56,8 @@
             // lblPassword
             // 
             lblPassword.AutoSize = true;
+            lblPassword.BackColor = Color.Transparent;
+            lblPassword.ForeColor = Color.Silver;
             lblPassword.Location = new Point(32, 124);
             lblPassword.Name = "lblPassword";
             lblPassword.Size = new Size(80, 23);
@@ -62,6 +67,8 @@
             // lblRePassword
             // 
             lblRePassword.AutoSize = true;
+            lblRePassword.BackColor = Color.Transparent;
+            lblRePassword.ForeColor = Color.Silver;
             lblRePassword.Location = new Point(32, 184);
             lblRePassword.Name = "lblRePassword";
             lblRePassword.Size = new Size(81, 46);
@@ -98,8 +105,9 @@
             // lblHeader
             // 
             lblHeader.AutoSize = true;
+            lblHeader.BackColor = Color.Transparent;
             lblHeader.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblHeader.ForeColor = Color.Red;
+            lblHeader.ForeColor = Color.RosyBrown;
             lblHeader.Location = new Point(167, 9);
             lblHeader.Name = "lblHeader";
             lblHeader.Size = new Size(111, 37);
@@ -141,6 +149,8 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(451, 316);
             Controls.Add(btnCancel);
             Controls.Add(btnCheck);
